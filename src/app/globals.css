@@ -1,0 +1,76 @@
+@layer tailwind {
+  @tailwind base;
+}
+@import "@mantine/core/styles.css";
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --primary: #33bfbf;
+  --secondary: #b0bac9;
+  --enzy-dark: #1a2a39;
+  --enzy-blue: #0f5aae;
+  --enzy-light-blue: #f5faff;
+  --enzy-green: #33bfbf;
+  --enzy-light-green: #e8f7f7;
+  --enzy-dark-green: #018091;
+  --enzy-yellow: #ffc700;
+  --enzy-light-yellow: #ffdf00;
+  --enzy-success: #12b981;
+  --light: #f1f5f9;
+  --dark-base: #121628;
+  --dark-box: #202e3e;
+  --dark-foreground: #ffffffcc;
+  --dark-foreground-focus: #33bfbf;
+  --tw-bg-opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* Custom CSS */
+.btn-primary {
+  background-color: #33bfbf !important;
+  border-color: #33bfbf !important;
+  color: white !important;
+}
+
+.btn-primary:hover {
+  background-color: #018091 !important;
+  border-color: #018091 !important;
+  color: white !important;
+}
+
+.sidebar {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+@layer base {
+}
+@layer components {
+  .form-input {
+    @apply rounded-lg border-[1.5px] bg-transparent py-3 px-5 transition active:border-primary disabled:bg-gray-100  dark:bg-form-input dark:focus:border-primary dark:border-form-strokedark;
+  }
+}
+.highlight {
+  background-color: yellow;
+}
