@@ -344,7 +344,6 @@ export default function SummaryCard() {
                     }}
                     value={floorId}
                   >
-                    <option value={2}>ชั้น 2</option>
                     {floorList.map((item) => {
                       return (
                         <option key={item.id} Value={item.Id}>
@@ -462,16 +461,40 @@ export default function SummaryCard() {
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  {item.pressure}
+                                  
+                                <Highlighter
+                                    highlightClassName="highlight" // Define your custom highlight class
+                                    searchWords={[searchTable]}
+                                    autoEscape={true}
+                                    textToHighlight= {String(item.pressure)} // Replace this with your text
+                                  />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  {item.power}
+                                  
+                                <Highlighter
+                                    highlightClassName="highlight" // Define your custom highlight class
+                                    searchWords={[searchTable]}
+                                    autoEscape={true}
+                                    textToHighlight= {String(item.power)} // Replace this with your text
+                                  />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  {item.efficiency}
+                                  
+                                <Highlighter
+                                    highlightClassName="highlight" // Define your custom highlight class
+                                    searchWords={[searchTable]}
+                                    autoEscape={true}
+                                    textToHighlight= {String(item.efficiency)} // Replace this with your text
+                                  />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  {item.workingHours}
+                                <Highlighter
+                                    highlightClassName="highlight" // Define your custom highlight class
+                                    searchWords={[searchTable]}
+                                    autoEscape={true}
+                                    textToHighlight= {String(item.workingHours)} // Replace this with your text
+                                  />
+                                 
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center">
                                   <button
