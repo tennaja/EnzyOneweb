@@ -85,9 +85,6 @@ export default function Login() {
 
   async function setToken(token) {
     Cookies.set("token", token, { domain: "localhost" });
-    if (typeof window !== 'undefined'){
-      localStorage.setItem ("token",token)
-    }
     const decoded = jwtDecode(token);
 
     dispatch(setReduxUsername(decoded?.data?.username));
