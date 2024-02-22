@@ -34,7 +34,7 @@ export async function getUserCompany(token) {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
-        "Authorization":"Bearer " + Cookies.get("token"),
+        "Authorization":"Bearer " + token,
       },
     });
     return res;
