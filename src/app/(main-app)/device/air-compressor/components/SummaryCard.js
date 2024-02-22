@@ -49,17 +49,17 @@ export default function SummaryCard() {
   // const password = useSelector((state) => state.userData.password);
   useEffect(() => {
     getBranchList();
-    
+
     console.log(username);
     console.log(password);
   }, []);
- 
- useEffect(() => {
+
+  useEffect(() => {
     if (isFirst && floorId != 0) {
       onSearchTable();
-      GetHitoricalGraph(floorId, listChange,new Date(),new Date());
+      GetHitoricalGraph(floorId, listChange, new Date(), new Date());
     }
-  }, [floorId,listChange]);
+  }, [floorId, listChange]);
   const OnListChange = async (event) => {
     setListChange(event);
   };
@@ -152,7 +152,7 @@ export default function SummaryCard() {
       "https://enzy.egat.co.th/api/device-management/air-compressor/list/" +
         floorId
     );
-    GetHitoricalGraph(floorId, listChange,new Date(),new Date());
+    GetHitoricalGraph(floorId, listChange, new Date(), new Date());
     setTableList(result.data);
     setDeviceId(result.data[0].id);
     setIsFirst(false);
@@ -423,9 +423,9 @@ export default function SummaryCard() {
                             return (
                               item.name.includes(searchTable) ||
                               item.status.includes(searchTable) ||
-                              String(item.power).includes(searchTable) || 
+                              String(item.power).includes(searchTable) ||
                               String(item.pressure).includes(searchTable) ||
-                              String(item.efficiency).includes(searchTable) || 
+                              String(item.efficiency).includes(searchTable) ||
                               String(item.workingHours).includes(searchTable)
                             );
                           })
@@ -454,7 +454,7 @@ export default function SummaryCard() {
                                       : "whitespace-nowrap px-6 py-4 text-center text-red-500 font-extrabold"
                                   }
                                 >
-                                   <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
@@ -462,40 +462,36 @@ export default function SummaryCard() {
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  
-                                <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight= {String(item.pressure)} // Replace this with your text
+                                    textToHighlight={String(item.pressure)} // Replace this with your text
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  
-                                <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight= {String(item.power)} // Replace this with your text
+                                    textToHighlight={String(item.power)} // Replace this with your text
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  
-                                <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight= {String(item.efficiency)} // Replace this with your text
+                                    textToHighlight={String(item.efficiency)} // Replace this with your text
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight= {String(item.workingHours)} // Replace this with your text
+                                    textToHighlight={String(item.workingHours)} // Replace this with your text
                                   />
-                                 
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center">
                                   <button
