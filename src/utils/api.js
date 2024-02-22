@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const authorizationHeader = {
-  Authorization: "Bearer " + Cookies.get("token"),
+let authorizationHeader = {
+  Authorization: "Bearer " + localStorage.getItem("token"),
 };
 
 export async function login(req) {
@@ -34,7 +34,7 @@ export async function getUserCompany(token) {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization":"Bearer " + localStorage.getItem("token"),
       },
     });
     return res;
@@ -50,7 +50,7 @@ export async function getNavigationItems(req) {
       process.env.NEXT_PUBLIC_APP_URL + `/api/company-module?id=${companyId}`;
     const res = await axios.get(url, {
       withCredentials: true,
-      headers: { "Content-Type": "application/json", ...authorizationHeader },
+      headers: { "Content-Type": "application/json", "Authorization":"Bearer " + localStorage.getItem("token") },
     });
     return res;
   } catch (error) {
@@ -63,7 +63,7 @@ export async function getUserModule(token) {
     const url = process.env.NEXT_PUBLIC_APP_URL + `/api/user-module`;
     const res = await axios.get(url, {
       withCredentials: true,
-      headers: { "Content-Type": "application/json", ...authorizationHeader },
+      headers: { "Content-Type": "application/json", "Authorization":"Bearer " + localStorage.getItem("token") },
       withCredentials: true,
     });
     return res;
@@ -81,7 +81,7 @@ export async function getVariableData(req) {
       `/api/variable?month=${month}&year=${year}`;
     const res = await axios.get(url, {
       withCredentials: true,
-      headers: { "Content-Type": "application/json", ...authorizationHeader },
+      headers: { "Content-Type": "application/json", "Authorization":"Bearer " + localStorage.getItem("token") },
     });
     return res;
   } catch (error) {
@@ -101,7 +101,7 @@ export async function ChangestatusIsOff (devId,username,password) {
       },
       {
         withCredentials: true,
-        headers: { "Content-Type": "application/json" ,...authorizationHeader},
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + localStorage.getItem("token")},
       }
     );
     return res;
@@ -125,7 +125,7 @@ export async function ChangestatusIsOn (devId,username,password) {
       },
       {
         withCredentials: true,
-        headers: { "Content-Type": "application/json" ,...authorizationHeader},
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + localStorage.getItem("token")},
       }
     );
     return res;
@@ -136,6 +136,7 @@ export async function ChangestatusIsOn (devId,username,password) {
 }
 
 export async function getHistoricalGraph(req) {
+  console.log(authorizationHeader)
   const floorId = req.floorId;
   const unit = req.unit
   const dateFrom = req.dateFrom
@@ -153,17 +154,17 @@ export async function getHistoricalGraph(req) {
   }
 }
 
-export async function getBranch(req) {
-  const companyId = req.companyId;
-  try {
-    const url =
-      process.env.NEXT_PUBLIC_APP_URL + 'https://enzy.egat.co.th/api/branch-list/'+companyId;
-      const res = await axios.get(url, {
-      withCredentials: true,
-      headers: { "Content-Type": "application/json",  },
-    });
-    return res;
-  } catch (error) {
-    return error;
-  }
-}
+// export async function getBranch(req) {
+//   const companyId = req.companyId;
+//   try {
+//     const url =
+//       process.env.NEXT_PUBLIC_APP_URL + 'https://enzy.egat.co.th/api/branch-list/'+companyId;
+//       const res = await axios.get(url, {
+//       withCredentials: true,
+//       headers: { "Content-Type": "application/json",  },
+//     });
+//     return res;
+//   } catch (error) {
+//     return error;
+//   }
+// }

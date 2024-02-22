@@ -49,16 +49,17 @@ export default function SummaryCard() {
   // const password = useSelector((state) => state.userData.password);
   useEffect(() => {
     getBranchList();
-    GetHitoricalGraph();
+    
     console.log(username);
     console.log(password);
   }, []);
-
-  useEffect(() => {
+ 
+ useEffect(() => {
     if (isFirst && floorId != 0) {
       onSearchTable();
+      GetHitoricalGraph(floorId, listChange,new Date(),new Date());
     }
-  }, [floorId]);
+  }, [floorId,listChange]);
   const OnListChange = async (event) => {
     setListChange(event);
   };
@@ -151,7 +152,7 @@ export default function SummaryCard() {
       "https://enzy.egat.co.th/api/device-management/air-compressor/list/" +
         floorId
     );
-
+    GetHitoricalGraph(floorId, listChange,new Date(),new Date());
     setTableList(result.data);
     setDeviceId(result.data[0].id);
     setIsFirst(false);
@@ -338,7 +339,7 @@ export default function SummaryCard() {
                 <label>
                   ชั้น :
                   <select
-                    className="w-44 border border-slate-300 mx-2 rounded-md h-9"
+                    className="w-44 border border-slate-300 mx-2 rounded-md "
                     onChange={(event) => {
                       onTableChange(event.target.value);
                     }}
