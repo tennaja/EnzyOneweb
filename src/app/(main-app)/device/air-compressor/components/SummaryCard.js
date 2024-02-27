@@ -32,13 +32,13 @@ export default function SummaryCard() {
   const [isFirst, setIsFirst] = useState(true);
   const [showModalStart, setShowModalStart] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [listChange, setListChange] = useState([0]);
+  const [listChange, setListChange] = useState("barg");
   const [errorMsg, setErrorMsg] = useState("");
   const [searchTable, setSerachTable] = useState("");
   const [showModalError, setShowModalError] = useState(false);
   const [showModalStop, setShowModalStop] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
-  const [ListLabel, setListLabel] = useState([]);
+  const [ListLabel, setListLabel] = useState([0]);
   const [username, setUsername] = useState([]);
   const [password, setPassword] = useState([]);
   const [typedate, setTypeDate] = useState("day");
@@ -49,22 +49,32 @@ export default function SummaryCard() {
   // const password = useSelector((state) => state.userData.password);
   useEffect(() => {
     getBranchList();
-    
-    console.log(username);
-    console.log(password);
+    OnListChange();
   }, []);
  
  useEffect(() => {
     if (isFirst && floorId != 0) {
       onSearchTable();
-      GetHitoricalGraph(floorId, listChange,new Date(),new Date());
+      GetHitoricalGraph(floorId,listChange,new Date(),new Date());
     }
   }, [floorId,listChange]);
+  
   const OnListChange = async (event) => {
     setListChange(event);
+    console.log(listChange)
+    if(typedate == "day"){
+      onChangeDay(startDate) 
+    }else if (typedate == "month"){
+      onChangeMonth(startDate) 
+    }
+  else if (typedate == "year"){
+    onChangeYear(startDate) 
+  }
+    
   };
   const OnListtypeDateChange = async (event) => {
     setTypeDate(event);
+    console.log(typedate)
   };
   //เปิด popup เพื่อสั่ง Start
   const openModalIsStart = (DecviceId) => {
@@ -152,7 +162,7 @@ export default function SummaryCard() {
       "https://enzy.egat.co.th/api/device-management/air-compressor/list/" +
         floorId
     );
-    GetHitoricalGraph(floorId, listChange,new Date(),new Date());
+    GetHitoricalGraph(floorId,listChange,new Date(),new Date());
     setTableList(result.data);
     setDeviceId(result.data[0].id);
     setIsFirst(false);
@@ -205,6 +215,8 @@ export default function SummaryCard() {
 
   //กราฟ
   async function GetHitoricalGraph(floorId, listChange, dateFrom, dateTo) {
+    setLoading(true)
+    console.log(listChange)
     const paramsNav = {
       floorId: floorId,
       unit: listChange,
@@ -215,14 +227,26 @@ export default function SummaryCard() {
     if (res.status === 200) {
       setChartList(res.data);
       let label = [];
+      let modday = 0;
       console.log(res.data);
-
-      for (let j = 0; j < res.data[0].data.length; j++) {
-        label.push(res.data[0].data[j].time);
+      if(typedate == "day"){
+        modday = 30
+      }else if (typedate == "month"){
+        modday = 1440
       }
+    else if (typedate == "year"){
+      modday = 43200
+    }
+      for (let j = 0; j < res.data[0].data.length; j++) {
+         if (j%modday == 0 ) {
+          label.push(res.data[0].data[j].time);
+        }
+      }
+
 
       setListLabel(label);
       console.log(label);
+      setLoading(false)
     } else {
       setErrorMsg("error");
       console.log(errorMsg);
@@ -231,6 +255,7 @@ export default function SummaryCard() {
 
   //Dropdown Month
   const onChangeMonth = (date) => {
+    setStartDate(date)
     let Month = date.getMonth();
     console.log(Month);
     let Year = date.getFullYear();
@@ -247,6 +272,7 @@ export default function SummaryCard() {
 
   //Drpdown Year
   const onChangeYear = (date) => {
+    setStartDate(date)
     let Year = date.getFullYear();
     console.log(Year);
     let startDate = new Date(Year, 0, 1);
@@ -260,6 +286,7 @@ export default function SummaryCard() {
   };
 
   const onChangeDay = (date) => {
+    setStartDate(date)
     let Month = date.getMonth();
     let Year = date.getFullYear();
     let day = date.getDay();
@@ -288,7 +315,7 @@ export default function SummaryCard() {
     <div>
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
         <div className="flex flex-col gap-4 p-2">
-          <span className="text-lg  font-bold">Air Compressor Module</span>
+          <span className="text-lg  font-bold">Air Compressor</span>
           <div className="w-full py-1 pb-2">
             <div className="inline-flex">
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
@@ -355,10 +382,11 @@ export default function SummaryCard() {
                   </select>
                 </label>
               </div>
-              <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200"></div>
+              <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 items-center"></div>
               <button
                 type="button"
-                className=" w-40 focus:outline-none text-white bg-[#14b8a6]  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
+                className="focus:outline-none text-white bg-[#14b8a6]  rounded-md text-lg px-5 m-2 mb-2 h-9 mt-3 w-40
+                "
                 onClick={onSearchTable}
               >
                 เลือก
@@ -401,7 +429,7 @@ export default function SummaryCard() {
                           Power(kW)
                         </th>
                         <th scope="col" className="px-6 py-4 text-center">
-                          Efficlency
+                          Efficiency
                         </th>
                         <th scope="col" className="px-6 py-4 text-center">
                           Running Hour
@@ -620,7 +648,7 @@ export default function SummaryCard() {
         ) : null}
         {loading ? (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="py-12 border w-auto shadow-lg rounded-md bg-white items-center">
+            <div className="py-12 border w-auto shadow-lg rounded-md bg-white items-center text-center" style={{textAlign : '-webkit-center'}}>
               <RotatingLines
                 visible={true}
                 height="96"
@@ -641,7 +669,7 @@ export default function SummaryCard() {
               </div>
             </div>
           </div>
-        ) : null}
+         ) : null} 
         {showModalError ? (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
@@ -676,7 +704,7 @@ export default function SummaryCard() {
                 onChange={(date) => onChangeDay(date)}
                 dateFormat="dd/MM/yyyy"
               />
-            ) : typedate == "week" ? (
+            ) : typedate == "month" ? (
               <DatePicker
                 className="w-44 border border-slate-300 mx-2 rounded-md h-9 px-2"
                 selected={startDate}
@@ -703,15 +731,16 @@ export default function SummaryCard() {
               value={typedate}
             >
               <option value="day">รายวัน</option>
-              <option value="week">รายเดือน</option>
+              <option value="month">รายเดือน</option>
               <option value="year">รายปี</option>
             </select>
             <select
               className="w-44 border border-slate-300 mx-2 rounded-md h-9"
               onChange={(event) => OnListChange(event.target.value)}
+              value={listChange}
             >
-              <option value="Barg">Presure (Barg)</option>
-              <option value="kw">Power (kW)</option>
+              <option value="barg">Presure (barg)</option>
+              <option value="kw">Power (kw)</option>
               <option value="%">Efficlency (%)</option>
             </select>
           </div>
