@@ -385,7 +385,7 @@ export default function SummaryCard() {
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 items-center"></div>
               <button
                 type="button"
-                className="focus:outline-none text-white bg-[#14b8a6]  rounded-md text-lg px-5 m-2 mb-2 h-9 mt-3 w-40
+                className="text-white bg-[#14b8a6] rounded-md text-lg px-10 h-9 mt-3 
                 "
                 onClick={onSearchTable}
               >
@@ -695,7 +695,18 @@ export default function SummaryCard() {
       </div>
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
         <div className="flex flex-col gap-4 p-2">
+        <div className="flex justify-between">
           <span className="text-lg  font-bold">Historical</span>
+          <select
+              className="w-44 border border-slate-300 mx-2 rounded-md h-9"
+              onChange={(event) => OnListChange(event.target.value)}
+              value={listChange}
+            >
+              <option value="barg">Presure (barg)</option>
+              <option value="kw">Power (kw)</option>
+              <option value="%">Efficlency (%)</option>
+            </select>
+          </div>
           <div className="flex gap-5">
             {typedate == "day" ? (
               <DatePicker
@@ -734,15 +745,7 @@ export default function SummaryCard() {
               <option value="month">รายเดือน</option>
               <option value="year">รายปี</option>
             </select>
-            <select
-              className="w-44 border border-slate-300 mx-2 rounded-md h-9"
-              onChange={(event) => OnListChange(event.target.value)}
-              value={listChange}
-            >
-              <option value="barg">Presure (barg)</option>
-              <option value="kw">Power (kw)</option>
-              <option value="%">Efficlency (%)</option>
-            </select>
+           
           </div>
         </div>
         <Line
