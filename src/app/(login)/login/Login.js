@@ -260,7 +260,7 @@ export default function Login() {
           <div className="w-full border-stroke border-primary dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12 xl:p-16">
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-dark-base sm:text-title-xl2">
-                Login to your account 2
+                Login to your account 
               </h2>
 
               {errorMsg != "" && (

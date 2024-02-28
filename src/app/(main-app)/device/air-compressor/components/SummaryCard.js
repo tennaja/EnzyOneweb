@@ -49,13 +49,13 @@ export default function SummaryCard() {
   // const password = useSelector((state) => state.userData.password);
   useEffect(() => {
     getBranchList();
-    OnListChange();
+    // OnListChange();
   }, []);
  
  useEffect(() => {
-    if (isFirst && floorId != 0) {
+    if (isFirst && floorId != 0 && listChange) {
       onSearchTable();
-      GetHitoricalGraph(floorId,listChange,new Date(),new Date());
+      GetHitoricalGraph(floorId,listChange,formatDate(new Date()),formatDate(new Date()));
     }
   }, [floorId,listChange]);
   
@@ -67,7 +67,7 @@ export default function SummaryCard() {
     }else if (typedate == "month"){
       onChangeMonth(startDate) 
     }
-  else if (typedate == "year"){
+    else if (typedate == "year"){
     onChangeYear(startDate) 
   }
     
@@ -214,12 +214,12 @@ export default function SummaryCard() {
   }
 
   //กราฟ
-  async function GetHitoricalGraph(floorId, listChange, dateFrom, dateTo) {
+  async function GetHitoricalGraph(floorId, listChanges, dateFrom, dateTo) {
     setLoading(true)
-    console.log(listChange)
+    console.log(listChanges)
     const paramsNav = {
       floorId: floorId,
-      unit: listChange,
+      unit: listChanges,
       dateFrom: dateFrom,
       dateTo: dateTo,
     };
@@ -286,11 +286,14 @@ export default function SummaryCard() {
   };
 
   const onChangeDay = (date) => {
+    console.log(date)
     setStartDate(date)
     let Month = date.getMonth();
     let Year = date.getFullYear();
-    let day = date.getDay();
+    let day = date.getDate();
+    console.log(day)
     let startDate = new Date(Year, Month, day);
+    console.log(listChange)
     GetHitoricalGraph(
       floorId,
       listChange,
@@ -748,7 +751,9 @@ export default function SummaryCard() {
            
           </div>
         </div>
-        <Line
+        <div class=" flex-grow items-center">
+        <span className="[writing-mode:vertical-lr] transform rotate-180 text-center mb-0">{listChange}</span>
+        <Line 
           data={{
             labels: ListLabel,
             datasets: chartList.map((item) => {
@@ -785,7 +790,8 @@ export default function SummaryCard() {
             },
           }}
         />
-      </div>
+        </div>
+        </div>
       <div></div>
       {/* <button
                     className="px-4 py-2 bg-red-600 text-white font-medium rounded-md  focus:outline-none w-62"
