@@ -32,6 +32,7 @@ export default function SummaryCard() {
   const [isFirst, setIsFirst] = useState(true);
   const [showModalStart, setShowModalStart] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingGraph, setLoadingGraph] = useState(false);
   const [listChange, setListChange] = useState("barg");
   const [errorMsg, setErrorMsg] = useState("");
   const [searchTable, setSerachTable] = useState("");
@@ -64,17 +65,31 @@ export default function SummaryCard() {
     console.log(listChange)
     if(typedate == "day"){
       onChangeDay(startDate) 
+       console.log(startDate)
     }else if (typedate == "month"){
       onChangeMonth(startDate) 
+      console.log(startDate)
     }
     else if (typedate == "year"){
-    onChangeYear(startDate) 
+      onChangeYear(startDate) 
+      console.log(startDate)
   }
     
   };
   const OnListtypeDateChange = async (event) => {
     setTypeDate(event);
     console.log(typedate)
+    if(typedate === "day"){
+       onChangeDay(startDate) 
+       console.log(startDate)
+    }else if (typedate === "month"){
+      onChangeMonth(startDate) 
+      console.log(startDate)
+    }
+    else if (typedate === "year"){
+      onChangeYear(startDate) 
+      console.log(startDate)
+  }
   };
   //เปิด popup เพื่อสั่ง Start
   const openModalIsStart = (DecviceId) => {
@@ -215,7 +230,7 @@ export default function SummaryCard() {
 
   //กราฟ
   async function GetHitoricalGraph(floorId, listChanges, dateFrom, dateTo) {
-    setLoading(true)
+    setLoadingGraph(true)
     console.log(listChanges)
     const paramsNav = {
       floorId: floorId,
@@ -246,7 +261,7 @@ export default function SummaryCard() {
 
       setListLabel(label);
       console.log(label);
-      setLoading(false)
+      setLoadingGraph(false)
     } else {
       setErrorMsg("error");
       console.log(errorMsg);
@@ -262,6 +277,8 @@ export default function SummaryCard() {
     console.log(Year);
     let startDate = new Date(Year, Month, 1);
     let endDate = new Date(Year, Month + 1, 0);
+    console.log(startDate)
+    console.log(endDate)
     GetHitoricalGraph(
       floorId,
       listChange,
@@ -283,6 +300,7 @@ export default function SummaryCard() {
       formatDate(startDate),
       formatDate(endDate)
     );
+    
   };
 
   const onChangeDay = (date) => {
@@ -556,14 +574,14 @@ export default function SummaryCard() {
           </div>
         </div>
         {showModalStop ? (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mt-5">
                   Are you sure ?
                 </h3>
-                <div className="flex gap-5 items-center mt-5">
-                  <p>Username : </p>
+                <div className="flex gap-5 items-center mt-5 ">
+                  <p className="text-gray-900">Username : </p>
                   <input
                     type="text"
                     placeholder="Enter your username"
@@ -574,7 +592,7 @@ export default function SummaryCard() {
                   />
                 </div>
                 <div className="flex gap-5 items-center mt-5 px-1">
-                  <p>Password : </p>
+                  <p className="text-gray-900">Password : </p>
                   <input
                     type="text"
                     placeholder="Enter your Password"
@@ -603,14 +621,14 @@ export default function SummaryCard() {
           </div>
         ) : null}
         {showModalStart ? (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                <h3 className="text-2xl font-bold mt-5">
                   Are you sure ?
                 </h3>
                 <div className="flex gap-5 items-center mt-5">
-                  <p>Username : </p>
+                  <p className="text-gray-900">Username : </p>
                   <input
                     type="text"
                     placeholder="Enter your username"
@@ -621,7 +639,7 @@ export default function SummaryCard() {
                   />
                 </div>
                 <div className="flex gap-5 items-center mt-5 px-1">
-                  <p>Password : </p>
+                  <p className="text-gray-900">Password : </p>
                   <input
                     type="text"
                     placeholder="Enter your Password"
@@ -751,46 +769,71 @@ export default function SummaryCard() {
            
           </div>
         </div>
-        <div class=" flex-grow items-center">
-        <span className="[writing-mode:vertical-lr] transform rotate-180 text-center mb-0">{listChange}</span>
-        <Line 
-          data={{
-            labels: ListLabel,
-            datasets: chartList.map((item) => {
-              return {
-                label: item.name,
-                data: item.data.map((data, index) => {
-                  return data.value;
-                }),
-                borderColor: RandomColor(),
-                fill: false,
-              };
-            }),
-            options: {
-              maintainAspectRatio: false,
-              responsive: true,
-              title: {
-                display: false,
-                text: "Sales Charts",
-              },
-
-              legend: {
-                labels: {},
-                align: "end",
-                position: "bottom",
-              },
-              tooltips: {
-                mode: "index",
-                intersect: false,
-              },
-              hover: {
-                mode: "nearest",
-                intersect: true,
-              },
+        { loadingGraph ? (
+           <div className="py-12 w-auto items-center text-center" style={{textAlign : '-webkit-center'}}><RotatingLines
+           visible={true}
+           height="96"
+           width="96"
+           color="grey"
+           strokeWidth="5"
+           animationDuration="0.75"
+           ariaLabel="rotating-lines-loading"
+           wrapperStyle={{}}
+           wrapperClass=""
+         /></div>
+        ) : <div class="flex">
+        <div className="flex items-center justify-center">
+          {
+            listChange == "barg" ? (
+              <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">Presure (barg)</span>
+            ) : listChange == "kw" ? (
+              <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">Power (kw)</span>
+            ) :  (
+              <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">Efficlency (%)</span>
+            )
+          }
+      </div>
+      <Line 
+        
+        data={{
+          labels: ListLabel,
+          datasets: chartList.map((item) => {
+            return {
+              label: item.name,
+              data: item.data.map((data, index) => {
+                return data.value;
+              }),
+              borderColor: RandomColor(),
+              fill: false,
+            };
+          }),
+          options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            title: {
+              display: false,
+              text: "Sales Charts",
             },
-          }}
-        />
-        </div>
+
+            legend: {
+              labels: {},
+              align: "end",
+              position: "bottom",
+            },
+            tooltips: {
+              mode: "index",
+              intersect: false,
+            },
+            hover: {
+              mode: "nearest",
+              intersect: true,
+            },
+          },
+        }}
+      />
+      
+      </div>}
+        
         </div>
       <div></div>
       {/* <button
