@@ -76,21 +76,27 @@ export default function SummaryCard() {
   }
     
   };
+
+  useEffect (() => {
+    if(typedate == "day"){
+      onChangeDay(startDate) 
+      console.log(startDate)
+   }else if (typedate == "month"){
+     onChangeMonth(startDate) 
+     console.log(startDate)
+   }
+   else if (typedate == "year"){
+     onChangeYear(startDate) 
+     console.log(startDate)
+ }
+  },[typedate])
   const OnListtypeDateChange = async (event) => {
     setTypeDate(event);
-    console.log(typedate)
-    if(typedate === "day"){
-       onChangeDay(startDate) 
-       console.log(startDate)
-    }else if (typedate === "month"){
-      onChangeMonth(startDate) 
-      console.log(startDate)
-    }
-    else if (typedate === "year"){
-      onChangeYear(startDate) 
-      console.log(startDate)
-  }
+    
+    
+    
   };
+    
   //เปิด popup เพื่อสั่ง Start
   const openModalIsStart = (DecviceId) => {
     setShowModalStart(true);
@@ -177,7 +183,7 @@ export default function SummaryCard() {
       "https://enzy.egat.co.th/api/device-management/air-compressor/list/" +
         floorId
     );
-    GetHitoricalGraph(floorId,listChange,new Date(),new Date());
+    GetHitoricalGraph(floorId,listChange,formatDate(new Date()),formatDate(new Date()));
     setTableList(result.data);
     setDeviceId(result.data[0].id);
     setIsFirst(false);
@@ -244,7 +250,9 @@ export default function SummaryCard() {
       let label = [];
       let modday = 0;
       console.log(res.data);
+      console.log("🚀 ~ GetHitoricalGraph ~ typedate:", typedate)
       if(typedate == "day"){
+        
         modday = 30
       }else if (typedate == "month"){
         modday = 1440
@@ -253,6 +261,7 @@ export default function SummaryCard() {
       modday = 43200
     }
       for (let j = 0; j < res.data[0].data.length; j++) {
+        console.log(j%modday)
          if (j%modday == 0 ) {
           label.push(res.data[0].data[j].time);
         }
@@ -804,7 +813,7 @@ export default function SummaryCard() {
                 return data.value;
               }),
               borderColor: RandomColor(),
-              fill: false,
+              fill: true,
             };
           }),
           options: {
