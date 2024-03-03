@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState , useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
@@ -22,11 +22,10 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
-
 
 ChartJS.register(
   CategoryScale,
@@ -45,31 +44,29 @@ export default function SummaryCard() {
   const zoomOptions = {
     pan: {
       enabled: true,
-      mode: "x"
+      mode: "x",
     },
     zoom: {
       wheel: {
-        enabled: true
+        enabled: true,
       },
       pinch: {
-        enabled: true
+        enabled: true,
       },
-      mode: "x"
-    }
-
+      mode: "x",
+    },
   };
   const options = {
-    
     responsive: true,
     interaction: {
-      mode: 'index',
+      mode: "index",
       intersect: false,
     },
     spanGaps: true,
     plugins: {
       // afterDraw: chart => {
-      //   if (chart.tooltip?._active?.length) {               
-      //      let x = chart.tooltip._active[0].element.x;             
+      //   if (chart.tooltip?._active?.length) {
+      //      let x = chart.tooltip._active[0].element.x;
       //      let yAxis = chart.scales.y;
       //      let ctx = chart.ctx;
       //      ctx.save();
@@ -83,24 +80,24 @@ export default function SummaryCard() {
       //   }
       // },
       legend: {
-        position: "top"
+        position: "top",
       },
-      zoom: zoomOptions
+      zoom: zoomOptions,
     },
     scales: {
       x: {
-         display: true,
-         grid: {
+        display: true,
+        grid: {
           drawOnChartArea: false, // only want the grid lines for one axis to show up
         },
       },
       y: {
-         display: true,
-         grid: {
+        display: true,
+        grid: {
           drawOnChartArea: true, // only want the grid lines for one axis to show up
         },
-      }
-   },
+      },
+    },
   };
   const chartRef = useRef(null);
 
@@ -140,51 +137,50 @@ export default function SummaryCard() {
     getBranchList();
     // OnListChange();
   }, []);
- 
- useEffect(() => {
+
+  useEffect(() => {
     if (isFirst && floorId != 0 && listChange) {
       onSearchTable();
-      GetHitoricalGraph(floorId,listChange,formatDate(new Date()),formatDate(new Date()));
+      GetHitoricalGraph(
+        floorId,
+        listChange,
+        formatDate(new Date()),
+        formatDate(new Date())
+      );
     }
-  }, [floorId,listChange]);
-  
+  }, [floorId, listChange]);
+
   const OnListChange = async (event) => {
     setListChange(event);
-    console.log(listChange)
-    if(typedate == "day"){
-      onChangeDay(startDate) 
-       console.log(startDate)
-    }else if (typedate == "month"){
-      onChangeMonth(startDate) 
-      console.log(startDate)
+    console.log(listChange);
+    if (typedate == "day") {
+      onChangeDay(startDate);
+      console.log(startDate);
+    } else if (typedate == "month") {
+      onChangeMonth(startDate);
+      console.log(startDate);
+    } else if (typedate == "year") {
+      onChangeYear(startDate);
+      console.log(startDate);
     }
-    else if (typedate == "year"){
-      onChangeYear(startDate) 
-      console.log(startDate)
-  }
-    
   };
 
-  useEffect (() => {
-    if(typedate == "day"){
-      onChangeDay(startDate) 
-      console.log(startDate)
-   }else if (typedate == "month"){
-     onChangeMonth(startDate) 
-     console.log(startDate)
-   }
-   else if (typedate == "year"){
-     onChangeYear(startDate) 
-     console.log(startDate)
- }
-  },[typedate])
+  useEffect(() => {
+    if (typedate == "day") {
+      onChangeDay(startDate);
+      console.log(startDate);
+    } else if (typedate == "month") {
+      onChangeMonth(startDate);
+      console.log(startDate);
+    } else if (typedate == "year") {
+      onChangeYear(startDate);
+      console.log(startDate);
+    }
+  }, [typedate]);
   const OnListtypeDateChange = async (event) => {
     setTypeDate(event);
-    
-    
-    
   };
-    
+
   //เปิด popup เพื่อสั่ง Start
   const openModalIsStart = (DecviceId) => {
     setShowModalStart(true);
@@ -271,7 +267,12 @@ export default function SummaryCard() {
       "https://enzy.egat.co.th/api/device-management/air-compressor/list/" +
         floorId
     );
-    GetHitoricalGraph(floorId,listChange,formatDate(new Date()),formatDate(new Date()));
+    GetHitoricalGraph(
+      floorId,
+      listChange,
+      formatDate(new Date()),
+      formatDate(new Date())
+    );
     setTableList(result.data);
     setDeviceId(result.data[0].id);
     setIsFirst(false);
@@ -324,8 +325,8 @@ export default function SummaryCard() {
 
   //กราฟ
   async function GetHitoricalGraph(floorId, listChanges, dateFrom, dateTo) {
-    setLoadingGraph(true)
-    console.log(listChanges)
+    setLoadingGraph(true);
+    console.log(listChanges);
     const paramsNav = {
       floorId: floorId,
       unit: listChanges,
@@ -338,27 +339,24 @@ export default function SummaryCard() {
       let label = [];
       let modday = 0;
       console.log(res.data);
-      console.log("🚀 ~ GetHitoricalGraph ~ typedate:", typedate)
-      if(typedate == "day"){
-        
-        modday = 30
-      }else if (typedate == "month"){
-        modday = 1440
+      console.log("🚀 ~ GetHitoricalGraph ~ typedate:", typedate);
+      if (typedate == "day") {
+        modday = 30;
+      } else if (typedate == "month") {
+        modday = 1440;
+      } else if (typedate == "year") {
+        modday = 43200;
       }
-    else if (typedate == "year"){
-      modday = 43200
-    }
       for (let j = 0; j < res.data[0].data.length; j++) {
-        console.log(j%modday)
+        console.log(j % modday);
         //  if (j%modday == 0 ) {
-          label.push(res.data[0].data[j].time);
+        label.push(res.data[0].data[j].time);
         // }
       }
 
-
       setListLabel(label);
       console.log(label);
-      setLoadingGraph(false)
+      setLoadingGraph(false);
     } else {
       setErrorMsg("error");
       console.log(errorMsg);
@@ -367,15 +365,15 @@ export default function SummaryCard() {
 
   //Dropdown Month
   const onChangeMonth = (date) => {
-    setStartDate(date)
+    setStartDate(date);
     let Month = date.getMonth();
     console.log(Month);
     let Year = date.getFullYear();
     console.log(Year);
     let startDate = new Date(Year, Month, 1);
     let endDate = new Date(Year, Month + 1, 0);
-    console.log(startDate)
-    console.log(endDate)
+    console.log(startDate);
+    console.log(endDate);
     GetHitoricalGraph(
       floorId,
       listChange,
@@ -386,7 +384,7 @@ export default function SummaryCard() {
 
   //Drpdown Year
   const onChangeYear = (date) => {
-    setStartDate(date)
+    setStartDate(date);
     let Year = date.getFullYear();
     console.log(Year);
     let startDate = new Date(Year, 0, 1);
@@ -397,18 +395,17 @@ export default function SummaryCard() {
       formatDate(startDate),
       formatDate(endDate)
     );
-    
   };
 
   const onChangeDay = (date) => {
-    console.log(date)
-    setStartDate(date)
+    console.log(date);
+    setStartDate(date);
     let Month = date.getMonth();
     let Year = date.getFullYear();
     let day = date.getDate();
-    console.log(day)
+    console.log(day);
     let startDate = new Date(Year, Month, day);
-    console.log(listChange)
+    console.log(listChange);
     GetHitoricalGraph(
       floorId,
       listChange,
@@ -569,9 +566,9 @@ export default function SummaryCard() {
                             return (
                               item.name.includes(searchTable) ||
                               item.status.includes(searchTable) ||
-                              String(item.power).includes(searchTable) || 
+                              String(item.power).includes(searchTable) ||
                               String(item.pressure).includes(searchTable) ||
-                              String(item.efficiency).includes(searchTable) || 
+                              String(item.efficiency).includes(searchTable) ||
                               String(item.workingHours).includes(searchTable)
                             );
                           })
@@ -600,7 +597,7 @@ export default function SummaryCard() {
                                       : "whitespace-nowrap px-6 py-4 text-center text-red-500 font-extrabold"
                                   }
                                 >
-                                   <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
@@ -608,40 +605,36 @@ export default function SummaryCard() {
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  
-                                <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight= {String(item.pressure)} // Replace this with your text
+                                    textToHighlight={String(item.pressure)} // Replace this with your text
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  
-                                <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight= {String(item.power)} // Replace this with your text
+                                    textToHighlight={String(item.power)} // Replace this with your text
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  
-                                <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight= {String(item.efficiency)} // Replace this with your text
+                                    textToHighlight={String(item.efficiency)} // Replace this with your text
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                <Highlighter
+                                  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight= {String(item.workingHours)} // Replace this with your text
+                                    textToHighlight={String(item.workingHours)} // Replace this with your text
                                   />
-                                 
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center">
                                   <button
@@ -721,9 +714,7 @@ export default function SummaryCard() {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
-                <h3 className="text-2xl font-bold mt-5">
-                  Are you sure ?
-                </h3>
+                <h3 className="text-2xl font-bold mt-5">Are you sure ?</h3>
                 <div className="flex gap-5 items-center mt-5">
                   <p className="text-gray-900">Username : </p>
                   <input
@@ -766,7 +757,10 @@ export default function SummaryCard() {
         ) : null}
         {loading ? (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="py-12 border w-auto shadow-lg rounded-md bg-white items-center text-center" style={{textAlign : '-webkit-center'}}>
+            <div
+              className="py-12 border w-auto shadow-lg rounded-md bg-white items-center text-center"
+              style={{ textAlign: "-webkit-center" }}
+            >
               <RotatingLines
                 visible={true}
                 height="96"
@@ -787,7 +781,7 @@ export default function SummaryCard() {
               </div>
             </div>
           </div>
-         ) : null} 
+        ) : null}
         {showModalError ? (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
@@ -813,9 +807,9 @@ export default function SummaryCard() {
       </div>
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
         <div className="flex flex-col gap-4 p-2">
-        <div className="flex justify-between">
-          <span className="text-lg  font-bold">Historical</span>
-          <select
+          <div className="flex justify-between">
+            <span className="text-lg  font-bold">Historical</span>
+            <select
               className="w-44 border border-slate-300 mx-2 rounded-md h-9"
               onChange={(event) => OnListChange(event.target.value)}
               value={listChange}
@@ -863,58 +857,70 @@ export default function SummaryCard() {
               <option value="month">รายเดือน</option>
               <option value="year">รายปี</option>
             </select>
-            <button className="border border-slate-300 rounded-md h-9 px-2" onClick={onResetZoom}>zoom reset</button>
+            <button
+              className="border border-slate-300 rounded-md h-9 px-2"
+              onClick={onResetZoom}
+            >
+              zoom reset
+            </button>
           </div>
         </div>
-        { loadingGraph ? (
-           <div className="py-12 w-auto items-center text-center" style={{textAlign : '-webkit-center'}}><RotatingLines
-           visible={true}
-           height="96"
-           width="96"
-           color="grey"
-           strokeWidth="5"
-           animationDuration="0.75"
-           ariaLabel="rotating-lines-loading"
-           wrapperStyle={{}}
-           wrapperClass=""
-         /></div>
-        ) : <div class="flex">
-        <div className="flex items-center justify-center">
-          {
-            listChange == "barg" ? (
-              <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">Presure (barg)</span>
-            ) : listChange == "kw" ? (
-              <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">Power (kw)</span>
-            ) :  (
-              <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">Efficlency (%)</span>
-            )
-          }
+        {loadingGraph ? (
+          <div
+            className="py-12 w-auto items-center text-center"
+            style={{ textAlign: "-webkit-center" }}
+          >
+            <RotatingLines
+              visible={true}
+              height="96"
+              width="96"
+              color="grey"
+              strokeWidth="5"
+              animationDuration="0.75"
+              ariaLabel="rotating-lines-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          </div>
+        ) : (
+          <div class="flex">
+            <div className="flex items-center justify-center">
+              {listChange == "barg" ? (
+                <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">
+                  Presure (barg)
+                </span>
+              ) : listChange == "kw" ? (
+                <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">
+                  Power (kw)
+                </span>
+              ) : (
+                <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">
+                  Efficlency (%)
+                </span>
+              )}
+            </div>
+
+            <Line
+              data={{
+                labels: ListLabel,
+                datasets: chartList.map((item) => {
+                  return {
+                    label: item.name,
+                    data: item.data.map((data) => {
+                      return data.value;
+                    }),
+                    borderColor: RandomColor(),
+                    fill: false,
+                    tension: 0,
+                  };
+                }),
+              }}
+              ref={chartRef}
+              options={options}
+            />
+          </div>
+        )}
       </div>
-      
-      <Line 
-        data={{
-          labels: ListLabel,
-          datasets: chartList.map((item) => {
-            return {
-              label: item.name,
-              data: item.data.map((data) => {
-                return data.value;
-              }),
-              borderColor: RandomColor(),
-              fill: false,
-              tension: 0,
-            
-            };
-          }),
-        }}
-        ref={chartRef} options={options}
-       
-      />
-      
-      
-      </div>}
-        
-        </div>
       <div></div>
       {/* <button
                     className="px-4 py-2 bg-red-600 text-white font-medium rounded-md  focus:outline-none w-62"
