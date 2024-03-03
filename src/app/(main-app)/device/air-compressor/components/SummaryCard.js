@@ -67,21 +67,21 @@ export default function SummaryCard() {
     },
     spanGaps: true,
     plugins: {
-      afterDraw: chart => {
-        if (chart.tooltip?._active?.length) {               
-           let x = chart.tooltip._active[0].element.x;             
-           let yAxis = chart.scales.y;
-           let ctx = chart.ctx;
-           ctx.save();
-           ctx.beginPath();
-           ctx.moveTo(x, yAxis.top);
-           ctx.lineTo(x, yAxis.bottom);
-           ctx.lineWidth = 1;
-           ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
-           ctx.stroke();
-           ctx.restore();
-        }
-      },
+      // afterDraw: chart => {
+      //   if (chart.tooltip?._active?.length) {               
+      //      let x = chart.tooltip._active[0].element.x;             
+      //      let yAxis = chart.scales.y;
+      //      let ctx = chart.ctx;
+      //      ctx.save();
+      //      ctx.beginPath();
+      //      ctx.moveTo(x, yAxis.top);
+      //      ctx.lineTo(x, yAxis.bottom);
+      //      ctx.lineWidth = 1;
+      //      ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
+      //      ctx.stroke();
+      //      ctx.restore();
+      //   }
+      // },
       legend: {
         position: "top"
       },
