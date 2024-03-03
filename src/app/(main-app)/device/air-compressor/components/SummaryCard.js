@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useRef} from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
@@ -8,18 +8,106 @@ import Highlighter from "react-highlight-words";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
-import { Bar, Line } from "react-chartjs-2";
 import {
   ChangestatusIsOff,
   ChangestatusIsOn,
   getHistoricalGraph,
 } from "@/utils/api";
-import * as userSlice from "@/redux/slicer/userSlice";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import zoomPlugin from "chartjs-plugin-zoom";
+
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  zoomPlugin
+);
+
 // import ModalStart from "./ModalStart";
 
 export default function SummaryCard() {
+  const zoomOptions = {
+    pan: {
+      enabled: true,
+      mode: "x"
+    },
+    zoom: {
+      wheel: {
+        enabled: true
+      },
+      pinch: {
+        enabled: true
+      },
+      mode: "x"
+    }
+
+  };
+  const options = {
+    
+    responsive: true,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
+    spanGaps: true,
+    plugins: {
+      afterDraw: chart => {
+        if (chart.tooltip?._active?.length) {               
+           let x = chart.tooltip._active[0].element.x;             
+           let yAxis = chart.scales.y;
+           let ctx = chart.ctx;
+           ctx.save();
+           ctx.beginPath();
+           ctx.moveTo(x, yAxis.top);
+           ctx.lineTo(x, yAxis.bottom);
+           ctx.lineWidth = 1;
+           ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
+           ctx.stroke();
+           ctx.restore();
+        }
+      },
+      legend: {
+        position: "top"
+      },
+      zoom: zoomOptions
+    },
+    scales: {
+      x: {
+         display: true,
+         grid: {
+          drawOnChartArea: false, // only want the grid lines for one axis to show up
+        },
+      },
+      y: {
+         display: true,
+         grid: {
+          drawOnChartArea: true, // only want the grid lines for one axis to show up
+        },
+      }
+   },
+  };
+  const chartRef = useRef(null);
+
+  const onResetZoom = () => {
+    chartRef.current.resetZoom();
+  };
   const companyData = useSelector((state) => state.companyData.company);
-  const hour = ("0" + new Date().getUTCHours()).slice(-2);
   const [branchList, setBranchList] = useState([]);
   const [buildingList, setBuildingList] = useState([]);
   const [floorList, setFloorList] = useState([]);
@@ -262,9 +350,9 @@ export default function SummaryCard() {
     }
       for (let j = 0; j < res.data[0].data.length; j++) {
         console.log(j%modday)
-         if (j%modday == 0 ) {
+        //  if (j%modday == 0 ) {
           label.push(res.data[0].data[j].time);
-        }
+        // }
       }
 
 
@@ -775,7 +863,7 @@ export default function SummaryCard() {
               <option value="month">รายเดือน</option>
               <option value="year">รายปี</option>
             </select>
-           
+            <button className="border border-slate-300 rounded-md h-9 px-2" onClick={onResetZoom}>zoom reset</button>
           </div>
         </div>
         { loadingGraph ? (
@@ -802,44 +890,27 @@ export default function SummaryCard() {
             )
           }
       </div>
+      
       <Line 
-        
         data={{
           labels: ListLabel,
           datasets: chartList.map((item) => {
             return {
               label: item.name,
-              data: item.data.map((data, index) => {
+              data: item.data.map((data) => {
                 return data.value;
               }),
               borderColor: RandomColor(),
-              fill: true,
+              fill: false,
+              tension: 0,
+            
             };
           }),
-          options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            title: {
-              display: false,
-              text: "Sales Charts",
-            },
-
-            legend: {
-              labels: {},
-              align: "end",
-              position: "bottom",
-            },
-            tooltips: {
-              mode: "index",
-              intersect: false,
-            },
-            hover: {
-              mode: "nearest",
-              intersect: true,
-            },
-          },
         }}
+        ref={chartRef} options={options}
+       
       />
+      
       
       </div>}
         
