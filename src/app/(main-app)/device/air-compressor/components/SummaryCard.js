@@ -8,6 +8,7 @@ import Highlighter from "react-highlight-words";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
+
 import {
   ChangestatusIsOff,
   ChangestatusIsOn,
@@ -28,19 +29,15 @@ import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
   zoomPlugin
 );
 
 // import ModalStart from "./ModalStart";
 
 export default function SummaryCard() {
+  
+  
+
   const zoomOptions = {
     pan: {
       enabled: true,
@@ -899,7 +896,7 @@ export default function SummaryCard() {
                 </span>
               )}
             </div>
-
+            {(typeof window !== 'undefined') && 
             <Line
               data={{
                 labels: ListLabel,
@@ -917,7 +914,7 @@ export default function SummaryCard() {
               }}
               ref={chartRef}
               options={options}
-            />
+            />}
           </div>
         )}
       </div>

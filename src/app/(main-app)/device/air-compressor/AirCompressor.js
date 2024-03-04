@@ -1,6 +1,8 @@
 import React from "react";
-import SummaryCard from "./components/SummaryCard";
+// import SummaryCard from "./components/SummaryCard";
 import ZoomableChart from "./components/GraphList";
+import dynamic from 'next/dynamic'
+const SummaryCard = dynamic(() => import('./components/SummaryCard'), { ssr: false });
 
 export default function AirCompressor() {
   return (
