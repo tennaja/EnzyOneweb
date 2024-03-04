@@ -154,17 +154,17 @@ export async function getHistoricalGraph(req) {
   }
 }
 
-// export async function getBranch(req) {
-//   const companyId = req.companyId;
-//   try {
-//     const url =
-//       process.env.NEXT_PUBLIC_APP_URL + 'https://enzy.egat.co.th/api/branch-list/'+companyId;
-//       const res = await axios.get(url, {
-//       withCredentials: true,
-//       headers: { "Content-Type": "application/json",  },
-//     });
-//     return res;
-//   } catch (error) {
-//     return error;
-//   }
-// }
+export async function getBranch(req) {
+  const companyid = req.Id
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/branch-list/'+companyid;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}

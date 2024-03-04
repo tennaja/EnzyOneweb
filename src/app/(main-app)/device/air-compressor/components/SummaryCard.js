@@ -13,6 +13,7 @@ import {
   ChangestatusIsOff,
   ChangestatusIsOn,
   getHistoricalGraph,
+  getBranch
 } from "@/utils/api";
 
 import {
@@ -41,17 +42,16 @@ export default function SummaryCard() {
   const zoomOptions = {
     pan: {
       enabled: true,
-      mode: "x",
+      mode: 'x',
+      modifierKey: 'ctrl',
     },
     zoom: {
-      wheel: {
-        enabled: true,
+      drag: {
+        enabled: true
       },
-      pinch: {
-        enabled: true,
-      },
-      mode: "x",
+      mode: 'x',
     },
+    
   };
   const options = {
     responsive: true,
@@ -208,9 +208,9 @@ export default function SummaryCard() {
 
   //สาขา
   const getBranchList = async () => {
-    const result = await axios.get(
-      "https://enzy.egat.co.th/api/branch-list/" + companyData.Id
-    );
+
+    const result = await getBranch(companyData)
+    console.log(result)
     if (result.data.length != 0) {
       setBranchList(result.data);
 
@@ -332,27 +332,33 @@ export default function SummaryCard() {
     };
     const res = await getHistoricalGraph(paramsNav);
     if (res.status === 200) {
-      setChartList(res.data);
-      let label = [];
-      let modday = 0;
-      console.log(res.data);
-      console.log("🚀 ~ GetHitoricalGraph ~ typedate:", typedate);
-      if (typedate == "day") {
-        modday = 30;
-      } else if (typedate == "month") {
-        modday = 1440;
-      } else if (typedate == "year") {
-        modday = 43200;
+      if (res.data.length > 0){
+        setChartList(res.data);
+        let label = [];
+        let modday = 0;
+        console.log(res.data);
+        console.log("🚀 ~ GetHitoricalGraph ~ typedate:", typedate);
+        if (typedate == "day") {
+          modday = 30;
+        } else if (typedate == "month") {
+          modday = 1440;
+        } else if (typedate == "year") {
+          modday = 43200;
+        }
+        for (let j = 0; j < res.data[0].data.length; j++) {
+          // console.log(j % modday);
+          //  if (j%modday == 0 ) {
+          label.push(res.data[0].data[j].time);
+          // }
+        }
+  
+        setListLabel(label);
+        console.log(label);
+      } else {
+        setChartList([])
+        setListLabel([])
       }
-      for (let j = 0; j < res.data[0].data.length; j++) {
-        console.log(j % modday);
-        //  if (j%modday == 0 ) {
-        label.push(res.data[0].data[j].time);
-        // }
-      }
-
-      setListLabel(label);
-      console.log(label);
+      
       setLoadingGraph(false);
     } else {
       setErrorMsg("error");
@@ -451,7 +457,6 @@ export default function SummaryCard() {
                   </select>
                 </label>
               </div>
-
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
                 <p className=" text-red-700 mx-2 ">*</p>
                 <label>

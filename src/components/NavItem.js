@@ -60,7 +60,7 @@ export const NavItems = [
       },
       {
         label: "HVAC",
-        href: "/device/Hvac-Cpms",
+        href: "/Device/Hvac-Cpms",
       },
       {
         label: "Air Conditioning System",
