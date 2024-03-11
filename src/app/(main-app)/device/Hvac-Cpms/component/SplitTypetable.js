@@ -3,9 +3,10 @@ import Link from "next/link";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React, { useEffect, useState } from "react";
+
 import Highlighter from "react-highlight-words";
 import {
-  ChangeValueSettempSplttpye ,ChangeValueSetMode
+  ChangeValueSettempSplttpye ,ChangeValueSetMode ,ChangeValueSetFan
 } from "@/utils/api";
 import Loading from "./Loading";
 import ModalPopError from "./ModalError";
@@ -74,6 +75,34 @@ export default function SplitTypetable(SplittypeList) {
   
   }
 
+  async function clickChangestatusStop() {
+    setLoading(true);
+    const res = await ChangestatusIsOff(DecviceId, username, password);
+    if (res.status === 200) {
+      console.log(res.data);
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
+      closeModal();
+      setLoading(false);
+      setModalError(true);
+    } else if (res.response.status === 401){
+      console.log(res.response);
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+      setModalError(true);
+    }
+    else if (res.response.status === 500){
+      console.log(res.response);
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+      setModalError(true);
+    }
+  }
+
   const handleChangeValueSetMode = async () => {
     setLoading(true);
     const result = await ChangeValueSetMode(DecviceId,Values);
@@ -90,6 +119,24 @@ export default function SplitTypetable(SplittypeList) {
       alert('Error')
       notifyError()
     }
+}
+
+const handleChangeValueSetFan = async () => {
+  setLoading(true);
+  const result = await ChangeValueSetFan(DecviceId,Values);
+  if (result.status === 200) {
+    console.log(result.data)
+    alert('Success')
+    closeModal();
+    setLoading(false);
+    notifySuccess();
+  } else {
+    closeModal();
+    setLoading(false);
+    setModalError(true)
+    alert('Error')
+    notifyError()
+  }
 }
     const onChangeValue = (event) => {
       setValues(event);
@@ -379,7 +426,7 @@ export default function SplitTypetable(SplittypeList) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => handleChangeValueSetMode()}
+                    onClick={() => handleChangeValueSetFan()}
                   >
                     confirm
                   </button>
@@ -433,7 +480,27 @@ export default function SplitTypetable(SplittypeList) {
         ) : null}
 
 {ModalError ? (
-          <ModalPopError closeModal = {closeModal}/>
+           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+           <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+             <div className="text-center">
+               <h3 className="text-2xl font-bold text-gray-900 mt-5">
+               Something Went wrong
+               </h3>
+               <div className="mt-2 px-7 py-3">
+                 <p className="text-lg text-gray-500 mt-2">`We aren't able to process your requested operation
+                 Please try again` </p>
+               </div>
+               <div className="flex justify-center mt-10 gap-5">
+                 <button
+                   className="px-4 py-2 bg-red-600 text-white font-medium rounded-md  focus:outline-none w-62"
+                   onClick={() => closeModal()}
+                 >
+                   Close
+                 </button>
+               </div>
+             </div>
+           </div>
+         </div>
         ) : null}
 {showModalStop ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
@@ -454,7 +521,7 @@ export default function SplitTypetable(SplittypeList) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusStart()}
+                    onClick={() => clickChangestatusStop()}
                   >
                     confirm
                   </button>

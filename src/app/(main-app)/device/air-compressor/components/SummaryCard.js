@@ -290,6 +290,8 @@ export default function SummaryCard() {
       setAlertmessage(res.data.message);
       onSearchTable();
       closeModal();
+      setUsername("")
+      setPassword("")
       setLoading(false);
       setShowModalError(true);
     } else if (res.response.status === 401){
@@ -297,6 +299,8 @@ export default function SummaryCard() {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
       closeModal();
+      setUsername("")
+      setPassword("")
       setLoading(false);
       setShowModalError(true);
     }
@@ -305,6 +309,8 @@ export default function SummaryCard() {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
       closeModal();
+      setUsername("")
+      setPassword("")
       setLoading(false);
       setShowModalError(true);
     }
@@ -320,6 +326,8 @@ export default function SummaryCard() {
       setAlertmessage(res.data.message);
       onSearchTable();
       closeModal();
+      setUsername("")
+      setPassword("")
       setLoading(false);
       setShowModalError(true);
     } else if (res.response.status === 401){
@@ -327,6 +335,8 @@ export default function SummaryCard() {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
       closeModal();
+      setUsername("")
+      setPassword("")
       setLoading(false);
       setShowModalError(true);
     }
@@ -335,6 +345,8 @@ export default function SummaryCard() {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
       closeModal();
+      setUsername("")
+      setPassword("")
       setLoading(false);
       setShowModalError(true);
     }
@@ -588,7 +600,9 @@ export default function SummaryCard() {
                             // console.log(data)
                             return (
                               item.name.includes(searchTable) ||
+                              item.name.toLowerCase().includes(searchTable) ||
                               item.status.includes(searchTable) ||
+                              item.status.toLowerCase().includes(searchTable) ||
                               String(item.power).includes(searchTable) ||
                               String(item.pressure).includes(searchTable) ||
                               String(item.efficiency).includes(searchTable) ||

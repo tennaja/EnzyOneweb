@@ -313,3 +313,24 @@ export async function ChangeValueSetMode (devId,value) {
     return error
   }
 }
+
+export async function ChangeValueSetFan (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/split-type/fan`;
+    let res = await axios.post(
+      url,
+      {
+        value : value,
+        devId : devId,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
