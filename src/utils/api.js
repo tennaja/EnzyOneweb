@@ -168,3 +168,148 @@ export async function getBranch(req) {
     return error;
   }
 }
+
+export async function getBulding(branchId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/building-list/'+branchId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getFloor(buildingId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/floor-list/'+buildingId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getFloorplan(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/floor-plan/'+1;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getAHU(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/ahu/list/'+1;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getVAV(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/vav/list/'+1;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getIOT(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/iot/list/'+1;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getSplittype(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/split-type/list/'+1;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function ChangeValueSettempSplttpye (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/split-type/temp`;
+    let res = await axios.post(
+      url,
+      {
+        value : value,
+        devId : devId,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+
+export async function ChangeValueSetMode (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/split-type/mode`;
+    let res = await axios.post(
+      url,
+      {
+        value : value,
+        devId : devId,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}

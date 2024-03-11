@@ -49,6 +49,7 @@ export default function SummaryCard() {
       drag: {
         enabled: true
       },
+      
       mode: 'x',
     },
     
@@ -228,6 +229,7 @@ export default function SummaryCard() {
 
     setBuildingList(result.data);
     setBuildingId(result.data[0].Id);
+    console.log(buildingId)
     getFloorLit(result.data[0].Id);
   };
   //ชั้น
@@ -240,6 +242,8 @@ export default function SummaryCard() {
     if (result.data.length != 0) {
       setFloorList(result.data);
       setFloorId(result.data[0].Id);
+      console.log(floorId)
+      
     }
     // getTableAirCompressorList(result.data[0].Id)
   };
@@ -264,6 +268,7 @@ export default function SummaryCard() {
       "https://enzy.egat.co.th/api/device-management/air-compressor/list/" +
         floorId
     );
+    console.log(floorId)
     GetHitoricalGraph(
       floorId,
       listChange,
@@ -279,7 +284,6 @@ export default function SummaryCard() {
   async function clickChangestatusStop() {
     setLoading(true);
     const res = await ChangestatusIsOff(DecviceId, username, password);
-
     if (res.status === 200) {
       console.log(res.data);
       setAlertTitle(res.data.title);
@@ -288,10 +292,18 @@ export default function SummaryCard() {
       closeModal();
       setLoading(false);
       setShowModalError(true);
-    } else {
-      console.log(res);
-      setAlertTitle(res.title);
-      setAlertmessage(res.message);
+    } else if (res.response.status === 401){
+      console.log(res.response);
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+      setShowModalError(true);
+    }
+    else if (res.response.status === 500){
+      console.log(res.response);
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
       closeModal();
       setLoading(false);
       setShowModalError(true);
@@ -310,10 +322,18 @@ export default function SummaryCard() {
       closeModal();
       setLoading(false);
       setShowModalError(true);
-    } else {
-      console.log(res.data);
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+    } else if (res.response.status === 401){
+      console.log(res.response);
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+      setShowModalError(true);
+    }
+    else if (res.response.status === 500){
+      console.log(res.response);
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
       closeModal();
       setLoading(false);
       setShowModalError(true);
@@ -489,6 +509,7 @@ export default function SummaryCard() {
                     }}
                     value={floorId}
                   >
+                  
                     {floorList.map((item) => {
                       return (
                         <option key={item.id} Value={item.Id}>
@@ -582,7 +603,7 @@ export default function SummaryCard() {
                               >
                                 <td
                                   className="whitespace-nowrap px-6 py-4 font-extrabold"
-                                  Value={item.Id}
+                                  
                                 >
                                   {/* {getHighlightedText(item.name,searchTable)} */}
                                   <Highlighter

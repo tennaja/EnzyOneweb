@@ -1,5 +1,6 @@
 import React from "react";
 import FilterCard from "./component/FilterCard";
+import FloorPlan from "./component/FloorPlan";
 export default function HvacModule() {
   return (
     <div className="min-h-screen flex w-full text-enzy-dark dark:text-slate-200">
