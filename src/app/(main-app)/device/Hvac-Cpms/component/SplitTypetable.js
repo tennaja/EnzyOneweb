@@ -487,7 +487,7 @@ const handleChangeValueSetFan = async () => {
                Something Went wrong
                </h3>
                <div className="mt-2 px-7 py-3">
-                 <p className="text-lg text-gray-500 mt-2">We aren't able to process your requested operation
+                 <p className="text-lg text-gray-500 mt-2">We aren&apos;t able to process your requested operation
                  Please try again </p>
                </div>
                <div className="flex justify-center mt-10 gap-5">
