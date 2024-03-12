@@ -8,6 +8,9 @@ import Highlighter from "react-highlight-words";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   ChangestatusIsOff,
@@ -30,7 +33,14 @@ import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 
 ChartJS.register(
-  zoomPlugin
+  zoomPlugin,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
 );
 
 // import ModalStart from "./ModalStart";
@@ -38,7 +48,19 @@ ChartJS.register(
 export default function SummaryCard() {
   
   
+  const notifySuccess = () => toast.success(`Operation Complete
+  `, {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
 
+  
   const zoomOptions = {
     pan: {
       enabled: true,
@@ -128,11 +150,18 @@ export default function SummaryCard() {
   const [typedate, setTypeDate] = useState("day");
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
+  const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setIsShowPassword(!isShowPassword);
+  };
 
   // const username = useSelector((state) => state.userData.username);
   // const password = useSelector((state) => state.userData.password);
   useEffect(() => {
     getBranchList();
+    
+
     // OnListChange();
   }, []);
 
@@ -242,8 +271,7 @@ export default function SummaryCard() {
     if (result.data.length != 0) {
       setFloorList(result.data);
       setFloorId(result.data[0].Id);
-      console.log(floorId)
-      
+      console.log(floorId)    
     }
     // getTableAirCompressorList(result.data[0].Id)
   };
@@ -281,13 +309,14 @@ export default function SummaryCard() {
   };
 
   //คลิกปิด
-  async function clickChangestatusStop() {
+ const clickChangestatusStop = async () => {
     setLoading(true);
     const res = await ChangestatusIsOff(DecviceId, username, password);
     if (res.status === 200) {
       console.log(res.data);
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
+      notifySuccess();
       onSearchTable();
       closeModal();
       setUsername("")
@@ -315,6 +344,7 @@ export default function SummaryCard() {
       setShowModalError(true);
     }
   }
+  
 
   //คลิกเพื่อเปิด
   async function clickChangestatusStart() {
@@ -325,6 +355,7 @@ export default function SummaryCard() {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
       onSearchTable();
+      notifySuccess();
       closeModal();
       setUsername("")
       setPassword("")
@@ -463,6 +494,7 @@ export default function SummaryCard() {
 
   return (
     <div>
+      
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
         <div className="flex flex-col gap-4 p-2">
           <span className="text-lg  font-bold">Air Compressor</span>
@@ -705,9 +737,12 @@ export default function SummaryCard() {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mt-5">
-                  Are you sure ?
+                Are you sure?
                 </h3>
-                <div className="flex gap-5 items-center mt-5 ">
+                <div className="flex gap-5 justify-center items-center mt-5 ">
+                  <span>Are you sure to control this device?</span>
+                </div>
+                <div className="flex gap-5 justify-center items-center mt-5 ">
                   <p className="text-gray-900">Username : </p>
                   <input
                     type="text"
@@ -718,16 +753,27 @@ export default function SummaryCard() {
                     }}
                   />
                 </div>
-                <div className="flex gap-5 items-center mt-5 px-1">
+                <div className="flex justify-center gap-5 items-center mt-5 px-1 ml-12">
                   <p className="text-gray-900">Password : </p>
                   <input
-                    type="text"
-                    placeholder="Enter your Password"
-                    className="border border-slate-300 rounded-md h-9 px-2"
+                  type={isShowPassword ? "text" : "password"}
+                  placeholder="********"
+                    
+                    className="border border-slate-300 rounded-md h-9 px-2 ml-2"
                     onChange={(e) => {
                       onChangePassword(e.target.value);
                     }}
                   />
+                   <div
+                      onClick={toggleShowPassword}
+                      className="flex mr-2 w-6 h-6 items-center justify-center hover:bg-"
+                    >
+                      {isShowPassword ? (
+                        <EyeSlashIcon className="w-4 h-4" />
+                      ) : (
+                        <EyeIcon className="w-4 h-4" />
+                      )}
+                    </div>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
                   <button
@@ -748,49 +794,65 @@ export default function SummaryCard() {
           </div>
         ) : null}
         {showModalStart ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold mt-5">Are you sure ?</h3>
-                <div className="flex gap-5 items-center mt-5">
-                  <p className="text-gray-900">Username : </p>
-                  <input
-                    type="text"
-                    placeholder="Enter your username"
-                    className="border border-slate-300 rounded-md h-9 px-2"
-                    onChange={(e) => {
-                      onChangeUsername(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="flex gap-5 items-center mt-5 px-1">
-                  <p className="text-gray-900">Password : </p>
-                  <input
-                    type="text"
-                    placeholder="Enter your Password"
-                    className="border border-slate-300 rounded-md h-9 px-2"
-                    onChange={(e) => {
-                      onChangePassword(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="flex justify-center mt-10 gap-5">
-                  <button
-                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                    onClick={() => closeModal()}
-                  >
-                    cancel
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusStart()}
-                  >
-                    confirm
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+         <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+         <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+           <div className="text-center">
+             <h3 className="text-2xl font-bold text-gray-900 mt-5">
+             Are you sure?
+             </h3>
+             <div className="flex gap-5 justify-center items-center mt-5 ">
+               <span>Are you sure to control this device?</span>
+             </div>
+             <div className="flex gap-5 justify-center items-center mt-5 ">
+               <p className="text-gray-900">Username : </p>
+               <input
+                 type="text"
+                 placeholder="Enter your username"
+                 className="border border-slate-300 rounded-md h-9 px-2"
+                 onChange={(e) => {
+                   onChangeUsername(e.target.value);
+                 }}
+               />
+             </div>
+             <div className="flex justify-center gap-5 items-center mt-5 px-1 ml-12">
+               <p className="text-gray-900">Password : </p>
+               <input
+               type={isShowPassword ? "text" : "password"}
+               placeholder="********"
+                 
+                 className="border border-slate-300 rounded-md h-9 px-2 ml-2"
+                 onChange={(e) => {
+                   onChangePassword(e.target.value);
+                 }}
+               />
+                <div
+                   onClick={toggleShowPassword}
+                   className="flex mr-2 w-6 h-6 items-center justify-center hover:bg-"
+                 >
+                   {isShowPassword ? (
+                     <EyeSlashIcon className="w-4 h-4" />
+                   ) : (
+                     <EyeIcon className="w-4 h-4" />
+                   )}
+                 </div>
+             </div>
+             <div className="flex justify-center mt-10 gap-5">
+               <button
+                 className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                 onClick={() => closeModal()}
+               >
+                 cancel
+               </button>
+               <button
+                 className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                 onClick={() => clickChangestatusStart()}
+               >
+                 confirm
+               </button>
+             </div>
+           </div>
+         </div>
+       </div>
         ) : null}
         {loading ? (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
@@ -836,6 +898,8 @@ export default function SummaryCard() {
                   >
                     Close
                   </button>
+                  {/* <ToastContainer /> */}
+                  
                 </div>
               </div>
             </div>
@@ -964,7 +1028,7 @@ export default function SummaryCard() {
                     onClick={() => setShowModalStart(true)}
                   >
                     Close
-                  </button> */}
+                  </button> */}<ToastContainer />
     </div>
   );
 }
