@@ -84,21 +84,6 @@ export default function SummaryCard() {
     },
     spanGaps: true,
     plugins: {
-      // afterDraw: chart => {
-      //   if (chart.tooltip?._active?.length) {
-      //      let x = chart.tooltip._active[0].element.x;
-      //      let yAxis = chart.scales.y;
-      //      let ctx = chart.ctx;
-      //      ctx.save();
-      //      ctx.beginPath();
-      //      ctx.moveTo(x, yAxis.top);
-      //      ctx.lineTo(x, yAxis.bottom);
-      //      ctx.lineWidth = 1;
-      //      ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
-      //      ctx.stroke();
-      //      ctx.restore();
-      //   }
-      // },
       legend: {
         position: "top",
       },
@@ -106,16 +91,26 @@ export default function SummaryCard() {
     },
     scales: {
       x: {
+        // min: 0,
+        //     ticks: {
+        //     stepSize: 100.0
+        //     },
         display: true,
         grid: {
           drawOnChartArea: false, // only want the grid lines for one axis to show up
         },
       },
       y: {
+        
+            min: 0,
+            ticks: {
+            stepSize: 0.01
+            },
         display: true,
         grid: {
           drawOnChartArea: true, // only want the grid lines for one axis to show up
         },
+        
       },
     },
   };
@@ -178,18 +173,23 @@ export default function SummaryCard() {
   }, [floorId, listChange]);
 
   const OnListChange = async (event) => {
-    setListChange(event);
-    console.log(listChange);
+  setListChange(event)
+  console.log(listChange)
+  console.log(event);
     if (typedate == "day") {
-      onChangeDay(startDate);
+      onChangeDay(startDate,event);
       console.log(startDate);
     } else if (typedate == "month") {
-      onChangeMonth(startDate);
+      
+      onChangeMonth(startDate,event);
       console.log(startDate);
     } else if (typedate == "year") {
-      onChangeYear(startDate);
+     
+      onChangeYear(startDate,event);
       console.log(startDate);
     }
+    
+    
   };
 
   useEffect(() => {
@@ -204,8 +204,11 @@ export default function SummaryCard() {
       console.log(startDate);
     }
   }, [typedate]);
+
+
   const OnListtypeDateChange = async (event) => {
     setTypeDate(event);
+    console.log(typedate)
   };
 
   //เปิด popup เพื่อสั่ง Start
@@ -234,7 +237,7 @@ export default function SummaryCard() {
     return "#" + randomColor;
   };
 
-  useEffect(() => {}, []);
+  
 
   //สาขา
   const getBranchList = async () => {
@@ -322,7 +325,7 @@ export default function SummaryCard() {
       setUsername("")
       setPassword("")
       setLoading(false);
-      setShowModalError(true);
+      
     } else if (res.response.status === 401){
       console.log(res.response);
       setAlertTitle(res.response.data.title);
@@ -360,7 +363,7 @@ export default function SummaryCard() {
       setUsername("")
       setPassword("")
       setLoading(false);
-      setShowModalError(true);
+      
     } else if (res.response.status === 401){
       console.log(res.response);
       setAlertTitle(res.response.data.title);
@@ -384,12 +387,12 @@ export default function SummaryCard() {
   }
 
   //กราฟ
-  async function GetHitoricalGraph(floorId, listChanges, dateFrom, dateTo) {
+  async function GetHitoricalGraph(floorId, listChange, dateFrom, dateTo) {
     setLoadingGraph(true);
-    console.log(listChanges);
+    console.log(listChange);
     const paramsNav = {
       floorId: floorId,
-      unit: listChanges,
+      unit: listChange,
       dateFrom: dateFrom,
       dateTo: dateTo,
     };
@@ -401,13 +404,13 @@ export default function SummaryCard() {
         let modday = 0;
         console.log(res.data);
         console.log("🚀 ~ GetHitoricalGraph ~ typedate:", typedate);
-        if (typedate == "day") {
-          modday = 30;
-        } else if (typedate == "month") {
-          modday = 1440;
-        } else if (typedate == "year") {
-          modday = 43200;
-        }
+        // if (typedate == "day") {
+        //   modday = 30;
+        // } else if (typedate == "month") {
+        //   modday = 1440;
+        // } else if (typedate == "year") {
+        //   modday = 43200;
+        // }
         for (let j = 0; j < res.data[0].data.length; j++) {
           // console.log(j % modday);
           //  if (j%modday == 0 ) {
@@ -416,7 +419,7 @@ export default function SummaryCard() {
         }
   
         setListLabel(label);
-        console.log(label);
+        
       } else {
         setChartList([])
         setListLabel([])
@@ -430,7 +433,8 @@ export default function SummaryCard() {
   }
 
   //Dropdown Month
-  const onChangeMonth = (date) => {
+  const onChangeMonth = (date,event) => {
+    
     setStartDate(date);
     let Month = date.getMonth();
     console.log(Month);
@@ -442,14 +446,15 @@ export default function SummaryCard() {
     console.log(endDate);
     GetHitoricalGraph(
       floorId,
-      listChange,
+      event,
       formatDate(startDate),
       formatDate(endDate)
     );
   };
 
   //Drpdown Year
-  const onChangeYear = (date) => {
+  const onChangeYear = (date,event) => {
+    
     setStartDate(date);
     let Year = date.getFullYear();
     console.log(Year);
@@ -457,13 +462,14 @@ export default function SummaryCard() {
     let endDate = new Date(Year, 12, 0);
     GetHitoricalGraph(
       floorId,
-      listChange,
+      event,
       formatDate(startDate),
       formatDate(endDate)
     );
   };
 
-  const onChangeDay = (date) => {
+  const onChangeDay = (date,event) => {
+    
     console.log(date);
     setStartDate(date);
     let Month = date.getMonth();
@@ -474,7 +480,7 @@ export default function SummaryCard() {
     console.log(listChange);
     GetHitoricalGraph(
       floorId,
-      listChange,
+      event,
       formatDate(startDate),
       formatDate(startDate)
     );
@@ -913,11 +919,12 @@ export default function SummaryCard() {
             <select
               className="w-44 border border-slate-300 mx-2 rounded-md h-9"
               onChange={(event) => OnListChange(event.target.value)}
+              
               value={listChange}
             >
-              <option value="barg">Presure (barg)</option>
+              <option value="barg">Pressure (barg)</option>
               <option value="kw">Power (kw)</option>
-              <option value="%">Efficlency (%)</option>
+              <option value="%">Efficiency (%)</option>
             </select>
           </div>
           <div className="flex gap-5">
@@ -988,7 +995,7 @@ export default function SummaryCard() {
             <div className="flex items-center justify-center">
               {listChange == "barg" ? (
                 <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">
-                  Presure (barg)
+                  Pressure (barg)
                 </span>
               ) : listChange == "kw" ? (
                 <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">
@@ -996,7 +1003,7 @@ export default function SummaryCard() {
                 </span>
               ) : (
                 <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">
-                  Efficlency (%)
+                  Efficiency (%)
                 </span>
               )}
             </div>
@@ -1013,6 +1020,8 @@ export default function SummaryCard() {
                     borderColor: RandomColor(),
                     fill: false,
                     tension: 0,
+                    categoryPercentage: 0.1, // notice here 
+                    barPercentage: 0.1,  // notice here 
                   };
                 }),
               }}

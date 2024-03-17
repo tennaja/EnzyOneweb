@@ -136,7 +136,7 @@ export async function ChangestatusIsOn (devId,username,password) {
 }
 
 export async function getHistoricalGraph(req) {
-  console.log(Cookies.get("token"))
+  // console.log(Cookies.get("token"))
   const floorId = req.floorId;
   const unit = req.unit
   const dateFrom = req.dateFrom
@@ -332,5 +332,63 @@ export async function ChangeValueSetFan (devId,value) {
   } catch (error) {
     console.log("error", error);
     return error
+  }
+}
+
+export async function ChangeControlSplittypeIsOff (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/split-type/control`;
+    let res = await axios.post(
+      url,
+      {
+        devId : devId,
+        value : value,
+        
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+
+export async function getAHUGraph(req) {
+  
+  const floorId = req.floorId;
+  const dateFrom = req.dateFrom
+  const dateTo = req.dateTo
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/ahu/graph?floorId=${floorId}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",},
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getSplittypeGraph(req) {
+  
+  const floorId = req.floorId;
+  const dateFrom = req.dateFrom
+  const dateTo = req.dateTo
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/split-type/graph?floorId=${floorId}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",},
+    });
+    return res;
+  } catch (error) {
+    return error;
   }
 }

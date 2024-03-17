@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 export default function VAVtable(VAVList) {
     const [searchTable, setSerachTable] = useState("");
-    console.log(VAVList)
+    
   return (
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
         <div className="flex flex-col gap-4 p-2">
@@ -11,7 +11,7 @@ export default function VAVtable(VAVList) {
             <span className="text-lg  font-bold">VAV</span>
             <input
               type="text"
-              placeholder="ค้นหา Device"
+              placeholder="ค้นหา"
               className="border border-slate-300 rounded-md h-9 px-2"
               onKeyUp={(e) => {
                 setSerachTable(e.target.value);
@@ -60,7 +60,7 @@ export default function VAVtable(VAVList) {
                       
                     );
                   }).map((item) => {
-                    console.log(item)
+                    
                     return (
                       <tr
                         className="border-b dark:border-neutral-500"
@@ -76,10 +76,11 @@ export default function VAVtable(VAVList) {
                           
                         </td>
                         <td
-                          className={
+                           className={
                             item.status == "on"
                               ? "whitespace-nowrap px-6 py-4 text-center text-green-500 font-extrabold"
-                              : "whitespace-nowrap px-6 py-4 text-center text-red-500 font-extrabold"
+                              : item.status == "offline" ? "whitespace-nowrap px-6 py-4 text-center text-red-500 font-extrabold"
+                              : "whitespace-nowrap px-6 py-4 text-center text-gray-500 font-extrabold"
                           }
                         >
                           <Highlighter

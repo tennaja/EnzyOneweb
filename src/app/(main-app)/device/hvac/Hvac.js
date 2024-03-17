@@ -1,6 +1,7 @@
 import React from "react";
-import FilterCard from "./component/FilterCard";
-import FloorPlan from "./component/FloorPlan";
+
+import dynamic from 'next/dynamic'
+const FilterCard = dynamic(() => import('./component/FilterCard'), { ssr: false });
 export default function HvacModule() {
   return (
     <div className="min-h-screen flex w-full text-enzy-dark dark:text-slate-200">
