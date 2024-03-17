@@ -105,7 +105,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
         {AHUlist.length > 0 && AHUlist.map((marker, index) => {
         return (
         <div
-          key={index}
+          key={marker.id}
           className="bg-red-600 rounded-full px-2 py-2"
           style={{ left: marker.position.x, top: marker.position.y, position: "absolute" }}
           >
@@ -117,7 +117,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
         {VSVlist.length > 0 && VSVlist.map((marker, index) => {
         return (
         <div
-          key={index}
+          key={marker.id}
           className="bg-green-600 rounded-full px-2 py-2"
           style={{ left: marker.position.x, top: marker.position.y, position: "absolute" }}
           >
@@ -130,7 +130,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
          {Splittypelist.length > 0 && Splittypelist.map((marker, index) => {
         return (
         <div
-          key={index}
+          key={marker.id}
           className="bg-blue-600 rounded-full px-2 py-2"
           style={{ left: marker.position.x, top: marker.position.y, position: "absolute" }}
           >
@@ -143,7 +143,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
          {IOTlist.length > 0 && Splittypelist.map((marker, index) => {
         return (
         <div
-          key={index}
+          key={marker.id}
           className="bg-yellow-600 rounded-full px-2 py-2"
           style={{ left: marker.position.x, top: marker.position.y, position: "absolute" }}
           >
@@ -155,7 +155,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
         {Splittypelist.length > 0 && Splittypelist.map((item) => {
                     
                     return (
-                      <div value={'SPLIT'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: (item.position.x)+300, top : (item.position.y),  position: "absolute"}} onClick={() => onChangeValue('SPLIT',item.deviceName,item.id,item.setTemp)}>   
+                      <div key={item.id} value={'SPLIT'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: (item.position.x)+300, top : (item.position.y),  position: "absolute"}} onClick={() => onChangeValue('SPLIT',item.deviceName,item.id,item.setTemp)}>   
                       <div class="font-bold text-xs bg-red-600 text-center text-white py-2">{item.deviceName}</div>
                       <div class="px-3">
                       <span class="text-gray-700 text-xs">
@@ -250,7 +250,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
 {VSVlist.length > 0 && VSVlist.map((item) => {
                     
                     return (
-                      <div value={'VAV'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: item.position.x, top: item.position.y,  }} 
+                      <div key={item.id} value={'VAV'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: item.position.x, top: item.position.y,  }} 
                       // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
                       >   
                       <div class="font-bold text-xs bg-red-600 text-center text-white py-2">{item.deviceName}</div>
@@ -274,7 +274,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
       {AHUlist.length > 0 && AHUlist.map((item) => {
                     
                     return (
-                      <div value={'AHU'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: item.position.x, top: item.position.y,  }}  
+                      <div key={item.id} value={'AHU'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: item.position.x, top: item.position.y,  }}  
                       // onClick={() => onChangeValue('AHU',item.deviceName)}
                       >   
                       <div class="font-bold text-xs bg-gray-400 text-center text-white py-2">{item.deviceName}</div>
@@ -315,7 +315,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
 {Splittypelist.length > 0 && Splittypelist.map((item) => {
                     
                     return (
-                      <div value={'SPLIT'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: item.position.x, top: item.position.y,  }} onClick={() => onChangeValue('SPLIT',item.deviceName,item.id,item.setTemp)}>   
+                      <div key={item.id} value={'SPLIT'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: item.position.x, top: item.position.y,  }} onClick={() => onChangeValue('SPLIT',item.deviceName,item.id,item.setTemp)}>   
                       <div class="font-bold text-xs bg-red-600 text-center text-white py-2">{item.deviceName}</div>
                       <div class="px-3">
                       <span class="text-gray-700 text-xs">
@@ -338,7 +338,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
 {IOTlist.length > 0 && IOTlist.map((item) => {
                     
                     return (
-                      <div value={'IOT'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: item.position.x, top: item.position.y,  }} onClick={(e) => {
+                      <div key={item.id} value={'IOT'} class="max-w-48 rounded overflow-hidden shadow-lg border border-black" style={{ left: item.position.x, top: item.position.y,  }} onClick={(e) => {
                         onChangeValue(e.target.value);
                       }}>   
                       <div class="font-bold text-xs bg-red-600 text-center text-white py-2">{item.deviceName}</div>
