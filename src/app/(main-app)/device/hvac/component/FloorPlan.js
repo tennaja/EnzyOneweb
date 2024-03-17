@@ -99,8 +99,8 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
        
        
        <div style={{position: 'relative' }}>
-       { Data.length > 0 && Data.map((item) => {
-        return <img  style={{width : 700, height : 700}} src={item.imageUrl} alt="Image with markers"/>
+       { Data.length > 0 && Data.map((item,index) => {
+        return <img  key={index} style={{width : 700, height : 700}} src={item.imageUrl} alt="Image with markers"/>
       })}
         {AHUlist.length > 0 && AHUlist.map((marker, index) => {
         return (
