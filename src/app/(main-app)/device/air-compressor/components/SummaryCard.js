@@ -147,6 +147,10 @@ export default function SummaryCard() {
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const [Color,setColor] = useState();
+  
+  const colors =[
+    '#278BE1','#05B8AA','#E84F6E','#F8872B','#FEBB20','#9071CC','#00998F','#C14233','#00C2E','#345381']
 
   const toggleShowPassword = () => {
     setIsShowPassword(!isShowPassword);
@@ -400,7 +404,11 @@ export default function SummaryCard() {
     const res = await getHistoricalGraph(paramsNav);
     if (res.status === 200) {
       if (res.data.length > 0){
+        console.log(res.data)
         setChartList(res.data);
+        
+          
+        
         let label = [];
         let modday = 0;
         console.log(res.data);
@@ -1019,7 +1027,13 @@ export default function SummaryCard() {
                     data: item.data.map((data) => {
                       return data.value;
                     }),
-                    borderColor: RandomColor(),
+                    borderColor: chartList.map((item,index) => {
+                      const colorIndex = index % colors.length;
+                      const color = colors[colorIndex];
+                      console.log(color)
+                      return color
+                      
+                    }),
                     fill: false,
                     tension: 0,
                     

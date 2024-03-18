@@ -98,7 +98,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
         })} */}
        
        
-       <div style={{position: 'relative' }}>
+       <div style={{position: 'relative' }} className="flex items-center">
        { Data.length > 0 && Data.map((item,index) => {
         return <img  key={index} style={{width : 700, height : 700}} src={item.imageUrl} alt="Image with markers"/>
       })}
