@@ -77,7 +77,8 @@ export default function SummaryCard() {
     
   };
   const options = {
-    responsive: true,
+    aspectRatio: 4, 
+    
     interaction: {
       mode: "index",
       intersect: false,
@@ -1007,8 +1008,9 @@ export default function SummaryCard() {
                 </span>
               )}
             </div>
+            
             {(typeof window !== 'undefined') && 
-            <Line
+            <Line 
               data={{
                 labels: ListLabel,
                 datasets: chartList.map((item) => {
@@ -1020,14 +1022,14 @@ export default function SummaryCard() {
                     borderColor: RandomColor(),
                     fill: false,
                     tension: 0,
-                    categoryPercentage: 0.1, // notice here 
-                    barPercentage: 0.1,  // notice here 
+                    
                   };
                 }),
               }}
               ref={chartRef}
               options={options}
             />}
+            
           </div>
         )}
       </div>
