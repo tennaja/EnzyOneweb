@@ -90,7 +90,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
       <ToastContainer />
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 mt-5">
       
-      <div className="flex flex-col gap-4 p-2">
+      <div className="flex flex-col gap-4 p-2 item center">
       <div className="flex justify-between">
       {/* { Data.length > 0 && Data.map((item) => {
         return <div><span>{item.name}</span></div>,
@@ -98,15 +98,15 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
         })} */}
        
        
-       <div style={{position: 'relative' }} className="flex items-center">
+       <div style={{position: 'relative' }} >
        { Data.length > 0 && Data.map((item,index) => {
-        return <img  key={index} style={{width : 700, height : 700}} src={item.imageUrl} alt="Image with markers"/>
+        return <img  key={index} style={{width : 700, height : 700}} src={item.imageUrl} />
       })}
         {AHUlist.length > 0 && AHUlist.map((marker, index) => {
         return (
         <div
           key={marker.id}
-          className="bg-red-600 rounded-full px-2 py-2"
+          className="bg-red-600 rounded-full px-1 py-1"
           style={{ left: marker.position.x, top: marker.position.y, position: "absolute" }}
           >
             
@@ -118,7 +118,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
         return (
         <div
           key={marker.id}
-          className="bg-green-600 rounded-full px-2 py-2"
+          className="bg-green-600 rounded-full px-1 py-1"
           style={{ left: marker.position.x, top: marker.position.y, position: "absolute" }}
           >
             
@@ -131,7 +131,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
         return (
         <div
           key={marker.id}
-          className="bg-blue-600 rounded-full px-2 py-2"
+          className="bg-blue-600 rounded-full px-1 py-1"
           style={{ left: marker.position.x, top: marker.position.y, position: "absolute" }}
           >
             
@@ -144,7 +144,7 @@ export default function FloorPlan({Data,AHUlist,VSVlist,Splittypelist,IOTlist}) 
         return (
         <div
           key={marker.id}
-          className="bg-yellow-600 rounded-full px-2 py-2"
+          className="bg-yellow-600 rounded-full px-1 py-1"
           style={{ left: marker.position.x, top: marker.position.y, position: "absolute" }}
           >
           </div>

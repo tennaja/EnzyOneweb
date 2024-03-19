@@ -392,3 +392,45 @@ export async function getSplittypeGraph(req) {
     return error;
   }
 }
+
+export async function ChangeValueSettempAHU (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/ahu/supply-temp`;
+    let res = await axios.post(
+      url,
+      {
+        value : value,
+        devId : devId,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+
+export async function ChangeValueDamperVAV (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/vav/damper`;
+    let res = await axios.post(
+      url,
+      {
+        value : value,
+        devId : devId,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}

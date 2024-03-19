@@ -921,9 +921,9 @@ export default function SummaryCard() {
           </div>
         ) : null}
       </div>
-      <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
+      <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5 ">
         <div className="flex flex-col gap-4 p-2">
-          <div className="flex justify-between">
+          <div className="flex justify-between "> 
             <span className="text-lg  font-bold">Historical</span>
             <select
               className="w-44 border border-slate-300 mx-2 rounded-md h-9"

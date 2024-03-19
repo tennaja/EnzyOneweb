@@ -287,14 +287,15 @@ export default function SplitTypetable(SplittypeList) {
                                 />
 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
+                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
+                                <Link href="/device/hvac" onClick={(event) => onclickOPenSettemp(item.id, item.devId, item.setTemp ,event.preventDefault())}>
                                 <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={String(item.setTemp)} // Replace this with your text
-                                  onClick={() => onclickOPenSettemp(item.id, item.devId, item.setTemp)}
-                                />
+                                  
+                                /></Link>
 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
@@ -322,25 +323,27 @@ export default function SplitTypetable(SplittypeList) {
                                 
 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
+                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
+                                <Link href="/device/hvac" onClick={(event) => onclickOPenSetMode(item.id, item.devId,event.preventDefault())}>
                                 <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={item.fan} // Replace this with your text
-                                  onClick={() => onclickOPenSetMode(item.id, item.devId)}
+                                 
                                 />
-
+                                </Link>
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
+                              <td className="whitespace-nowrap px-6 py-4 text-[#5eead4] underline font-bold">
+                                <Link href="/device/hvac" onClick={(event) => onclickOPenSetFan(item.id, item.devId,event.preventDefault())}>
                                 <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={item.mode} // Replace this with your text
-                                  onClick={() => onclickOPenSetFan(item.id, item.devId)}
+                                  
                                 />
-
+                                </Link>
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                                 <Highlighter
