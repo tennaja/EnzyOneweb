@@ -18,20 +18,15 @@ export default function FloorPlan({
   Splittypelist,
   IOTlist,
 }) {
-  // console.log(Data);
+  console.log(Data);
   const [Values, setValues] = useState();
   const [valueSettemp, setvalueSettemp] = useState();
-  const [DecviceId, setDeviceId] = useState();
-  const [test, setTest] = useState();
+  const [DecviceId, setDeviceId] = useState(null);
   const [DeviceName, setDeviceName] = useState();
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
 
-  const [toggle, setToggle] = useState(false);
-  const handleToggleChange = () => {
-    setToggle(!toggle);
-  };
   const notifySuccess = () =>
     toast.success(
       `Operation Complete
@@ -87,13 +82,11 @@ export default function FloorPlan({
     setValues(values);
   };
 
-  const onChangeValue = (value,dataId,dataList) => {
-    console.log(dataId)
-    setTest(dataList)
-    setDeviceId(dataId);
-    console.log(DecviceId)
+  const onChangeValue = (value, devicename, id, valuesettemp) => {
+    setDeviceName(devicename);
+    setDeviceId(id);
     setValues(value);
-    
+    setvalueSettemp(valuesettemp);
   };
 
   const closeModal = () => {
@@ -170,12 +163,6 @@ export default function FloorPlan({
                           top: marker.position.y,
                           position: "absolute",
                         }}
-                        onClick={() =>
-                          onChangeValue(
-                            "AHU",
-                            {marker}+marker.id
-                          )
-                        }
                         // onClick={() => onChangeValue('AHU',item.deviceName)}
                       >
                         <div class="bottom-arrow font-bold text-xs bg-gray-400 text-center text-white py-2">
@@ -191,7 +178,7 @@ export default function FloorPlan({
                   return (
                     <div>
                       <div
-                        key={index}
+                        key={marker.id}
                         className="bg-green-600 rounded-full px-1 py-1"
                         style={{
                           left: marker.position.x,
@@ -200,7 +187,7 @@ export default function FloorPlan({
                         }}
                       ></div>
                       <div
-                        key={index}
+                        key={marker.id}
                         value={"VAV"}
                         className="w-32"
                         style={{
@@ -208,12 +195,6 @@ export default function FloorPlan({
                           top: marker.position.y,
                           position: "absolute",
                         }}
-                        onClick={() =>
-                          onChangeValue(
-                            "VAV",
-                            marker
-                          )
-                        }
                         // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
                       >
                         <div class="bottom-arrow font-bold text-xs bg-red-600 text-center text-white py-2">
@@ -238,7 +219,7 @@ export default function FloorPlan({
                 })}
               {Splittypelist.length > 0 &&
                 Splittypelist.map((marker, index) => {
-                  
+                  console.log(marker);
                   return (
                     <div>
                       <div
@@ -263,7 +244,9 @@ export default function FloorPlan({
                         onClick={() =>
                           onChangeValue(
                             "SPLIT",
-                            marker
+                            marker.deviceName,
+                            marker.id,
+                            marker.setTemp
                           )
                         }
                       >
@@ -290,7 +273,7 @@ export default function FloorPlan({
 
               {IOTlist.length > 0 &&
                 IOTlist.map((marker, index) => {
-                  
+                  console.log(marker);
                   return (
                     <div>
                       <div
@@ -314,8 +297,9 @@ export default function FloorPlan({
                         onClick={() =>
                           onChangeValue(
                             "SPLIT",
+                            marker.deviceName,
                             marker.id,
-                            marker
+                            marker.setTemp
                           )
                         }
                       >
@@ -341,12 +325,12 @@ export default function FloorPlan({
                 })}
             </div>
           </div>
-          <div className="flex justify-end  w-56">
+          <div className="flex justify-end bg-yellow-300 w-48">
             {Values == "VAV" ? (
-              <div class="w-56 h-60 rounded shadow-md">
+              <div class="w-48 h-60 rounded shadow-md">
                 <div class="font-bold text-md py-2 px-3">{DeviceName}</div>
                 <div class="px-3">
-                  <span class="text-gray-700 text-xs">Supply Temp. (°C)</span>
+                  <span class="text-gray-700 text-xs">Temp. (°C)</span>
                 </div>
                 <div class="px-3">
                   <span class="text-gray-700 text-xs">Air Flow (CFM)</span>
@@ -356,34 +340,22 @@ export default function FloorPlan({
                 </div>
               </div>
             ) : Values == "AHU" ? (
-              <div class="w-56 h-60 rounded shadow-md">
+              <div class="w-48 h-60 rounded shadow-md">
                 <div class="font-bold text-xs text-center py-2">
                   {DeviceName}
                 </div>
                 <div class="px-3">
-                  <span class="text-gray-700 text-xs">Supply Temp. (°C)</span>
+                  <span class="text-gray-700 text-xs">Temp. (°C)</span>
                 </div>
                 <div class="px-3">
-                  <span class="text-gray-700 text-xs">Supply Temp. Setpoint (°C)</span>
+                  <span class="text-gray-700 text-xs">Air Flow (CFM)</span>
                 </div>
                 <div class="px-3">
-                  <span class="text-gray-700 text-xs">Return Temp. (°C)</span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">VSD %Drive (Hz)</span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">VSD Power (kW)</span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">VSD Speed (rpm)</span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">Control Valve (%)</span>
+                  <span class="text-gray-700 text-xs">Damper (%)</span>
                 </div>
               </div>
             ) : Values == "SPLIT" ? (
-              <div class="w-56 h-60 rounded shadow-md">
+              <div class="w-48 h-60 rounded shadow-md">
                 <div class="font-bold text-xs text-center py-2">
                   {DeviceName}
                 </div>
@@ -411,13 +383,6 @@ export default function FloorPlan({
                 </div>
                 <div class="px-3">
                   <span class="text-gray-700 text-xs">Mode :</span>
-                </div>
-                <div class="px-3 flex gap-4">
-                  <span class="text-gray-700 text-xs">Automation : </span><div className='toggle-container' onClick={handleToggleChange}>
-           <div className={`toggle-btn ${!toggle ? "disable" : ""}`}>
-               {toggle ? "ON" : "OFF"}
-           </div>
-       </div>
                 </div>
               </div>
             ) : null}

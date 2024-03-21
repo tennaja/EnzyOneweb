@@ -200,7 +200,7 @@ export async function getFloor(buildingId) {
 export async function getFloorplan(floorId) {
   try {
     const url =
-      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/floor-plan/'+1;
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/floor-plan/'+floorId;
       const res = await axios.get(url, {
       withCredentials: true,
       headers: { "Content-Type": "application/json",  },
@@ -215,7 +215,7 @@ export async function getFloorplan(floorId) {
 export async function getAHU(floorId) {
   try {
     const url =
-      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/ahu/list/'+1;
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/ahu/list/'+floorId;
       const res = await axios.get(url, {
       withCredentials: true,
       headers: { "Content-Type": "application/json",  },
@@ -230,7 +230,7 @@ export async function getAHU(floorId) {
 export async function getVAV(floorId) {
   try {
     const url =
-      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/vav/list/'+1;
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/vav/list/'+floorId;
       const res = await axios.get(url, {
       withCredentials: true,
       headers: { "Content-Type": "application/json",  },
@@ -245,7 +245,7 @@ export async function getVAV(floorId) {
 export async function getIOT(floorId) {
   try {
     const url =
-      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/iot/list/'+1;
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/iot/list/'+floorId;
       const res = await axios.get(url, {
       withCredentials: true,
       headers: { "Content-Type": "application/json",  },
@@ -260,7 +260,7 @@ export async function getIOT(floorId) {
 export async function getSplittype(floorId) {
   try {
     const url =
-      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/split-type/list/'+1;
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/split-type/list/'+floorId;
       const res = await axios.get(url, {
       withCredentials: true,
       headers: { "Content-Type": "application/json",  },

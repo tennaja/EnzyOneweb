@@ -74,3 +74,71 @@ body {
 .highlight {
   background-color: yellow;
 }
+
+
+
+.bottom-arrow {
+  border: 1px ;
+  border-radius: 3px;
+  margin-top: -10px;
+  margin-left: 15px;
+  position: relative;
+}
+.bottom-arrow:after {
+  content: "";
+  display: block;
+  position: absolute;
+  
+  width: 10px;
+  height: 10px;
+  top: 10px;
+  left: -5px;
+  background: inherit;
+
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.toggle-container {
+  position: relative;
+  width: 70px;
+  height: 32px;
+  background-color: #c4c4c4;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 20px;
+  padding: 2px;
+}
+.toggle-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 38px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #5eead4;
+  box-shadow: 0 2px 4px rgb(0, 0, 0, 0.25);
+  padding: 8px 12px;
+  border-radius: 20px;
+  position: absolute;
+  transition: all 0.2s ease;
+  left: 34px;
+}
+
+.disable {
+  background-color: #FF6666;
+  left: 2px;
+}
+
+.t1{
+  
+  font-family: Verdana, sans-serif;
+  font-size: larger;
+}
+
