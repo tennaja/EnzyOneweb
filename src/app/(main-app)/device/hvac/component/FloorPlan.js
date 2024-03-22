@@ -568,7 +568,7 @@ export default function FloorPlan({
                 console.log(marker)
                 return (
                   <div> 
-              <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+              <div key={marker.id} class="w-64 bg-white h-auto rounded shadow-md pb-6">
                 <div class="font-bold text-lg text-center py-2">{marker.deviceName}</div>
                 <div class="px-3">
                   <span class="text-gray-700 text-sm">Supply Temp. (°C) : {marker.temp}</span>
@@ -589,7 +589,7 @@ export default function FloorPlan({
                   console.log(marker)
                   return (
                     <div> 
-              <div key={index} class="w-64 bg-white h-auto rounded shadow-md pb-6">
+              <div key={marker.id} class="w-64 bg-white h-auto rounded shadow-md pb-6">
                 <div class="font-bold text-lg text-center py-2">
                 {marker.deviceName}
                 </div>
@@ -626,7 +626,7 @@ export default function FloorPlan({
                   console.log(marker)
                   return (
               <div>     
-              <div key={index} class="w-64 bg-white h-auto rounded shadow-md pb-6">
+              <div key={marker.id} class="w-64 bg-white h-auto rounded shadow-md pb-6">
                 <div class="font-bold text-lg text-center py-2">
                 {marker.deviceName}
                 </div>
