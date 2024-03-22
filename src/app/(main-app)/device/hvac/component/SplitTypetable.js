@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Switch } from '@headlessui/react'
 import Highlighter from "react-highlight-words";
 import {
-  ChangeValueSettempSplttpye, ChangeValueSetMode, ChangeValueSetFan ,ChangeControlSplittypeIsOff 
+  ChangeValueSettempSplttpye, ChangeValueSetMode, ChangeValueSetFan ,ChangeControlSplittype ,ChangeAutomationSplittype
 } from "@/utils/api";
 import Loading from "./Loading";
 import ModalPopError from "./ModalError";
@@ -22,10 +22,11 @@ export default function SplitTypetable(SplittypeList) {
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
   const [showModalStart, setShowModalStart] = useState(false);
-  const [showModalStop, setShowModalStop] = useState(false);
+  const [showModalControle, setShowModalControle] = useState(false);
+  const [showModalAutomation, setShowModalAutomation] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
-  const [enabled, setEnabled] = useState(false)
+  
 
   const [toggle, setToggle] = useState(false);
   const handleToggleChange = () => {
@@ -36,13 +37,25 @@ export default function SplitTypetable(SplittypeList) {
   const openModalControleIsStop = (DecviceId,values) => {
     setDeviceId(DecviceId)
     setValues('off')
-    setShowModalStop(true);
+    setShowModalControle(true);
     
   }
   const openModalControleIsStart = (DecviceId,values) => {
     setDeviceId(DecviceId)
     setValues('on')
-    setShowModalStop(true);
+    setShowModalControle(true);
+    
+  }
+  const openModalAutomationIsStop = (DecviceId,values) => {
+    setDeviceId(DecviceId)
+    setValues('off')
+    setShowModalAutomation(true);
+    
+  }
+  const openModalAutomationIsStart = (DecviceId,values) => {
+    setDeviceId(DecviceId)
+    setValues('on')
+    setShowModalAutomation(true);
     
   }
 
@@ -78,9 +91,34 @@ export default function SplitTypetable(SplittypeList) {
     }
   }
 
-  async function clickChangestatusStop() {
+  async function clickChangestatusControle() {
     setLoading(true);
-    const res = await ChangeControlSplittypeIsOff(DecviceId, Values);
+    const res = await ChangeControlSplittype(DecviceId, Values);
+    if (res.status === 200) {
+      console.log(res.data)
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
+      closeModal();
+      setLoading(false);
+      notifySuccess();
+    } else if (res.response.status === 401) {
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+      
+    }
+    else if (res.response.status === 500) {
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+    }
+  }
+
+  async function clickChangestatusAutomation() {
+    setLoading(true);
+    const res = await ChangeAutomationSplittype(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data)
       setAlertTitle(res.data.title);
@@ -162,10 +200,11 @@ export default function SplitTypetable(SplittypeList) {
     setOpenSettempModal(false)
     setOpenSetFanModal(false)
     setOpenSetModeModal(false)
+    setShowModalControle(false)
+    setShowModalAutomation(false)
     setModalError(false)
     setDeviceId(null);
-    setShowModalStop(false);
-    setShowModalStart(false);
+   
 
   };
  
@@ -369,7 +408,11 @@ export default function SplitTypetable(SplittypeList) {
                                 /> */}
 
        
-       <div className='toggle-container' onClick={handleToggleChange}>
+       <div className='toggle-container' onClick={() =>
+                                      item.automation == "on"
+                                        ? openModalAutomationIsStop(item.id)
+                                        : openModalAutomationIsStart(item.id)
+                                    }>
            <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
                {item.automation=="on" ? "ON" : "OFF"}
            </div>
@@ -531,7 +574,7 @@ export default function SplitTypetable(SplittypeList) {
             </div>
           </div>
         ) : null}
-        {showModalStop ? (
+        {showModalControle  ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -550,7 +593,35 @@ export default function SplitTypetable(SplittypeList) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusStop()}
+                    onClick={() => clickChangestatusControle()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalAutomation  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device start {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusAutomation()}
                   >
                     confirm
                   </button>

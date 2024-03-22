@@ -142,7 +142,7 @@ const handleChangeValueSettemp = async () => {
                             item.status == "on"
                               ? "whitespace-nowrap px-6 py-4 text-center text-green-500 font-extrabold"
                               : item.status == "offline" ? "whitespace-nowrap px-6 py-4 text-center text-red-500 font-extrabold"
-                              : "whitespace-nowrap px-6 py-4 text-center text-gray-500 font-extrabold"
+                              : "whitespace-nowrap px-6 py-4 text-center text-gray-400 font-extrabold"
                           }
                         >
                           <Highlighter

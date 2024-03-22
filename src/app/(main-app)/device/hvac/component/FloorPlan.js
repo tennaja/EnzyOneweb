@@ -8,7 +8,7 @@ import {
   ChangeValueSettempSplttpye,
   ChangeValueSetMode,
   ChangeValueSetFan,
-  ChangeControlSplittypeIsOff,ChangeValueDamperVAV
+  ChangeControlSplittype,ChangeValueDamperVAV,ChangeValueSettempAHU,ChangeAutomationSplittype
 } from "@/utils/api";
 
 export default function FloorPlan({
@@ -27,12 +27,18 @@ export default function FloorPlan({
   const [Listcontrol, setListcontrol] = useState({});
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [OpenSettempModalVAV, setOpenSettempModalVAV] = useState(false);
+  const [OpenSettempModalAHU, setOpenSettempModalAHU] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
   const [DeviceName, setDeviceName] = useState('');
   const [toggle, setToggle] = useState(false);
   const [OpenSetModeModal, setOpenSetModeModal] = useState(false)
   const [OpenSetFanModal, setOpenSetFanModal] = useState(false)
+  const [showModalControle, setShowModalControle] = useState(false);
+  const [showModalAutomation, setShowModalAutomation] = useState(false);
+  const [alerttitle, setAlertTitle] = useState("");
+  const [alertmassage, setAlertmessage] = useState("");
+  
   const handleToggleChange = () => {
     setToggle(!toggle);
   };
@@ -118,6 +124,32 @@ export default function FloorPlan({
         setModalError(true)
       }
     }
+    
+    const openModalControleIsStop = (DecviceId,values) => {
+      setDeviceId(DecviceId)
+      setValues('off')
+      setShowModalControle(true);
+      
+    }
+    const openModalControleIsStart = (DecviceId,values) => {
+      setDeviceId(DecviceId)
+      setValues('on')
+      setShowModalControle(true);
+      
+    }
+
+    const openModalAutomationIsStop = (DecviceId,values) => {
+      setDeviceId(DecviceId)
+      setValues('off')
+      setShowModalAutomation(true);
+      
+    }
+    const openModalAutomationIsStart = (DecviceId,values) => {
+      setDeviceId(DecviceId)
+      setValues('on')
+      setShowModalAutomation(true);
+      
+    }
 
   const handleChangeValueSettemp = async () => {
     setLoading(true);
@@ -153,11 +185,38 @@ export default function FloorPlan({
   const onChangeValueSettempVav = (event) => {
     setValues(event);
   };
+  const onChangeValueSettempAHU = (event) => {
+    setValues(event);
+  };
   const onclickOPenSettempVav = (id, DecviceId, values) => {
     setOpenSettempModalVAV(true)
     setDeviceId(id)
     setDeviceName(DecviceId)
     setValues(values)
+  }
+  const onclickOPenSettempAHU = (id, DecviceId, values) => {
+    setOpenSettempModalAHU(true)
+    setDeviceId(id)
+    setDeviceName(DecviceId)
+    setValues(values)
+  }
+  const handleChangeValueSettempAHU = async () => {
+    setLoading(true);
+    const res = await ChangeValueSettempAHU(DecviceId, Values);
+    if (res.status === 200) {
+      console.log(res.data)
+      closeModal();
+      setLoading(false);
+      notifySuccess();
+    } else if (res.response.status === 401) {
+      closeModal();
+      setLoading(false);
+      setModalError(true)
+    } else if (res.response.status === 500) {
+      closeModal();
+      setLoading(false);
+      setModalError(true)
+    }
   }
 
   useEffect(() => {
@@ -177,12 +236,67 @@ export default function FloorPlan({
     console.log(Values)
     console.log(Listcontrol)
    };
+   
+   async function clickChangestatusControle() {
+    setLoading(true);
+    const res = await ChangeControlSplittype(DecviceId, Values);
+    if (res.status === 200) {
+      console.log(res.data)
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
+      closeModal();
+      setLoading(false);
+      notifySuccess();
+    } else if (res.response.status === 401) {
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+      
+    }
+    else if (res.response.status === 500) {
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+    }
+  }
+  
+  async function clickChangestatusAutomation() {
+    setLoading(true);
+    const res = await ChangeAutomationSplittype(DecviceId, Values);
+    if (res.status === 200) {
+      console.log(res.data)
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
+      closeModal();
+      setLoading(false);
+      notifySuccess();
+    } else if (res.response.status === 401) {
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+      
+    }
+    else if (res.response.status === 500) {
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+    }
+  }
+  
+
   
   const closeModal = () => {
     setOpenSettempModal(false);
     setOpenSetFanModal(false)
     setOpenSetModeModal(false)
     setOpenSettempModalVAV(false)
+    setOpenSettempModalAHU(false)
+    setShowModalControle(false)
+    setShowModalAutomation(false)
     setModalError(false);
     setDeviceId(null);
     // setShowModalStop(false);
@@ -238,7 +352,10 @@ export default function FloorPlan({
                     <div>
                       <div
                         key={marker.id}
-                        className="bg-red-600 rounded-full px-1 py-1"
+                        className={marker.status == "on"
+                        ? "bg-[#5eead4] rounded-full px-1 py-1"
+                        : marker.status == "offline" ? " bg-red-500 rounded-full px-1 py-1"
+                        : " bg-gray-400 rounded-full px-1 py-1"}
                         style={{
                           left: marker.position.x,
                           top: marker.position.y,
@@ -262,7 +379,10 @@ export default function FloorPlan({
                         }
                         // onClick={() => onChangeValue('AHU',item.deviceName)}
                       >
-                        <div class="bottom-arrow font-bold text-xs bg-gray-400 text-center text-white py-2">
+                        <div class= {marker.status == "on"
+                        ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2" 
+                        : marker.status == "offline" ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2"
+                        : "bottom-arrow font-bold text-xs bg-gray-400 text-center text-white py-2"}>
                           {marker.deviceName}
                         </div>
                       </div>
@@ -276,7 +396,10 @@ export default function FloorPlan({
                     <div>
                       <div
                         key={index}
-                        className="bg-green-600 rounded-full px-1 py-1"
+                        className={marker.status == "on"
+                        ? "bg-[#5eead4] rounded-full px-1 py-1"
+                        : marker.status == "offline" ? " bg-red-500 rounded-full px-1 py-1"
+                        : " bg-gray-400 rounded-full px-1 py-1"}
                         style={{
                           left: marker.position.x,
                           top: marker.position.y,
@@ -286,7 +409,7 @@ export default function FloorPlan({
                       <div
                         key={index}
                         value={"VAV"}
-                        className="w-32"
+                        className="w-40"
                         style={{
                           left: marker.position.x,
                           top: marker.position.y,
@@ -301,7 +424,10 @@ export default function FloorPlan({
                         }
                         // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
                       >
-                        <div class="bottom-arrow font-bold text-xs bg-red-600 text-center text-white py-2">
+                        <div class={marker.status == "on"
+                        ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black" 
+                        : marker.status == "offline" ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                        : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"}>
                           {marker.deviceName}
                         </div>
                         {/* <div class="px-3">
@@ -327,7 +453,10 @@ export default function FloorPlan({
                     <div>
                       <div
                         key={marker.id}
-                        className="bg-blue-600 rounded-full px-1 py-1"
+                        className={marker.control == "on"
+                        ? "bg-[#5eead4] rounded-full px-1 py-1"
+                        : marker.control == "offline" ? " bg-red-500 rounded-full px-1 py-1"
+                        : " bg-gray-400 rounded-full px-1 py-1"}
                         style={{
                           left: marker.position.x,
                           top: marker.position.y,
@@ -351,7 +480,10 @@ export default function FloorPlan({
                           )
                         }
                       >
-                        <div class="bottom-arrow font-bold text-xs bg-red-600 text-center text-white py-2">
+                        <div class={marker.control == "on"
+                        ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black" 
+                        : marker.control == "offline" ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                        : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"}>
                           {marker.deviceName}
                           {/* <div class="px-3 bg-white">
               <span class="text-gray-700 text-xs">
@@ -378,7 +510,10 @@ export default function FloorPlan({
                     <div>
                       <div
                         key={marker.id}
-                        className="bg-yellow-600 rounded-full px-1 py-1"
+                        className={marker.status == "on"
+                        ? "bg-[#5eead4] rounded-full px-1 py-1"
+                        : marker.status == "offline" ? " bg-red-500 rounded-full px-1 py-1"
+                        : " bg-gray-400 rounded-full px-1 py-1"}
                         style={{
                           left: marker.position.x,
                           top: marker.position.y,
@@ -401,7 +536,10 @@ export default function FloorPlan({
                         //   )
                         // }
                       >
-                        <div class="bottom-arrow font-bold text-xs bg-yellow-600 text-center text-white py-2">
+                        <div class={marker.status == "on"
+                        ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black" 
+                        : marker.status == "offline" ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                        : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"}>
                           {marker.deviceName}
                           {/* <div class="px-3 bg-white">
           <span class="text-gray-700 text-xs">
@@ -459,7 +597,9 @@ export default function FloorPlan({
                   <span class="text-gray-700 text-sm">Supply Temp. (°C) : {marker.supplyTemp}</span>
                 </div>
                 <div class="px-3">
-                  <span class="text-gray-700 text-sm">Supply Temp. Setpoint (°C) : {marker.supplyTempSetPoint}</span>
+                  <span class="text-gray-700 text-sm">Supply Temp. Setpoint (°C) : <span className="text-[#5eead4] underline text-sm"onClick={() =>
+                      onclickOPenSettempAHU(marker.id,marker.deviceName,marker.supplyTempSetPoint)
+                    }>{marker.supplyTempSetPoint}</span></span>
                 </div>
                 <div class="px-3">
                   <span class="text-gray-700 text-sm">Return Temp. (°C) : {marker.returnTemp}</span>
@@ -506,7 +646,20 @@ export default function FloorPlan({
                   </span>
                 </div>
                 <div class="px-3">
-                  <span class="text-gray-700 text-sm">Control : {marker.control}</span>
+                  <span class="text-gray-700 text-sm">Control : <button
+                                    type="button"
+                                    className={
+                                      marker.control == "on"
+                                        ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        : marker.control == "off"  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        : "text-white bg-red-500 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                      }
+                                    onClick={() =>
+                                      marker.control == "on"
+                                        ? openModalControleIsStop(marker.id)
+                                        : openModalControleIsStart(marker.id)
+                                    }
+                                  >{marker.control}</button></span>
                 </div>
                 <div class="px-3 flex gap-2">
                   <span class="text-gray-700 text-sm">Fan : <span className="text-[#5eead4] underline text-sm" onClick={(event) => onclickOPenSetMode(marker.id, marker.devId,event.preventDefault())}>{marker.fan}</span></span>
@@ -516,9 +669,13 @@ export default function FloorPlan({
                   >Mode : <span className="text-[#5eead4] underline text-sm" onClick={(event) => onclickOPenSetFan(marker.id, marker.devId,event.preventDefault())}>{marker.mode}</span></span>
                 </div>
                 <div class="px-3 flex gap-2">
-                  <span class="text-gray-700 text-sm">Automation : </span><div className='toggle-container' onClick={handleToggleChange}>
-           <div className={`toggle-btn ${!toggle ? "disable" : ""}`}>
-               {toggle ? "ON" : "OFF"}
+                  <span class="text-gray-700 text-sm">Automation : </span><div className='toggle-container' onClick={() =>
+                                      marker.automation == "on"
+                                        ? openModalAutomationIsStop(marker.id)
+                                        : openModalAutomationIsStart(marker.id)
+                                    }>
+           <div className={`toggle-btn ${marker.automation=="off" ? "disable" : ""}`}>
+               {marker.automation=="on" ? "ON" : "OFF"}
            </div>
        </div>
                 </div>
@@ -861,6 +1018,97 @@ export default function FloorPlan({
                 >
                   confirm
                 </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {OpenSettempModalAHU ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <h5 className="mt-5">Set Supply Temp. Setpoint (°C) : {DeviceName}</h5>
+
+              <h5 className="mt-5">Temperature</h5>
+              <input
+                type="number"
+                placeholder="Enter your username"
+                className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
+                min={10}
+                max={40}
+                value={Values}
+                onChange={(e) => {
+                  onChangeValueSettempAHU(e.target.value);
+                }}
+              />
+
+              <div className="flex justify-center mt-10 gap-5">
+                <button
+                  className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                  onClick={() => closeModal()}
+                >
+                  cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                  onClick={() => handleChangeValueSettempAHU()}
+                >
+                  confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalControle  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device start {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusControle()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalAutomation  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device start {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusAutomation()}
+                  >
+                    confirm
+                  </button>
+                </div>
               </div>
             </div>
           </div>

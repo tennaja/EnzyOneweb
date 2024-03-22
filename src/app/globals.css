@@ -83,6 +83,7 @@ body {
   margin-top: -10px;
   margin-left: 15px;
   position: relative;
+  border-color: black;
 }
 .bottom-arrow:after {
   content: "";
