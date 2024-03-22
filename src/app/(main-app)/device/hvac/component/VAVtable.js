@@ -46,6 +46,7 @@ export default function VAVtable(VAVList) {
     // setShowModalStop(false);
     // setShowModalStart(false);
 };
+
 const handleChangeValueSettemp = async () => {
   setLoading(true);
   const res = await ChangeValueDamperVAV(DecviceId, Values);

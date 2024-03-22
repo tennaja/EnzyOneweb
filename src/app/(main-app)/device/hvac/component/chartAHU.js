@@ -44,6 +44,7 @@ export default function ChartAHU({chartControle,chartSupplytemp,returntemp,label
 
     };
     const options = {
+        aspectRatio: 4, 
         responsive: true,
         interaction: {
             mode: "index",
@@ -68,6 +69,7 @@ export default function ChartAHU({chartControle,chartSupplytemp,returntemp,label
                 type: 'linear',
                 display: true,
                 position: 'left',
+                
                 title: {
                     display: true,
                     text: 'Controle Value %',

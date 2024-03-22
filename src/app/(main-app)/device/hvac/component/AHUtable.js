@@ -167,24 +167,25 @@ const handleChangeValueSettemp = async () => {
                                   />
                           
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
-                        <Link href="/device/hvac" onClick={(event) => onclickOPenSettemp(item.id, item.devId, item.supplyTemp ,event.preventDefault())}>
+                        <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
+                        
                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.supplyTemp)} // Replace this with your text
                                   />
-                        </Link>
+                        
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
+                        <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
+                        <Link href="/device/hvac" onClick={(event) => onclickOPenSettemp(item.id, item.devId, item.supplyTempSetPoint ,event.preventDefault())}>
                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
                                   />
-                          
+                          </Link>
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                         <Highlighter
@@ -244,7 +245,7 @@ const handleChangeValueSettemp = async () => {
     {OpenSettempModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
+              <h5 className="mt-5">Set Supply Temp. Setpoint (°C) : {DeviceName}</h5>
 
               <h5 className="mt-5">Temperature</h5>
               <input
