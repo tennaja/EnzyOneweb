@@ -126,6 +126,7 @@ const handleChangeValueSettemp = async () => {
                     // console.log(data)
                     return (
                       item.deviceName.includes(searchTable) ||
+                      item.deviceName.toLowerCase().includes(searchTable) ||
                       item.status.includes(searchTable) ||
                       String(item.supplyTemp).includes(searchTable) ||
                       String(item.supplyTempSetPoint).includes(searchTable) ||
@@ -178,7 +179,7 @@ const handleChangeValueSettemp = async () => {
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
-                        <Link href="/device/hvac" onClick={(event) => onclickOPenSettemp(item.id, item.devId, item.supplyTempSetPoint ,event.preventDefault())}>
+                        <Link href="/device/hvac" onClick={(event) => onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,event.preventDefault())}>
                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}

@@ -342,7 +342,7 @@ export default function SplitTypetable(SplittypeList) {
 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
-                                <Link href="/device/hvac" onClick={(event) => onclickOPenSettemp(item.id, item.devId, item.setTemp ,event.preventDefault())}>
+                                <Link href="/device/hvac" onClick={(event) => onclickOPenSettemp(item.id, item.deviceName, item.setTemp ,event.preventDefault())}>
                                 <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
@@ -353,7 +353,7 @@ export default function SplitTypetable(SplittypeList) {
 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
-                              <Link href="/device/hvac" onClick={(event) => onclickOPenSetMode(item.id, item.devId,event.preventDefault())}>
+                              <Link href="/device/hvac" onClick={(event) => onclickOPenSetMode(item.id, item.deviceName,event.preventDefault())}>
                                 <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
@@ -365,7 +365,7 @@ export default function SplitTypetable(SplittypeList) {
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
                         
-                                <Link href="/device/hvac" onClick={(event) => onclickOPenSetFan(item.id, item.devId,event.preventDefault())}>
+                                <Link href="/device/hvac" onClick={(event) => onclickOPenSetFan(item.id, item.deviceName,event.preventDefault())}>
                                 <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}

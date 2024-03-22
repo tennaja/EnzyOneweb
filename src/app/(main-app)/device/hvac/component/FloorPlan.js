@@ -661,7 +661,7 @@ export default function FloorPlan({
                                   >{marker.control}</button></span>
                 </div>
                 <div class="px-3 flex gap-2">
-                  <span class="text-gray-700 text-sm">Fan : <span className="text-[#5eead4] underline text-sm" onClick={(event) => onclickOPenSetMode(marker.id, marker.devId,event.preventDefault())}>{marker.fan}</span></span>
+                  <span class="text-gray-700 text-sm">Fan : <span className="text-[#5eead4] underline text-sm" onClick={(event) => onclickOPenSetMode(marker.id, marker.deviceName,event.preventDefault())}>{marker.fan}</span></span>
                 </div>
                 <div class="px-3 flex gap-2">
                   <span class="text-gray-700 text-sm " 

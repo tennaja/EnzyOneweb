@@ -54,6 +54,7 @@ export default function SmartIRtable(IotList) {
                     // console.log(data)
                     return (
                       item.deviceName.includes(searchTable) ||
+                      item.deviceName.toLowerCase().includes(searchTable) ||
                       // item.status.includes(searchTable) ||
                       String(item.temp).includes(searchTable) ||
                       String(item.humidity).includes(searchTable) ||
