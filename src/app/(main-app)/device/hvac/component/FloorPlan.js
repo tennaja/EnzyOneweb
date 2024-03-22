@@ -125,28 +125,32 @@ export default function FloorPlan({
       }
     }
     
-    const openModalControleIsStop = (DecviceId,values) => {
+    const openModalControleIsStop = (DecviceId,deviceName) => {
       setDeviceId(DecviceId)
       setValues('off')
+      setDeviceName(deviceName)
       setShowModalControle(true);
       
     }
-    const openModalControleIsStart = (DecviceId,values) => {
+    const openModalControleIsStart = (DecviceId,deviceName) => {
       setDeviceId(DecviceId)
       setValues('on')
+      setDeviceName(deviceName)
       setShowModalControle(true);
       
     }
 
-    const openModalAutomationIsStop = (DecviceId,values) => {
+    const openModalAutomationIsStop = (DecviceId,deviceName) => {
       setDeviceId(DecviceId)
       setValues('off')
+      setDeviceName(deviceName)
       setShowModalAutomation(true);
       
     }
-    const openModalAutomationIsStart = (DecviceId,values) => {
+    const openModalAutomationIsStart = (DecviceId,deviceName) => {
       setDeviceId(DecviceId)
       setValues('on')
+      setDeviceName(deviceName)
       setShowModalAutomation(true);
       
     }
@@ -655,8 +659,8 @@ export default function FloorPlan({
                                       }
                                     onClick={() =>
                                       marker.control == "on"
-                                        ? openModalControleIsStop(marker.id)
-                                        : openModalControleIsStart(marker.id)
+                                        ? openModalControleIsStop(marker.id,marker.deviceName)
+                                        : openModalControleIsStart(marker.id,marker.deviceName)
                                     }
                                   >{marker.control}</button></span>
                 </div>
@@ -665,13 +669,13 @@ export default function FloorPlan({
                 </div>
                 <div class="px-3 flex gap-2">
                   <span class="text-gray-700 text-sm " 
-                  >Mode : <span className="text-[#5eead4] underline text-sm" onClick={(event) => onclickOPenSetFan(marker.id, marker.devId,event.preventDefault())}>{marker.mode}</span></span>
+                  >Mode : <span className="text-[#5eead4] underline text-sm" onClick={(event) => onclickOPenSetFan(marker.id, marker.deviceName,event.preventDefault())}>{marker.mode}</span></span>
                 </div>
                 <div class="px-3 flex gap-2">
                   <span class="text-gray-700 text-sm">Automation : </span><div className='toggle-container' onClick={() =>
                                       marker.automation == "on"
-                                        ? openModalAutomationIsStop(marker.id)
-                                        : openModalAutomationIsStart(marker.id)
+                                        ? openModalAutomationIsStop(marker.id,marker.deviceName)
+                                        : openModalAutomationIsStart(marker.id,marker.deviceName)
                                     }>
            <div className={`toggle-btn ${marker.automation=="off" ? "disable" : ""}`}>
                {marker.automation=="on" ? "ON" : "OFF"}
