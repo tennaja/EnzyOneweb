@@ -349,9 +349,9 @@ export default function FloorPlan({
               {AHUlist.length > 0 &&
                 AHUlist.map((marker, index) => {
                   return (
-                    <div>
+                    <div key={marker.id}>
                       <div
-                        key={marker.id}
+                        
                         className={marker.status == "on"
                         ? "bg-[#5eead4] rounded-full px-1 py-1"
                         : marker.status == "offline" ? " bg-red-500 rounded-full px-1 py-1"
@@ -393,9 +393,9 @@ export default function FloorPlan({
               {VSVlist.length > 0 &&
                 VSVlist.map((marker, index) => {
                   return (
-                    <div>
+                    <div key={index}>
                       <div
-                        key={index}
+                        
                         className={marker.status == "on"
                         ? "bg-[#5eead4] rounded-full px-1 py-1"
                         : marker.status == "offline" ? " bg-red-500 rounded-full px-1 py-1"
@@ -450,9 +450,8 @@ export default function FloorPlan({
               {Splittypelist.length > 0 &&
                 Splittypelist.map((marker, index) => {
                   return (
-                    <div>
+                    <div key={marker.id}>
                       <div
-                        key={marker.id}
                         className={marker.control == "on"
                         ? "bg-[#5eead4] rounded-full px-1 py-1"
                         : marker.control == "offline" ? " bg-red-500 rounded-full px-1 py-1"
@@ -507,9 +506,9 @@ export default function FloorPlan({
               {IOTlist.length > 0 &&
                 IOTlist.map((marker, index) => { 
                   return (
-                    <div>
+                    <div key={marker.id}>
                       <div
-                        key={marker.id}
+                        
                         className={marker.status == "on"
                         ? "bg-[#5eead4] rounded-full px-1 py-1"
                         : marker.status == "offline" ? " bg-red-500 rounded-full px-1 py-1"
@@ -567,8 +566,8 @@ export default function FloorPlan({
               Listcontrol.map((marker, index) => {
                 console.log(marker)
                 return (
-                  <div> 
-              <div key={marker.id} class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                  <div key={marker.id}> 
+              <div  class="w-64 bg-white h-auto rounded shadow-md pb-6">
                 <div class="font-bold text-lg text-center py-2">{marker.deviceName}</div>
                 <div class="px-3">
                   <span class="text-gray-700 text-sm">Supply Temp. (°C) : {marker.temp}</span>
@@ -588,8 +587,8 @@ export default function FloorPlan({
                 Listcontrol.map((marker, index) => {
                   console.log(marker)
                   return (
-                    <div> 
-              <div key={marker.id} class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                    <div key={marker.id}> 
+              <div  class="w-64 bg-white h-auto rounded shadow-md pb-6">
                 <div class="font-bold text-lg text-center py-2">
                 {marker.deviceName}
                 </div>
@@ -625,8 +624,8 @@ export default function FloorPlan({
                 Listcontrol.map((marker, index) => {
                   console.log(marker)
                   return (
-              <div>     
-              <div key={marker.id} class="w-64 bg-white h-auto rounded shadow-md pb-6">
+              <div key={marker.id}>     
+              <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
                 <div class="font-bold text-lg text-center py-2">
                 {marker.deviceName}
                 </div>
