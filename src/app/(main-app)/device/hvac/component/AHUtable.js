@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Highlighter from "react-highlight-words";
 import Link from "next/link";
 import {
-  ChangeValueSettempAHU
+  ChangeValueSettempAHU,ChangeAutomationAHU
 } from "@/utils/api";
 import Loading from "./Loading";
 
@@ -17,6 +17,7 @@ export default function AHUtable(AHUlist) {
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
+  const [showModalAutomation, setShowModalAutomation] = useState(false);
   
 
   const notifySuccess = () =>
@@ -44,6 +45,7 @@ export default function AHUtable(AHUlist) {
     setOpenSettempModal(false)
     setModalError(false)
     setDeviceId(null);
+    setShowModalAutomation(false)
     // setShowModalStop(false);
     // setShowModalStart(false);
 };
@@ -63,6 +65,42 @@ const handleChangeValueSettemp = async () => {
     closeModal();
     setLoading(false);
     setModalError(true)
+  }
+}
+const openModalAutomationIsStop = (DecviceId,values) => {
+  setDeviceId(DecviceId)
+  setValues('off')
+  setShowModalAutomation(true);
+  
+}
+const openModalAutomationIsStart = (DecviceId,values) => {
+  setDeviceId(DecviceId)
+  setValues('on')
+  setShowModalAutomation(true);
+  
+}
+async function clickChangestatusAutomation() {
+  setLoading(true);
+  const res = await ChangeAutomationAHU(DecviceId, Values);
+  if (res.status === 200) {
+    console.log(res.data)
+    setAlertTitle(res.data.title);
+    setAlertmessage(res.data.message);
+    closeModal();
+    setLoading(false);
+    notifySuccess();
+  } else if (res.response.status === 401) {
+    setAlertTitle(res.response.data.title);
+    setAlertmessage(res.response.data.message);
+    closeModal();
+    setLoading(false);
+    
+  }
+  else if (res.response.status === 500) {
+    setAlertTitle(res.response.data.title);
+    setAlertmessage(res.response.data.message);
+    closeModal();
+    setLoading(false);
   }
 }
   return (
@@ -113,6 +151,9 @@ const handleChangeValueSettemp = async () => {
                   </th>
                   <th scope="col" className="px-6 py-4 text-center">
                     Control Valve (%)
+                  </th>
+                  <th scope="col" className="px-6 py-4 text-center">
+                  Automation
                   </th>
                 </tr>
               </thead>
@@ -178,15 +219,15 @@ const handleChangeValueSettemp = async () => {
                                   />
                         
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
-                        <Link href="/device/hvac" onClick={(event) => onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,event.preventDefault())}>
+                        <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold" onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,event.preventDefault()) : null}>
+                       
                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
                                   />
-                          </Link>
+                          
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                         <Highlighter
@@ -233,6 +274,23 @@ const handleChangeValueSettemp = async () => {
                                   />
                           
                         </td>
+                        <td className="whitespace-nowrap px-6 py-4 flex justify-center items-center font-extrabold">
+                                
+                               
+
+       
+                                <div className='toggle-container' onClick={() =>
+                                item.status == "on" ?
+                                item.automation == "on"
+                                    ? openModalAutomationIsStop(item.id)
+                                    : openModalAutomationIsStart(item.id)
+                                 :  null }>
+                                    <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
+                                        {item.automation=="on" ? "ON" : "OFF"}
+                                    </div>
+                                </div>
+                         
+                                                       </td>
                         
                       </tr>
                     );
@@ -298,6 +356,34 @@ const handleChangeValueSettemp = async () => {
                     onClick={() => closeModal()}
                   >
                     Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalAutomation  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device start {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusAutomation()}
+                  >
+                    confirm
                   </button>
                 </div>
               </div>

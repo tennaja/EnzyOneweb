@@ -12,7 +12,10 @@ import {
   } from "chart.js";
   import { Line } from "react-chartjs-2";
   import zoomPlugin from "chartjs-plugin-zoom";
-  
+  import { getSplittypeGraph } from "@/utils/api";
+import { DatePicker, Radio } from "antd";
+import moment from "moment";
+const { MonthPicker, RangePicker } = DatePicker;
   ChartJS.register(
     zoomPlugin,
     CategoryScale,
@@ -23,7 +26,33 @@ import {
     Tooltip,
     Legend,
   );
-export default function ChartSplittype({power,temp,roomtemp,external,label}) {
+export default function ChartSplittype({FloorId}) {
+  const [floorId, setFloorId] = useState();
+  const [chartListSplittype1, setChartListSplittype1] = useState([]);
+  const [chartListSplittype2, setChartListSplittype2] = useState([]);
+  const [chartListSplittype3, setChartListSplittype3] = useState([]);
+  const [chartListSplittype4, setChartListSplittype4] = useState([]);
+  const [ListLabelSplittype, setListLabelSplittype] = useState([0]);
+  const [dateFrom, setdateFrom] = useState(new Date());
+  const [dateTo, setdateTo] = useState(new Date());
+
+  useEffect(() => {
+    if (FloorId != 0) {
+        GetSplittypeGraph(FloorId, formatDate(new Date()), formatDate(new Date()));
+    }
+  }, [FloorId]);
+
+  const formatDate = (date) => {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  };
     const zoomOptions = {
         pan: {
             enabled: true,
@@ -112,11 +141,57 @@ export default function ChartSplittype({power,temp,roomtemp,external,label}) {
         var randomColor = Math.floor(Math.random() * 16777215).toString(16);
         return "#" + randomColor;
     };
+
+    async function GetSplittypeGraph(floorId, dateFrom, dateTo) {
+        setFloorId(floorId);
+        const paramsNav = {
+          floorId: floorId,
+          dateFrom: dateFrom,
+          dateTo: dateTo,
+        };
+        const res = await getSplittypeGraph(paramsNav);
+        console.log(paramsNav);
+        if (res.status === 200) {
+          if (res.data.power.length > 0) {
+            setChartListSplittype1(res.data.power);
+            let label = [];
+            let modday = 0;
+            console.log(res.data.power);
+            for (let j = 0; j < res.data.power[0].data.length; j++) {
+              label.push(res.data.power[0].data[j].time);
+            }
+            setListLabelSplittype(label);
+            // console.log(label);
+          }
+          if (res.data.temp.length > 0) {
+            setChartListSplittype2(res.data.temp);
+            let label = [];
+            let modday = 0;
+            console.log(res.data.temp);
+          }
+          if (res.data.roomTemp.length > 0) {
+            setChartListSplittype3(res.data.roomTemp);
+            let label = [];
+            let modday = 0;
+            console.log(res.data.roomTemp);
+          }
+          if (res.data.external.length > 0) {
+            setChartListSplittype4(res.data.external);
+            let label = [];
+            let modday = 0;
+            console.log(res.data.external);
+          }
+        }
+      }
+      function onChangeDay(date, dateString) {
+        console.log(dateString);
+        GetSplittypeGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
+      }
     return (
         <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
             <div className="flex flex-col gap-4 p-2">
-                <div className="flex justify-between">
-                    <span className="text-lg  font-bold">Graph Split Type</span>
+                <div className="flex gap-4">
+                <RangePicker onChange={onChangeDay} />
                     <button
               className="border border-slate-300 rounded-md h-9 px-2"
               onClick={onResetZoom}
@@ -131,9 +206,9 @@ export default function ChartSplittype({power,temp,roomtemp,external,label}) {
                     {(typeof window !== 'undefined') &&
                         <Line
                             data={{
-                                labels: label,
+                                labels: ListLabelSplittype,
                                 datasets: [
-                                    ...power.map((item) => {
+                                    ...chartListSplittype1.map((item) => {
                                         return {
                                             label: "Power "+item.deviceName,
                                             data: item.data.map((data) => {
@@ -148,7 +223,7 @@ export default function ChartSplittype({power,temp,roomtemp,external,label}) {
                                     }),
 
 
-                                    ...temp.map((item) => {
+                                    ...chartListSplittype2.map((item) => {
 
                                         return {
                                             label: "Temp "+item.deviceName,
@@ -165,7 +240,7 @@ export default function ChartSplittype({power,temp,roomtemp,external,label}) {
                                         }
                                     }),
 
-                                    ...roomtemp.map((item) => {
+                                    ...chartListSplittype3.map((item) => {
 
                                         return {
                                             label: "Room Temp "+item.deviceName,
@@ -182,7 +257,7 @@ export default function ChartSplittype({power,temp,roomtemp,external,label}) {
                                         }
                                     }),
 
-                                    ...external.map((item) => {
+                                    ...chartListSplittype4.map((item) => {
 
                                         return {
                                             label: "External "+item.deviceName,

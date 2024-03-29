@@ -79,23 +79,23 @@ body {
 
 .bottom-arrow {
   border: 1px ;
-  border-radius: 3px;
   margin-top: -10px;
   margin-left: 15px;
   position: relative;
+  border-style: solid;
   border-color: black;
 }
 .bottom-arrow:after {
   content: "";
   display: block;
   position: absolute;
-  
   width: 10px;
   height: 10px;
   top: 10px;
   left: -5px;
   background: inherit;
-
+  border-style: solid;
+  border-color: black;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);

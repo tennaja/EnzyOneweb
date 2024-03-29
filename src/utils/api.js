@@ -359,6 +359,27 @@ export async function ChangeControlSplittype (devId,value) {
 
 export async function ChangeAutomationSplittype (devId,value) {
   try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/split-type/automation`;
+    let res = await axios.post(
+      url,
+      {
+        devId : devId,
+        value : value,
+        
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+export async function ChangeAutomationAHU (devId,value) {
+  try {
     let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/hvac/ahu/automation`;
     let res = await axios.post(
       url,

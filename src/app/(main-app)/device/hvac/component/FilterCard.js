@@ -49,13 +49,13 @@ export default function FilterCard() {
 
   useEffect(() => {
     getBranchList();
-    GetAHUGraph();
-    GetSplittypeGraph();
   }, []);
 
   useEffect(() => {
     if (isFirst && floorId != 0) {
       onSearchData();
+      // GetAHUGraph(floorId);
+      // GetSplittypeGraph(floorId);
     }
   }, [floorId]);
 
@@ -97,44 +97,44 @@ export default function FilterCard() {
     // getTableAirCompressorList(result.data[0].Id)
   };
 
-  async function GetAHUGraph(floorId, dateFrom, dateTo) {
-    // setLoadingGraph(true);
-    const paramsNav = {
-      floorId: floorId,
-      dateFrom: "2024-02-02",
-      dateTo: "2024-02-02",
-    };
-    const res = await getAHUGraph(paramsNav);
-    console.log(paramsNav);
-    if (res.status === 200) {
-      if (res.data.controlValve.length > 0) {
-        setChartListAHU1(res.data.controlValve);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.controlValve);
-        for (let j = 0; j < res.data.controlValve[0].data.length; j++) {
-          label.push(res.data.controlValve[0].data[j].time);
-        }
-        setListLabelAHU(label);
-        // console.log(label);
-      }
-      if (res.data.supplyTemp.length > 0) {
-        setChartListAHU2(res.data.supplyTemp);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.supplyTemp);
-      }
-      if (res.data.returnTemp.length > 0) {
-        setChartListAHU3(res.data.returnTemp);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.returnTemp);
-      }
-    }
-  }
+  // async function GetAHUGraph(floorId, dateFrom, dateTo) {
+  //   setFloorId(floorId);
+  //   const paramsNav = {
+  //     floorId: floorId,
+  //     dateFrom: "2024-02-02",
+  //     dateTo: "2024-02-02",
+  //   };
+  //   const res = await getAHUGraph(paramsNav);
+  //   console.log(paramsNav);
+  //   if (res.status === 200) {
+  //     if (res.data.controlValve.length > 0) {
+  //       setChartListAHU1(res.data.controlValve);
+  //       let label = [];
+  //       let modday = 0;
+  //       console.log(res.data.controlValve);
+  //       for (let j = 0; j < res.data.controlValve[0].data.length; j++) {
+  //         label.push(res.data.controlValve[0].data[j].time);
+  //       }
+  //       setListLabelAHU(label);
+  //       // console.log(label);
+  //     }
+  //     if (res.data.supplyTemp.length > 0) {
+  //       setChartListAHU2(res.data.supplyTemp);
+  //       let label = [];
+  //       let modday = 0;
+  //       console.log(res.data.supplyTemp);
+  //     }
+  //     if (res.data.returnTemp.length > 0) {
+  //       setChartListAHU3(res.data.returnTemp);
+  //       let label = [];
+  //       let modday = 0;
+  //       console.log(res.data.returnTemp);
+  //     }
+  //   }
+  // }
 
   async function GetSplittypeGraph(floorId, dateFrom, dateTo) {
-    // setLoadingGraph(true);
+    setFloorId(floorId);
     const paramsNav = {
       floorId: floorId,
       dateFrom: "2024-02-02",
@@ -189,6 +189,8 @@ export default function FilterCard() {
     getVAVList(floorId);
     getSplittypeList(floorId);
     getIOTList(floorId);
+    // GetAHUGraph(floorId)
+    GetSplittypeGraph(floorId)
   };
 
   const getAHUList = async (floorId) => {
@@ -296,7 +298,7 @@ export default function FilterCard() {
                 type="button"
                 className="text-white bg-[#14b8a6] rounded-md text-lg px-10 h-9 mt-3 
                 "
-                onClick={GetAHUGraph}
+                onClick={onSearchData}
               >
                 เลือก
               </button>
@@ -305,29 +307,39 @@ export default function FilterCard() {
         </div>
         {floorplanList.id}
       </div>
-      <FloorPlan Data={floorplanList}
-        AHUlist={AHUList}
-        VSVlist={VAVList}
-        Splittypelist = {SplittypeList}
-        IOTlist = {IOTList}
+      <FloorPlan
+      FloorId= {floorId}
+        // Data={floorplanList}
+        // AHUlist={AHUList}
+        // VSVlist={VAVList}
+        // Splittypelist = {SplittypeList}
+        // IOTlist = {IOTList}
       />
       <AHUtable AHUlist={AHUList} />
       <VAVtable VAVList={VAVList} />
-      <SplitTypetable SplittypeList={SplittypeList} />
       <SmartIRtable IotList={IOTList} />
+      <SplitTypetable SplittypeList={SplittypeList} />
+      <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
+      <div className="flex flex-col gap-4 p-2">
+      <span className="text-lg  font-bold">Graph AHU</span>
       <ChartAHU
-        chartControle={chartListAHU1}
-        chartSupplytemp={chartListAHU2}
-        returntemp={chartListAHU3}
-        label={ListLabelAHU}
-      />
+      FloorId= {floorId}
+        // chartControle={chartListAHU1}
+        // chartSupplytemp={chartListAHU2}
+        // returntemp={chartListAHU3}
+        // label={ListLabelAHU}
+      /></div></div>
+      <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
+            <div className="flex flex-col gap-4 p-2">
+            <span className="text-lg  font-bold">Graph Split Type</span>
       <ChartSplittype
-        power={chartListSplittype1}
-        temp={chartListSplittype2}
-        roomtemp={chartListSplittype3}
-        external={chartListSplittype4}
-        label={ListLabelSplittype}
-      />
+      FloorId= {floorId}
+        // power={chartListSplittype1}
+        // temp={chartListSplittype2}                                 
+        // roomtemp={chartListSplittype3}
+        // external={chartListSplittype4}
+        // label={ListLabelSplittype}
+      /></div></div>
     </div>
   );
 }

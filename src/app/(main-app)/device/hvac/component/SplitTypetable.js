@@ -309,7 +309,7 @@ export default function SplitTypetable(SplittypeList) {
                                   item.status == "on"
                                     ? "whitespace-nowrap px-6 py-4 text-center text-green-500 font-extrabold"
                                     : item.status == "offline" ? "whitespace-nowrap px-6 py-4 text-center text-red-500 font-extrabold"
-                                    : "whitespace-nowrap px-6 py-4 text-center text-gray-500 font-extrabold"
+                                    : "whitespace-nowrap px-6 py-4 text-center text-gray-500 font-extrabold "
                                 }
                               >
                                 <Highlighter
@@ -341,19 +341,19 @@ export default function SplitTypetable(SplittypeList) {
                                 />
 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
-                                <Link href="/device/hvac" onClick={(event) => onclickOPenSettemp(item.id, item.deviceName, item.setTemp ,event.preventDefault())}>
+                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold" onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.setTemp ,event.preventDefault()) : null}>
+                                
                                 <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={String(item.setTemp)} // Replace this with your text
                                   
-                                /></Link>
+                                />
 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
-                              <Link href="/device/hvac" onClick={(event) => onclickOPenSetMode(item.id, item.deviceName,event.preventDefault())}>
+                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold"onClick={(event) => item.status == "on" ? onclickOPenSetMode(item.id, item.deviceName,event.preventDefault()) : null}>
+                              
                                 <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
@@ -361,18 +361,18 @@ export default function SplitTypetable(SplittypeList) {
                                   textToHighlight={item.fan} // Replace this with your text
                                  
                                 />
-                                </Link>
+                                
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold">
+                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id, item.deviceName,event.preventDefault()) : null}>
                         
-                                <Link href="/device/hvac" onClick={(event) => onclickOPenSetFan(item.id, item.deviceName,event.preventDefault())}>
+                                
                                 <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={item.mode} // Replace this with your text
                                 />
-                                </Link>
+                                
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center">
                                
@@ -382,12 +382,12 @@ export default function SplitTypetable(SplittypeList) {
                                       item.control == "on"
                                         ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
                                         : item.control == "off"  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                        : "text-white bg-red-500 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
                                       }
                                     onClick={() =>
                                       item.control == "on"
                                         ? openModalControleIsStop(item.id)
-                                        : openModalControleIsStart(item.id)
+                                        : item.control == "off" ? openModalControleIsStart(item.id) : null
                                     }
                                   >
                                     <Highlighter
@@ -400,19 +400,15 @@ export default function SplitTypetable(SplittypeList) {
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 flex justify-center items-center font-extrabold">
                                 
-                                {/* <Highlighter
-                                  highlightClassName="highlight" // Define your custom highlight class
-                                  searchWords={[searchTable]}
-                                  autoEscape={true}
-                                  textToHighlight={String(item.automation)} // Replace this with your text
-                                /> */}
+                               
 
        
        <div className='toggle-container' onClick={() =>
-                                      item.automation == "on"
-                                        ? openModalAutomationIsStop(item.id)
-                                        : openModalAutomationIsStart(item.id)
-                                    }>
+       item.status == "on" ?
+       item.automation == "on"
+           ? openModalAutomationIsStop(item.id)
+           : openModalAutomationIsStart(item.id)
+        :  null }>
            <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
                {item.automation=="on" ? "ON" : "OFF"}
            </div>

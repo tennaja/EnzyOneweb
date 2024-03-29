@@ -9,14 +9,16 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   ChangestatusIsOff,
   ChangestatusIsOn,
   getHistoricalGraph,
-  getBranch
+  getBranch,
+  getBulding,
+  getFloor,
 } from "@/utils/api";
 
 import {
@@ -40,45 +42,47 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 );
 
-// import ModalStart from "./ModalStart";
-
 export default function SummaryCard() {
-  
-  
-  const notifySuccess = () => toast.success(`Operation Complete
-  `, {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    });
+  //toast notify
+  const notifySuccess = () =>
+    toast.success(
+      `Operation Complete
+  `,
+      {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
 
-  
+  //funtion Zoom graph
   const zoomOptions = {
     pan: {
       enabled: true,
-      mode: 'x',
-      modifierKey: 'ctrl',
+      mode: "x",
+      modifierKey: "ctrl",
     },
     zoom: {
       drag: {
-        enabled: true
+        enabled: true,
       },
-      
-      mode: 'x',
+
+      mode: "x",
     },
-    
   };
+
+  // Option Graph
   const options = {
-    aspectRatio: 4, 
-    
+    aspectRatio: 4,
+
     interaction: {
       mode: "index",
       intersect: false,
@@ -102,21 +106,21 @@ export default function SummaryCard() {
         },
       },
       y: {
-        
-            min: 0,
-            ticks: {
-            stepSize: 0.01
-            },
+        min: 0,
+        ticks: {
+          stepSize: 0.01,
+        },
         display: true,
         grid: {
           drawOnChartArea: true, // only want the grid lines for one axis to show up
         },
-        
       },
     },
   };
+
   const chartRef = useRef(null);
 
+  //reset zoom graph
   const onResetZoom = () => {
     chartRef.current.resetZoom();
   };
@@ -147,10 +151,20 @@ export default function SummaryCard() {
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
-  const [Color,setColor] = useState();
-  
-  const colors =[
-    '#278BE1','#05B8AA','#E84F6E','#F8872B','#FEBB20','#9071CC','#00998F','#C14233','#00C2E','#345381']
+  const [Color, setColor] = useState();
+
+  const colors = [
+    "#278BE1",
+    "#05B8AA",
+    "#E84F6E",
+    "#F8872B",
+    "#FEBB20",
+    "#9071CC",
+    "#00998F",
+    "#C14233",
+    "#00C2E",
+    "#345381",
+  ];
 
   const toggleShowPassword = () => {
     setIsShowPassword(!isShowPassword);
@@ -160,8 +174,6 @@ export default function SummaryCard() {
   // const password = useSelector((state) => state.userData.password);
   useEffect(() => {
     getBranchList();
-    
-
     // OnListChange();
   }, []);
 
@@ -178,57 +190,44 @@ export default function SummaryCard() {
   }, [floorId, listChange]);
 
   const OnListChange = async (event) => {
-  setListChange(event)
-  console.log(listChange)
-  console.log(event);
+    setListChange(event);
     if (typedate == "day") {
-      onChangeDay(startDate,event);
-      console.log(startDate);
+      onChangeDay(startDate, event);
     } else if (typedate == "month") {
-      
-      onChangeMonth(startDate,event);
-      console.log(startDate);
+      onChangeMonth(startDate, event);
     } else if (typedate == "year") {
-     
-      onChangeYear(startDate,event);
-      console.log(startDate);
+      onChangeYear(startDate, event);
     }
-    
-    
   };
 
   useEffect(() => {
     if (typedate == "day") {
       onChangeDay(startDate);
-      console.log(startDate);
     } else if (typedate == "month") {
       onChangeMonth(startDate);
-      console.log(startDate);
     } else if (typedate == "year") {
       onChangeYear(startDate);
-      console.log(startDate);
     }
   }, [typedate]);
 
-
+  //type Date Change
   const OnListtypeDateChange = async (event) => {
     setTypeDate(event);
-    console.log(typedate)
   };
 
-  //เปิด popup เพื่อสั่ง Start
+  //Open popup for Start
   const openModalIsStart = (DecviceId) => {
     setShowModalStart(true);
     setDeviceId(DecviceId);
   };
 
-  //เปิด popup เพื่อสั่ง Stop
+  //Open popup for Stop
   const openModalIsStop = (DecviceId) => {
     setShowModalStop(true);
     setDeviceId(DecviceId);
   };
 
-  //ปิด popup
+  //Close popup
   const closeModal = () => {
     setShowModalStart(false);
     setShowModalStop(false);
@@ -242,13 +241,10 @@ export default function SummaryCard() {
     return "#" + randomColor;
   };
 
-  
-
-  //สาขา
+  //Get Branch
   const getBranchList = async () => {
+    const result = await getBranch(companyData);
 
-    const result = await getBranch(companyData)
-    console.log(result)
     if (result.data.length != 0) {
       setBranchList(result.data);
 
@@ -257,54 +253,49 @@ export default function SummaryCard() {
     }
   };
 
-  //อาคาร
+  //Get Building
   const getBuldingList = async (branchId) => {
     setBranchId(branchId);
-    const result = await axios.get(
-      "https://enzy.egat.co.th/api/building-list/" + branchId
-    );
-
-    setBuildingList(result.data);
-    setBuildingId(result.data[0].Id);
-    console.log(buildingId)
-    getFloorLit(result.data[0].Id);
+    const result = await getBulding(branchId);
+    if (result.data.length != 0) {
+      setBuildingList(result.data);
+      setBuildingId(result.data[0].Id);
+      getFloorLit(result.data[0].Id);
+    }
   };
-  //ชั้น
+  //Get Floor
   const getFloorLit = async (buildingId) => {
     setBuildingId(buildingId);
-    const result = await axios.get(
-      "https://enzy.egat.co.th/api/floor-list/" + buildingId
-    );
-
+    const result = await getFloor(buildingId);
     if (result.data.length != 0) {
       setFloorList(result.data);
       setFloorId(result.data[0].Id);
-      console.log(floorId)    
     }
-    // getTableAirCompressorList(result.data[0].Id)
   };
 
+  // input username
   const onChangeUsername = (event) => {
     setUsername(event);
-    console.log(event);
-  };
-  const onChangePassword = (event) => {
-    setPassword(event);
-    console.log(event);
   };
 
+  // input password
+  const onChangePassword = (event) => {
+    setPassword(event);
+  };
+
+  //
   const onTableChange = async (floorId) => {
     setFloorId(floorId);
   };
 
-  //ข้อมูลในตาราง
+  //Deatail in table
   const onSearchTable = async () => {
     setFloorId(floorId);
     const result = await axios.get(
       "https://enzy.egat.co.th/api/device-management/air-compressor/list/" +
         floorId
     );
-    console.log(floorId)
+
     GetHitoricalGraph(
       floorId,
       listChange,
@@ -316,85 +307,74 @@ export default function SummaryCard() {
     setIsFirst(false);
   };
 
-  //คลิกปิด
- const clickChangestatusStop = async () => {
+  //click is off
+  const clickChangestatusStop = async () => {
     setLoading(true);
     const res = await ChangestatusIsOff(DecviceId, username, password);
     if (res.status === 200) {
-      console.log(res.data);
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
       notifySuccess();
       onSearchTable();
       closeModal();
-      setUsername("")
-      setPassword("")
+      setUsername("");
+      setPassword("");
       setLoading(false);
-      
-    } else if (res.response.status === 401){
-      console.log(res.response);
+    } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
       closeModal();
-      setUsername("")
-      setPassword("")
+      setUsername("");
+      setPassword("");
       setLoading(false);
       setShowModalError(true);
-    }
-    else if (res.response.status === 500){
-      console.log(res.response);
+    } else if (res.response.status === 500) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
       closeModal();
-      setUsername("")
-      setPassword("")
+      setUsername("");
+      setPassword("");
       setLoading(false);
       setShowModalError(true);
     }
-  }
-  
+  };
 
-  //คลิกเพื่อเปิด
+  //Click ss on
   async function clickChangestatusStart() {
     setLoading(true);
     const res = await ChangestatusIsOn(DecviceId, username, password);
     if (res.status === 200) {
-      console.log(res.data);
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
       onSearchTable();
       notifySuccess();
       closeModal();
-      setUsername("")
-      setPassword("")
+      setUsername("");
+      setPassword("");
       setLoading(false);
-      
-    } else if (res.response.status === 401){
-      console.log(res.response);
+    } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
       closeModal();
-      setUsername("")
-      setPassword("")
+      setUsername("");
+      setPassword("");
       setLoading(false);
       setShowModalError(true);
-    }
-    else if (res.response.status === 500){
-      console.log(res.response);
+    } else if (res.response.status === 500) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
       closeModal();
-      setUsername("")
-      setPassword("")
+      setUsername("");
+      setPassword("");
       setLoading(false);
       setShowModalError(true);
     }
   }
 
-  //กราฟ
+  //Graph
   async function GetHitoricalGraph(floorId, listChange, dateFrom, dateTo) {
     setLoadingGraph(true);
-    console.log(listChange);
+
     const paramsNav = {
       floorId: floorId,
       unit: listChange,
@@ -403,16 +383,11 @@ export default function SummaryCard() {
     };
     const res = await getHistoricalGraph(paramsNav);
     if (res.status === 200) {
-      if (res.data.length > 0){
-        console.log(res.data)
+      if (res.data.length > 0) {
         setChartList(res.data);
-        
-          
-        
         let label = [];
         let modday = 0;
-        console.log(res.data);
-        console.log("🚀 ~ GetHitoricalGraph ~ typedate:", typedate);
+
         // if (typedate == "day") {
         //   modday = 30;
         // } else if (typedate == "month") {
@@ -426,33 +401,29 @@ export default function SummaryCard() {
           label.push(res.data[0].data[j].time);
           // }
         }
-  
+
         setListLabel(label);
-        
       } else {
-        setChartList([])
-        setListLabel([])
+        setChartList([]);
+        setListLabel([]);
       }
-      
+
       setLoadingGraph(false);
     } else {
       setErrorMsg("error");
-      console.log(errorMsg);
     }
   }
 
-  //Dropdown Month
-  const onChangeMonth = (date,event) => {
-    
+  //Datepicker Month
+  const onChangeMonth = (date, event) => {
     setStartDate(date);
     let Month = date.getMonth();
-    console.log(Month);
+
     let Year = date.getFullYear();
-    console.log(Year);
+
     let startDate = new Date(Year, Month, 1);
     let endDate = new Date(Year, Month + 1, 0);
-    console.log(startDate);
-    console.log(endDate);
+
     GetHitoricalGraph(
       floorId,
       event,
@@ -461,12 +432,11 @@ export default function SummaryCard() {
     );
   };
 
-  //Drpdown Year
-  const onChangeYear = (date,event) => {
-    
+  //Datepicker Year
+  const onChangeYear = (date, event) => {
     setStartDate(date);
     let Year = date.getFullYear();
-    console.log(Year);
+
     let startDate = new Date(Year, 0, 1);
     let endDate = new Date(Year, 12, 0);
     GetHitoricalGraph(
@@ -477,16 +447,16 @@ export default function SummaryCard() {
     );
   };
 
-  const onChangeDay = (date,event) => {
-    
-    console.log(date);
+  //Datpicker Day
+  const onChangeDay = (date, event) => {
     setStartDate(date);
     let Month = date.getMonth();
     let Year = date.getFullYear();
     let day = date.getDate();
-    console.log(day);
+
     let startDate = new Date(Year, Month, day);
-    console.log(listChange);
+
+    //HistoricalGraph
     GetHitoricalGraph(
       floorId,
       event,
@@ -495,6 +465,7 @@ export default function SummaryCard() {
     );
   };
 
+  //FormatDate
   const formatDate = (date) => {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -509,7 +480,6 @@ export default function SummaryCard() {
 
   return (
     <div>
-      
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
         <div className="flex flex-col gap-4 p-2">
           <span className="text-lg  font-bold">Air Compressor</span>
@@ -548,6 +518,7 @@ export default function SummaryCard() {
                     value={buildingId}
                   >
                     {buildingList.map((item) => {
+                      
                       return (
                         <option key={item.id} Value={item.Id}>
                           {item.Name}
@@ -568,7 +539,6 @@ export default function SummaryCard() {
                     }}
                     value={floorId}
                   >
-                  
                     {floorList.map((item) => {
                       return (
                         <option key={item.id} Value={item.Id}>
@@ -640,11 +610,6 @@ export default function SummaryCard() {
                       {tableList.length > 0 &&
                         tableList
                           .filter((item) => {
-                            // let data = []
-                            //  if (item.power.toString().includes(searchTable)){
-                            //   data = item
-                            // }
-                            // console.log(data)
                             return (
                               item.name.includes(searchTable) ||
                               item.name.toLowerCase().includes(searchTable) ||
@@ -662,10 +627,7 @@ export default function SummaryCard() {
                                 className="border-b dark:border-neutral-500"
                                 key={index}
                               >
-                                <td
-                                  className="whitespace-nowrap px-6 py-4 font-extrabold"
-                                  
-                                >
+                                <td className="whitespace-nowrap px-6 py-4 font-extrabold">
                                   {/* {getHighlightedText(item.name,searchTable)} */}
                                   <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
@@ -752,7 +714,7 @@ export default function SummaryCard() {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mt-5">
-                Are you sure?
+                  Are you sure?
                 </h3>
                 <div className="flex gap-5 justify-center items-center mt-5 ">
                   <span>Are you sure to control this device?</span>
@@ -771,24 +733,23 @@ export default function SummaryCard() {
                 <div className="flex justify-center gap-5 items-center mt-5 px-1 ml-12">
                   <p className="text-gray-900">Password : </p>
                   <input
-                  type={isShowPassword ? "text" : "password"}
-                  placeholder="********"
-                    
+                    type={isShowPassword ? "text" : "password"}
+                    placeholder="********"
                     className="border border-slate-300 rounded-md h-9 px-2 ml-2"
                     onChange={(e) => {
                       onChangePassword(e.target.value);
                     }}
                   />
-                   <div
-                      onClick={toggleShowPassword}
-                      className="flex mr-2 w-6 h-6 items-center justify-center hover:bg-"
-                    >
-                      {isShowPassword ? (
-                        <EyeSlashIcon className="w-4 h-4" />
-                      ) : (
-                        <EyeIcon className="w-4 h-4" />
-                      )}
-                    </div>
+                  <div
+                    onClick={toggleShowPassword}
+                    className="flex mr-2 w-6 h-6 items-center justify-center hover:bg-"
+                  >
+                    {isShowPassword ? (
+                      <EyeSlashIcon className="w-4 h-4" />
+                    ) : (
+                      <EyeIcon className="w-4 h-4" />
+                    )}
+                  </div>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
                   <button
@@ -809,65 +770,64 @@ export default function SummaryCard() {
           </div>
         ) : null}
         {showModalStart ? (
-         <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-         <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-           <div className="text-center">
-             <h3 className="text-2xl font-bold text-gray-900 mt-5">
-             Are you sure?
-             </h3>
-             <div className="flex gap-5 justify-center items-center mt-5 ">
-               <span>Are you sure to control this device?</span>
-             </div>
-             <div className="flex gap-5 justify-center items-center mt-5 ">
-               <p className="text-gray-900">Username : </p>
-               <input
-                 type="text"
-                 placeholder="Enter your username"
-                 className="border border-slate-300 rounded-md h-9 px-2"
-                 onChange={(e) => {
-                   onChangeUsername(e.target.value);
-                 }}
-               />
-             </div>
-             <div className="flex justify-center gap-5 items-center mt-5 px-1 ml-12">
-               <p className="text-gray-900">Password : </p>
-               <input
-               type={isShowPassword ? "text" : "password"}
-               placeholder="********"
-                 
-                 className="border border-slate-300 rounded-md h-9 px-2 ml-2"
-                 onChange={(e) => {
-                   onChangePassword(e.target.value);
-                 }}
-               />
-                <div
-                   onClick={toggleShowPassword}
-                   className="flex mr-2 w-6 h-6 items-center justify-center hover:bg-"
-                 >
-                   {isShowPassword ? (
-                     <EyeSlashIcon className="w-4 h-4" />
-                   ) : (
-                     <EyeIcon className="w-4 h-4" />
-                   )}
-                 </div>
-             </div>
-             <div className="flex justify-center mt-10 gap-5">
-               <button
-                 className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                 onClick={() => closeModal()}
-               >
-                 cancel
-               </button>
-               <button
-                 className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                 onClick={() => clickChangestatusStart()}
-               >
-                 confirm
-               </button>
-             </div>
-           </div>
-         </div>
-       </div>
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure?
+                </h3>
+                <div className="flex gap-5 justify-center items-center mt-5 ">
+                  <span>Are you sure to control this device?</span>
+                </div>
+                <div className="flex gap-5 justify-center items-center mt-5 ">
+                  <p className="text-gray-900">Username : </p>
+                  <input
+                    type="text"
+                    placeholder="Enter your username"
+                    className="border border-slate-300 rounded-md h-9 px-2"
+                    onChange={(e) => {
+                      onChangeUsername(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="flex justify-center gap-5 items-center mt-5 px-1 ml-12">
+                  <p className="text-gray-900">Password : </p>
+                  <input
+                    type={isShowPassword ? "text" : "password"}
+                    placeholder="********"
+                    className="border border-slate-300 rounded-md h-9 px-2 ml-2"
+                    onChange={(e) => {
+                      onChangePassword(e.target.value);
+                    }}
+                  />
+                  <div
+                    onClick={toggleShowPassword}
+                    className="flex mr-2 w-6 h-6 items-center justify-center hover:bg-"
+                  >
+                    {isShowPassword ? (
+                      <EyeSlashIcon className="w-4 h-4" />
+                    ) : (
+                      <EyeIcon className="w-4 h-4" />
+                    )}
+                  </div>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusStart()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         ) : null}
         {loading ? (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
@@ -914,7 +874,6 @@ export default function SummaryCard() {
                     Close
                   </button>
                   {/* <ToastContainer /> */}
-                  
                 </div>
               </div>
             </div>
@@ -923,12 +882,11 @@ export default function SummaryCard() {
       </div>
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5 ">
         <div className="flex flex-col gap-4 p-2">
-          <div className="flex justify-between "> 
+          <div className="flex justify-between ">
             <span className="text-lg  font-bold">Historical</span>
             <select
               className="w-44 border border-slate-300 mx-2 rounded-md h-9"
               onChange={(event) => OnListChange(event.target.value)}
-              
               value={listChange}
             >
               <option value="barg">Pressure (barg)</option>
@@ -1016,34 +974,31 @@ export default function SummaryCard() {
                 </span>
               )}
             </div>
-            
-            {(typeof window !== 'undefined') && 
-            <Line 
-              data={{
-                labels: ListLabel,
-                datasets: chartList.map((item) => {
-                  return {
-                    label: item.name,
-                    data: item.data.map((data) => {
-                      return data.value;
-                    }),
-                    borderColor: chartList.map((item,index) => {
-                      const colorIndex = index % colors.length;
-                      const color = colors[colorIndex];
-                      console.log(color)
-                      return color
-                      
-                    }),
-                    fill: false,
-                    tension: 0,
-                    
-                  };
-                }),
-              }}
-              ref={chartRef}
-              options={options}
-            />}
-            
+
+            {typeof window !== "undefined" && (
+              <Line
+                data={{
+                  labels: ListLabel,
+                  datasets: chartList.map((item) => {
+                    return {
+                      label: item.name,
+                      data: item.data.map((data) => {
+                        return data.value;
+                      }),
+                      borderColor: chartList.map((item, index) => {
+                        const colorIndex = index % colors.length;
+                        const color = colors[colorIndex];
+                        return color;
+                      }),
+                      fill: false,
+                      tension: 0,
+                    };
+                  }),
+                }}
+                ref={chartRef}
+                options={options}
+              />
+            )}
           </div>
         )}
       </div>
@@ -1053,7 +1008,8 @@ export default function SummaryCard() {
                     onClick={() => setShowModalStart(true)}
                   >
                     Close
-                  </button> */}<ToastContainer />
+                  </button> */}
+      <ToastContainer />
     </div>
   );
 }
