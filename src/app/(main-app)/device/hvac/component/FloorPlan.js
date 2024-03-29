@@ -415,7 +415,7 @@ export default function FloorPlan({ FloorId }) {
                 floorplanList.map((item, index) => {
                   console.log(item);
                   return (
-                    <div>
+                    <div key={item.id}>
                       <div className="flex flex-row gap-4 p-2">
                       <span className="text-lg  font-bold">HVAC Floor</span>
                       <span className="text-lg  font-bold">{item.name}</span>
