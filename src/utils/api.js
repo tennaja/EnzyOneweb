@@ -197,7 +197,8 @@ export async function getFloor(buildingId) {
   }
 }
 
-export async function getFloorplan(floorId) {
+//-------------------Hvac----------------------------------- 
+export async function getFloorplanHvac(floorId) {
   try {
     const url =
       process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/floor-plan/'+floorId;
@@ -476,3 +477,274 @@ export async function ChangeValueDamperVAV (devId,value) {
     return error
   }
 }
+
+//-------------------------Iot-----------------------------------------------*
+export async function getFloorplanIoT(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/floor-plan/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//****---device-parameter data on table---****
+export async function getdeviceparameter(deviceTypeId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-parameter/'+deviceTypeId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//indoor-temp-humid
+export async function getindoortemphumid(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/indoor-temp-humid/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//outdoor-temp-humid
+export async function getoutdoortemphumid(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/outdoor-temp-humid/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Pressure gauge
+export async function getPressuregauge(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/pressure-gauge/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Power Meter
+export async function getPowerMeter(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/power-meter/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Inveter
+export async function getInveter(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/inverter/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Flow Meter
+export async function getFlowMeter(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/flow-meter/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Motion Sensor
+export async function getMotionSensor(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/motion-sensor/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Lighting
+export async function getLighting(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/lighting/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Counter
+export async function getCounter(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/counter/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Smart IR
+export async function getSmartIR(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/smart-ir/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Efficiency
+export async function getEfficiency(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/efficiency/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//CCTV ยังมีปัญหาเป็น Api เดียวกับ Efficiency
+export async function getCCTV(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/cctv/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//CO2 Sensor
+export async function getCO2Sensor(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/co2/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Water Meter  
+export async function getWaterMeter(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/water-meter/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+} 
+//Heater  
+export async function getHeater(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/heater/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+//Heater Water 
+export async function getHeaterWater(floorId) { 
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/heater-water/list/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}                    

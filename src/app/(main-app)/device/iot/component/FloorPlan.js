@@ -13,7 +13,7 @@ import {
   ChangeValueSettempAHU,
   ChangeAutomationSplittype,
   ChangeAutomationAHU,
-  getFloorplanHvac,
+  getFloorplanIoT,
   getAHU,
   getVAV,
   getSplittype,
@@ -65,7 +65,7 @@ export default function FloorPlan({ FloorId }) {
 
   const getfloorplan = async (floorId) => {
     setFloorId(floorId);
-    const result = await getFloorplanHvac(floorId);
+    const result = await getFloorplanIoT(floorId);
     let data = [];
     data.push(result.data);
     console.log(result.data);
@@ -410,16 +410,17 @@ export default function FloorPlan({ FloorId }) {
     <div>
       <div className="grid rounded-xl bg-white p-2 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 mt-5">
         <div className="flex flex-col gap-4 p-2">
+        
               {floorplanList.length > 0 &&
                 floorplanList.map((item, index) => {
                   console.log(item);
                   return (
                     <div key={item.id}>
                       <div className="flex flex-row gap-4 p-2">
-                      <span className="text-lg  font-bold">HVAC Floor</span>
+                      <span className="text-lg  font-bold">IoT Floor</span>
                       <span className="text-lg  font-bold">{item.name}</span>
             <select
-              className="w-44 border border-slate-300 mx-2 rounded-md h-9"
+              className="w-auto border border-slate-300 mx-2 rounded-md h-9 px-3"
               onChange={(e) => setOption(e.target.value)}
             >
               <option>-</option>
@@ -427,7 +428,7 @@ export default function FloorPlan({ FloorId }) {
                 deviceTypeList.map((item) => {
                   console.log(item);
                   return (
-                  <option key={item.id}>{item.displayName}</option>)
+                  <option className="rounded-lg" key={item.id}>{item.displayName}</option>)
                 })}
             </select>
             </div>
@@ -464,7 +465,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={marker.id}
                             value={"AHU"}
-                            className="w-56 cursor-pointer"
+                            className="w-56"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -523,7 +524,6 @@ export default function FloorPlan({ FloorId }) {
                                   Control Valve (%) :{" "}
                                   {String(marker.controlValve)}
                                 </span>
-                                
                               </div>
                             </div>
                           </div>
@@ -552,7 +552,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={index}
                             value={"VAV"}
-                            className="w-44 cursor-pointer"
+                            className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -721,7 +721,7 @@ export default function FloorPlan({ FloorId }) {
                       );
                     })}
                 </div>
-              ) : option == "Split Type" ? (
+              ) : option == "Indoor Temp & Humid" ? (
                 <div>
                   {SplittypeList.length > 0 &&
                     SplittypeList.map((marker, index) => {
@@ -786,7 +786,7 @@ export default function FloorPlan({ FloorId }) {
                       );
                     })}
                 </div>
-              ) : option == "AHU" ? (
+              ) : option == "Outdoor Temp & Humid" ? (
                 <div>
                   {AHUList.length > 0 &&
                     AHUList.map((marker, index) => {
@@ -876,7 +876,7 @@ export default function FloorPlan({ FloorId }) {
                       );
                     })}
                 </div>
-              ) : option == "VAV" ? (
+              ) : option == "Pressure Gauge" ? (
                 <div>
                   {VAVList.length > 0 &&
                     VAVList.map((marker, index) => {
@@ -942,7 +942,74 @@ export default function FloorPlan({ FloorId }) {
                       );
                     })}
                 </div>
-              ) : option == "IoT" ? (
+              ) : option == "Power Meter" ? (
+                <div>
+                   {IOTList.length > 0 &&
+                    IOTList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                            // onClick={() =>
+                            //   onChangeValue(
+                            //     "SPLIT",
+                            //     [marker]
+                            //   )
+                            // }
+                          >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                  Room Temp. (°C) : {marker.roomTemp}
+                                </span></div>
+                                <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                  Humidity (%) : {marker.humidity}
+                                </span></div>
+                                <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                  Set Temp. (°C) : {marker.setTemp}
+                                </span></div>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "Inverter" ? (
                 <div>
                    {IOTList.length > 0 &&
                     IOTList.map((marker, index) => {
@@ -1014,7 +1081,7 @@ export default function FloorPlan({ FloorId }) {
           </div>
           <div className="flex justify-end w-auto">
             {Decvicetype == "VAV"
-              ? Listcontrol.length > 0 &&
+              ? Listcontrol.length > 0 && 
                 Listcontrol.map((marker, index) => {
                   console.log(marker);
                   return (

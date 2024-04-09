@@ -556,7 +556,7 @@ export default function SummaryCard() {
                 "
                 onClick={onSearchTable}
               >
-                เลือก
+                Submit
               </button>
             </div>
           </div>
@@ -568,7 +568,7 @@ export default function SummaryCard() {
             <span className="text-lg  font-bold">Control Device</span>
             <input
               type="text"
-              placeholder="ค้นหา Device"
+              placeholder="Search Device"
               className="border border-slate-300 rounded-md h-9 px-2"
               onKeyUp={(e) => {
                 setSerachTable(e.target.value);
