@@ -1582,6 +1582,7 @@ export default function FloorPlan({ FloorId }) {
               className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
               min={10}
               max={40}
+              decimalScale={2}
               value={Values}
               onChange={(e) => {
                 onChangeValueSettemp(e.target.value);
@@ -1748,7 +1749,6 @@ export default function FloorPlan({ FloorId }) {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
-
               <h5 className="mt-5">Temperature</h5>
               <NumericFormat 
               type="number" 

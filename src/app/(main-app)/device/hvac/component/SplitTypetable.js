@@ -441,7 +441,6 @@ export default function SplitTypetable(SplittypeList) {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
-
               <h5 className="mt-5">Temperature</h5>
               <NumericFormat 
               type="number" 
