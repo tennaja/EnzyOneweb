@@ -683,12 +683,12 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            // onClick={() =>
-                            //   onChangeValue(
-                            //     "SPLIT",
-                            //     [marker]
-                            //   )
-                            // }
+                            onClick={() =>
+                              onChangeValue(
+                                "IoT",
+                                [marker]
+                              )
+                            }
                           >
                             <div
                               class={
@@ -964,19 +964,19 @@ export default function FloorPlan({ FloorId }) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"IoT"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            // onClick={() =>
-                            //   onChangeValue(
-                            //     "SPLIT",
-                            //     [marker]
-                            //   )
-                            // }
+                            onClick={() =>
+                              onChangeValue(
+                                "IoT",
+                                [marker]
+                              )
+                            }
                           >
                             <div
                               class={
@@ -1025,6 +1025,11 @@ export default function FloorPlan({ FloorId }) {
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
+                            Status : {marker.status}
+                          </span>
+                        </div>
+                        <div class="px-3">
+                          <span class="text-gray-700 text-sm">
                             Supply Temp. (°C) : {marker.temp}
                           </span>
                         </div>
@@ -1063,6 +1068,11 @@ export default function FloorPlan({ FloorId }) {
                       <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
                         <div class="font-bold text-lg text-center py-2">
                           {marker.deviceName}
+                        </div>
+                        <div class="px-3">
+                          <span class="text-gray-700 text-sm">
+                            Status : {marker.status}
+                          </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
@@ -1153,6 +1163,11 @@ export default function FloorPlan({ FloorId }) {
                       <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
                         <div class="font-bold text-lg text-center py-2">
                           {marker.deviceName}
+                        </div>
+                        <div class="px-3">
+                          <span class="text-gray-700 text-sm">
+                            Status : {marker.status}
+                          </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
@@ -1273,6 +1288,40 @@ export default function FloorPlan({ FloorId }) {
                               {marker.automation == "on" ? "ON" : "OFF"}
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+                : Decvicetype == "IoT"
+              ? Listcontrol.length > 0 &&
+                Listcontrol.map((marker, index) => {
+                  console.log(marker);
+                  return (
+                    <div key={marker.id}>
+                      <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                        <div class="font-bold text-lg text-center py-2">
+                          {marker.deviceName}
+                        </div>
+                        <div class="px-3">
+                          <span class="text-gray-700 text-sm">
+                            Status : {marker.status}
+                          </span>
+                        </div>
+                        <div class="px-3">
+                          <span class="text-gray-700 text-sm">
+                          Temp. (°C) : {marker.temp}
+                          </span>
+                        </div>
+                        <div class="px-3">
+                          <span class="text-gray-700 text-sm">
+                          Humidity (%) : {marker.humidity}
+                          </span>
+                        </div>
+                        <div class="px-3">
+                          <span class="text-gray-700 text-sm">
+                          CO2 (ppm) : {marker.co2}
+                          </span>
                         </div>
                       </div>
                     </div>

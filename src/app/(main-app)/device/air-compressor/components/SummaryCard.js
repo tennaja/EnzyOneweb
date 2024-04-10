@@ -201,7 +201,7 @@ export default function SummaryCard() {
     setStartDate(dateString[0])
     setEndDate(dateString[1])
     console.log(dateString);
-    GetHitoricalGraph(floorId, listChange, formatDate(startDate), formatDate(endDate));
+    GetHitoricalGraph(floorId, listChange, formatDate(dateString[0]), formatDate(dateString[1]));
   }
   const OnListChange = async (event) => {
     setListChange(event);
@@ -590,7 +590,8 @@ export default function SummaryCard() {
                                   className={
                                     item.status == "On"
                                       ? "whitespace-nowrap px-6 py-4 text-center text-green-500 font-extrabold"
-                                      : "whitespace-nowrap px-6 py-4 text-center text-red-500 font-extrabold"
+                                      : item.status == "Offline" ? "whitespace-nowrap px-6 py-4 text-center text-red-500 font-extrabold"
+                                      : "whitespace-nowrap px-6 py-4 text-center text-gray-500 font-extrabold"
                                   }
                                 >
                                   <Highlighter
