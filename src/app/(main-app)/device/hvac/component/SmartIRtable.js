@@ -12,7 +12,7 @@ export default function SmartIRtable(IotList) {
             <span className="text-lg  font-bold">IOT</span>
             <input
               type="text"
-              placeholder="ค้นหา"
+              placeholder="Search Device"
               className="border border-slate-300 rounded-md h-9 px-2"
               onKeyUp={(e) => {
                 setSerachTable(e.target.value);

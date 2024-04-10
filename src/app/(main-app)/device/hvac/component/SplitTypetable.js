@@ -217,7 +217,7 @@ export default function SplitTypetable(SplittypeList) {
 
             <input
               type="text"
-              placeholder="ค้นหา"
+              placeholder="Search Device"
               className="border border-slate-300 rounded-md h-9 px-2"
               onKeyUp={(e) => {
                 setSerachTable(e.target.value);
@@ -341,9 +341,10 @@ export default function SplitTypetable(SplittypeList) {
                                 />
 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold" onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.setTemp ,event.preventDefault()) : null}>
+                              <td className="whitespace-nowrap px-6 py-4 text-center ">
                                 
                                 <Highlighter
+                                className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.setTemp ,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
@@ -352,9 +353,10 @@ export default function SplitTypetable(SplittypeList) {
                                 />
 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold"onClick={(event) => item.status == "on" ? onclickOPenSetMode(item.id, item.deviceName,event.preventDefault()) : null}>
+                              <td className="whitespace-nowrap px-6 py-4 text-center ">
                               
                                 <Highlighter
+                                className="text-[#5eead4] underline font-bold cursor-pointer"onClick={(event) => item.status == "on" ? onclickOPenSetMode(item.id, item.deviceName,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
@@ -363,10 +365,11 @@ export default function SplitTypetable(SplittypeList) {
                                 />
                                 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id, item.deviceName,event.preventDefault()) : null}>
+                              <td className="whitespace-nowrap px-6 py-4 text-center ">
                         
                                 
                                 <Highlighter
+                                className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id, item.deviceName,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}

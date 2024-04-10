@@ -5,12 +5,13 @@ import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
 import "../../../../globals.css";
 import Highlighter from "react-highlight-words";
-import DatePicker from "react-datepicker";
+
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { DatePicker, Radio } from "antd";
 
 import {
   ChangestatusIsOff,
@@ -62,6 +63,7 @@ export default function SummaryCard() {
         theme: "light",
       }
     );
+    const { MonthPicker, RangePicker } = DatePicker;
 
   //funtion Zoom graph
   const zoomOptions = {
@@ -118,6 +120,11 @@ export default function SummaryCard() {
     },
   };
 
+  function onChangeDay(date, dateString) {
+    console.log(dateString);
+    GetAHUGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
+  }
+
   const chartRef = useRef(null);
 
   //reset zoom graph
@@ -144,6 +151,7 @@ export default function SummaryCard() {
   const [showModalError, setShowModalError] = useState(false);
   const [showModalStop, setShowModalStop] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [ListLabel, setListLabel] = useState([0]);
   const [username, setUsername] = useState([]);
   const [password, setPassword] = useState([]);
@@ -189,27 +197,18 @@ export default function SummaryCard() {
     }
   }, [floorId, listChange]);
 
+  function onChangeDay(date, dateString) {
+    setStartDate(dateString[0])
+    setEndDate(dateString[1])
+    console.log(dateString);
+    GetHitoricalGraph(floorId, listChange, formatDate(startDate), formatDate(endDate));
+  }
   const OnListChange = async (event) => {
     setListChange(event);
-    if (typedate == "day") {
-      onChangeDay(startDate, event);
-    } else if (typedate == "month") {
-      onChangeMonth(startDate, event);
-    } else if (typedate == "year") {
-      onChangeYear(startDate, event);
-    }
+    GetHitoricalGraph(floorId, event, formatDate(startDate), formatDate(endDate))
   };
 
-  useEffect(() => {
-    if (typedate == "day") {
-      onChangeDay(startDate);
-    } else if (typedate == "month") {
-      onChangeMonth(startDate);
-    } else if (typedate == "year") {
-      onChangeYear(startDate);
-    }
-  }, [typedate]);
-
+  
   //type Date Change
   const OnListtypeDateChange = async (event) => {
     setTypeDate(event);
@@ -414,56 +413,7 @@ export default function SummaryCard() {
     }
   }
 
-  //Datepicker Month
-  const onChangeMonth = (date, event) => {
-    setStartDate(date);
-    let Month = date.getMonth();
-
-    let Year = date.getFullYear();
-
-    let startDate = new Date(Year, Month, 1);
-    let endDate = new Date(Year, Month + 1, 0);
-
-    GetHitoricalGraph(
-      floorId,
-      event,
-      formatDate(startDate),
-      formatDate(endDate)
-    );
-  };
-
-  //Datepicker Year
-  const onChangeYear = (date, event) => {
-    setStartDate(date);
-    let Year = date.getFullYear();
-
-    let startDate = new Date(Year, 0, 1);
-    let endDate = new Date(Year, 12, 0);
-    GetHitoricalGraph(
-      floorId,
-      event,
-      formatDate(startDate),
-      formatDate(endDate)
-    );
-  };
-
-  //Datpicker Day
-  const onChangeDay = (date, event) => {
-    setStartDate(date);
-    let Month = date.getMonth();
-    let Year = date.getFullYear();
-    let day = date.getDate();
-
-    let startDate = new Date(Year, Month, day);
-
-    //HistoricalGraph
-    GetHitoricalGraph(
-      floorId,
-      event,
-      formatDate(startDate),
-      formatDate(startDate)
-    );
-  };
+ 
 
   //FormatDate
   const formatDate = (date) => {
@@ -895,43 +845,9 @@ export default function SummaryCard() {
             </select>
           </div>
           <div className="flex gap-5">
-            {typedate == "day" ? (
-              <DatePicker
-                className="w-44 border border-slate-300 mx-2 rounded-md h-9 px-2"
-                selected={startDate}
-                onChange={(date) => onChangeDay(date)}
-                dateFormat="dd/MM/yyyy"
-              />
-            ) : typedate == "month" ? (
-              <DatePicker
-                className="w-44 border border-slate-300 mx-2 rounded-md h-9 px-2"
-                selected={startDate}
-                // onChange={(date) => setStartDate(date)}
-                onChange={(date) => onChangeMonth(date)}
-                dateFormat="MM/yyyy"
-                showMonthYearPicker
-                showFullMonthYearPicker
-                showFourColumnMonthYearPicker
-              />
-            ) : (
-              <DatePicker
-                className="w-44 border border-slate-300 mx-2 rounded-md h-9 px-2"
-                selected={startDate}
-                onChange={(date) => onChangeYear(date)}
-                showYearPicker
-                dateFormat="yyyy"
-              />
-            )}
+          <RangePicker onChange={onChangeDay} />
 
-            <select
-              className="w-44 border border-slate-300 mx-2 rounded-md h-9"
-              onChange={(event) => OnListtypeDateChange(event.target.value)}
-              value={typedate}
-            >
-              <option value="day">รายวัน</option>
-              <option value="month">รายเดือน</option>
-              <option value="year">รายปี</option>
-            </select>
+            
             <button
               className="border border-slate-300 rounded-md h-9 px-2"
               onClick={onResetZoom}
