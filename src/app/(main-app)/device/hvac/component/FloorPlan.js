@@ -1,5 +1,5 @@
 "use client";
-import Loading from "./Loading";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect, useState, useRef } from "react";
@@ -19,6 +19,7 @@ import {
   getSplittype,
   getIOT,
 } from "@/utils/api";
+import Loading from "./Loading";
 
 export default function FloorPlan({ FloorId }) {
   console.log(FloorId);
@@ -1013,23 +1014,37 @@ export default function FloorPlan({ FloorId }) {
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Status : {marker.status}
+                            Status : <span className={
+                            marker.status == "on"
+                              ? " text-center text-green-500 font-extrabold"
+                              : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                              : " text-center text-gray-500 font-extrabold"
+                          }>
+                          {marker.status}
+                          </span> 
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Supply Temp. (°C) : {marker.status == "offline" ? "-" : (marker.temp) }
+                            Supply Temp. (°C) : {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.temp}
+                          </span> : marker.temp}
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Air Flow (CFM) : {marker.airFlow}
+                            Air Flow (CFM) : {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.airFlow}
+                          </span> : marker.airFlow}
+                            
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
                             Damper (%) :{" "}
-                            <span
+                            {marker.status == "on" ? <span
                               className="text-[#5eead4] underline text-sm"
                               onClick={() => marker.status == "on" ?
                                 onclickOPenSettempVav(
@@ -1040,7 +1055,9 @@ export default function FloorPlan({ FloorId }) {
                               }
                             >
                               {marker.damper}
-                            </span>
+                            </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.damper}
+                          </span> : "-"}
                           </span>
                         </div>
                       </div>
@@ -1059,22 +1076,31 @@ export default function FloorPlan({ FloorId }) {
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Status : {marker.status}
+                            Status : <span className={
+                            marker.status == "on"
+                              ? " text-center text-green-500 font-extrabold"
+                              : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                              : " text-center text-gray-500 font-extrabold"
+                          }>
+                          {marker.status}
+                          </span> 
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Supply Temp. (°C) : {marker.supplyTemp}
+                            Supply Temp. (°C) : {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.supplyTemp}
+                          </span> : marker.supplyTemp}
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
                             Supply Temp. Setpoint (°C) :{" "}
-                            <span
+                            {marker.status == "on" ? <span
                               className="text-[#5eead4] underline text-sm"
-                              onClick={() =>
-                                marker.status == "on" ?
-                                onclickOPenSettempAHU(
+                              onClick={() => marker.status == "on" ?
+                              onclickOPenSettempAHU(
                                   marker.id,
                                   marker.deviceName,
                                   marker.supplyTempSetPoint
@@ -1082,39 +1108,57 @@ export default function FloorPlan({ FloorId }) {
                               }
                             >
                               {marker.supplyTempSetPoint}
-                            </span>
+                            </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.supplyTempSetPoint}
+                          </span> : "-"}
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Return Temp. (°C) : {marker.returnTemp}
+                            Return Temp. (°C) : {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.returnTemp}
+                          </span> : marker.returnTemp}
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            VSD %Drive (Hz) : {marker.vsdDrive}
+                            VSD %Drive (Hz) : {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.vsdDrive}
+                          </span> : marker.vsdDrive}
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            VSD Power (kW) : {marker.vsdPower}
+                            VSD Power (kW) : {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.vsdPower}
+                          </span> : marker.vsdPower}
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            VSD Speed (rpm) : {marker.vsdSpeed}
+                            VSD Speed (rpm) : {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.vsdSpeed}
+                          </span> : marker.vsdSpeed}
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Control Valve (%) : {marker.controlValve}
+                            Control Valve (%) : {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.controlValve}
+                          </span> : marker.controlValve}
                           </span>
                         </div>
                         <div class="px-3 flex gap-2">
                           <span class="text-gray-700 text-sm">
                             Automation :{" "}
                           </span>
-                          <div
+                          {" "}
+                            {marker.status == "offline" ? "-" : <div
                             className="toggle-container"
                             onClick={() =>
                               marker.status == "on" ?
@@ -1136,7 +1180,8 @@ export default function FloorPlan({ FloorId }) {
                             >
                               {marker.automation == "on" ? "ON" : "OFF"}
                             </div>
-                          </div>
+                          </div>}
+                          
                         </div>
                       </div>
                     </div>
@@ -1154,23 +1199,38 @@ export default function FloorPlan({ FloorId }) {
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Status : {marker.status}
+                            Status : <span className={
+                            marker.status == "on"
+                              ? " text-center text-green-500 font-extrabold"
+                              : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                              : " text-center text-gray-500 font-extrabold"
+                          }>
+                          {marker.status}
+                          </span> 
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Room Temp. (°C) : {marker.roomTemp}
+                            Room Temp. (°C) : 
+                            {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.roomTemp}
+                          </span> : marker.roomTemp}
+                            
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Humidity (%) : {marker.humidity}
+                            Humidity (%) : {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.humidity}
+                          </span> : marker.humidity}
                           </span>
                         </div>
                         <div class="px-3 flex gap-2">
                           <span class="text-gray-700 text-sm">
-                            Set Temp. (°C) :{" "}
-                            <span
+                            Set Temp. (°C) : {" "}
+                            {marker.status == "on" ? <span
                               className="text-[#5eead4] underline text-sm"
                               onClick={() =>
                                 marker.status == "on" ?
@@ -1182,13 +1242,15 @@ export default function FloorPlan({ FloorId }) {
                               }
                             >
                               {marker.setTemp}
-                            </span>
+                            </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.setTemp}
+                          </span> : "-"}
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
                             Control :{" "}
-                            <button
+                            {marker.status == "offline" ? "-" : <button
                               type="button"
                               className={
                                 marker.control == "on"
@@ -1210,13 +1272,14 @@ export default function FloorPlan({ FloorId }) {
                               }
                             >
                               {marker.control}
-                            </button>
+                            </button>}
+                            
                           </span>
                         </div>
                         <div class="px-3 flex gap-2">
                           <span class="text-gray-700 text-sm">
-                            Fan :{" "}
-                            <span
+                            Fan  : {" "}
+                            {marker.status == "on" ? <span
                               className="text-[#5eead4] underline text-sm"
                               onClick={(event) =>
                                 marker.status == "on" ?
@@ -1228,13 +1291,15 @@ export default function FloorPlan({ FloorId }) {
                               }
                             >
                               {marker.fan}
-                            </span>
+                            </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.fan}
+                          </span> : "-"}
                           </span>
                         </div>
                         <div class="px-3 flex gap-2">
                           <span class="text-gray-700 text-sm ">
-                            Mode :{" "}
-                            <span
+                            Mode  : {" "}
+                            {marker.status == "on" ? <span
                               className="text-[#5eead4] underline text-sm"
                               onClick={(event) =>
                                 marker.status == "on" ?
@@ -1246,14 +1311,16 @@ export default function FloorPlan({ FloorId }) {
                               }
                             >
                               {marker.mode}
-                            </span>
+                            </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.mode}
+                          </span> : "-"}
                           </span>
                         </div>
                         <div class="px-3 flex gap-2">
                           <span class="text-gray-700 text-sm">
                             Automation :{" "}
                           </span>
-                          <div
+                          {marker.status == "offline" ? "-" : <div
                             className="toggle-container"
                             onClick={() => 
                               marker.status == "on" ?
@@ -1275,7 +1342,8 @@ export default function FloorPlan({ FloorId }) {
                             >
                               {marker.automation == "on" ? "ON" : "OFF"}
                             </div>
-                          </div>
+                          </div>}
+                          
                         </div>
                       </div>
                     </div>
@@ -1293,22 +1361,44 @@ export default function FloorPlan({ FloorId }) {
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Status : {marker.status}
+                            Status : <span className={
+                            marker.status == "on"
+                              ? " text-center text-green-500 font-extrabold"
+                              : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                              : " text-center text-gray-500 font-extrabold"
+                          }>
+                          {marker.status}
+                          </span> 
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                          Temp. (°C) : {marker.temp}
+                          Temp. (°C) : 
+                          {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.temp}
+                          </span> : marker.temp}
+                          
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                          Humidity (%) : {marker.humidity}
+                          Humidity (%) : 
+                          {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.humidity}
+                          </span> : marker.humidity}
+                          
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                          CO2 (ppm) : {marker.co2}
+                          CO2 (ppm) : 
+                          {" "}
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                             {marker.co2}
+                          </span> : marker.co2}
+                          
                           </span>
                         </div>
                       </div>
@@ -1479,7 +1569,9 @@ export default function FloorPlan({ FloorId }) {
           })} */}
 
         <div></div>
-
+        {loading ? (
+          <Loading />
+        ) : null}
         {OpenSettempModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
