@@ -23,7 +23,21 @@ export default function AHUtable(AHUlist) {
   const [alertmassage, setAlertmessage] = useState("");
   
   
-
+  const notifySuccess = () =>
+  toast.success(
+    `Operation Complete
+  `,
+    {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    }
+  );
   
   const onChangeValue = (event) => {
     setValues(event);
@@ -51,20 +65,7 @@ const handleChangeValueSettemp = async () => {
     console.log(res.data)
     setLoading(false);
     closeModal();
-    toast.success(
-      `Operation Complete
-    `,
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
+    notifySuccess();
   } else if (res.response.status === 401) {
     setLoading(false);
     closeModal();
@@ -99,20 +100,7 @@ async function clickChangestatusAutomation() {
     setAlertmessage(res.data.message);
     closeModal();
     setLoading(false);
-    toast.success(
-      `Operation Complete
-    `,
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
+    notifySuccess();
   } else if (res.response.status === 401) {
     setAlertTitle(res.response.data.title);
     setAlertmessage(res.response.data.message);

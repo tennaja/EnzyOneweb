@@ -62,7 +62,21 @@ export default function FloorPlan({ FloorId }) {
       getIOTList(FloorId);
     }
   }, [FloorId]);
-
+  const notifySuccess = () =>
+  toast.success(
+    `Operation Complete
+  `,
+    {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    }
+  );
   const getfloorplan = async (floorId) => {
     setFloorId(floorId);
     const result = await getFloorplanHvac(floorId);
@@ -124,20 +138,7 @@ export default function FloorPlan({ FloorId }) {
       console.log(res.data);
       closeModal();
       setLoading(false);
-      toast.success(
-        `Operation Complete
-      `,
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      notifySuccess();
     } else {
       closeModal();
       setLoading(false);
@@ -170,20 +171,7 @@ export default function FloorPlan({ FloorId }) {
       console.log(res.data);
       closeModal();
       setLoading(false);
-      toast.success(
-        `Operation Complete
-      `,
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      notifySuccess();
     } else {
       closeModal();
       setLoading(false);
@@ -197,20 +185,7 @@ export default function FloorPlan({ FloorId }) {
       console.log(res.data);
       closeModal();
       setLoading(false);
-      toast.success(
-        `Operation Complete
-      `,
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      notifySuccess();
     } else if (res.response.status === 401) {
       closeModal();
       setLoading(false);
@@ -268,20 +243,7 @@ export default function FloorPlan({ FloorId }) {
       console.log(res.data);
       closeModal();
       setLoading(false);
-      toast.success(
-        `Operation Complete
-    `,
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      notifySuccess();
     } else if (res.response.status === 401) {
       closeModal();
       setLoading(false);
@@ -317,20 +279,7 @@ export default function FloorPlan({ FloorId }) {
       console.log(res.data);
       closeModal();
       setLoading(false);
-      toast.success(
-        `Operation Complete
-      `,
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      notifySuccess();
     } else if (res.response.status === 401) {
       closeModal();
       setLoading(false);
@@ -368,20 +317,7 @@ export default function FloorPlan({ FloorId }) {
       setAlertmessage(res.data.message);
       closeModal();
       setLoading(false);
-      toast.success(
-        `Operation Complete
-      `,
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      notifySuccess();
     } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
@@ -404,20 +340,7 @@ export default function FloorPlan({ FloorId }) {
       setAlertmessage(res.data.message);
       closeModal();
       setLoading(false);
-      toast.success(
-        `Operation Complete
-      `,
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      notifySuccess();
     } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
@@ -439,20 +362,7 @@ export default function FloorPlan({ FloorId }) {
       setAlertmessage(res.data.message);
       closeModal();
       setLoading(false);
-      toast.success(
-        `Operation Complete
-      `,
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      notifySuccess();
     } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
