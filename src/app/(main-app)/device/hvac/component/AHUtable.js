@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { NumericFormat } from 'react-number-format';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Highlighter from "react-highlight-words";
@@ -315,22 +316,23 @@ async function clickChangestatusAutomation() {
         </div>
       </div>
     </div></div>
-    {OpenSettempModal ? (
+        {OpenSettempModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Supply Temp. Setpoint (°C) : {DeviceName}</h5>
 
               <h5 className="mt-5">Temperature</h5>
-              <input
-                type="number"
-                placeholder="Enter your username"
-                className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-                min={10}
-                max={40}
-                value={Values}
-                onChange={(e) => {
-                  onChangeValue(e.target.value);
-                }}
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={10}
+              max={40}
+              value={Values} 
+              decimalScale={2}
+              onChange={(e) => {
+                onChangeValue(e.target.value);
+                e.preventDefault();
+              }}
               />
 
               <div className="flex justify-center mt-10 gap-5">

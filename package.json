@@ -55,6 +55,7 @@
     "react-image-marker": "^1.2.0",
     "react-js-switch": "^1.1.6",
     "react-loader-spinner": "^6.1.6",
+    "react-number-format": "^5.3.4",
     "react-redux": "^8.1.3",
     "react-spinners": "^0.13.8",
     "react-svg-pathline": "^0.6.0",

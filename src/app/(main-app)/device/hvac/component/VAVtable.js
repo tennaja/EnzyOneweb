@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { NumericFormat } from 'react-number-format';
 import Highlighter from "react-highlight-words";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -202,16 +203,17 @@ const handleChangeValueSettemp = async () => {
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
 
               <h5 className="mt-5">Temperature</h5>
-              <input
-                type="number"
-                placeholder="Enter your username"
-                className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-                min={0}
-                max={100}
-                value={Values}
-                onChange={(e) => {
-                  onChangeValue(e.target.value);
-                }}
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={0}
+              max={100}
+              value={Values} 
+              decimalScale={2}
+              onChange={(e) => {
+                onChangeValue(e.target.value);
+                e.preventDefault();
+              }}
               />
 
               <div className="flex justify-center mt-10 gap-5">
