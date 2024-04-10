@@ -22,8 +22,10 @@ export default function SplitTypetable(SplittypeList) {
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
   const [showModalStart, setShowModalStart] = useState(false);
-  const [showModalControle, setShowModalControle] = useState(false);
-  const [showModalAutomation, setShowModalAutomation] = useState(false);
+  const [showModalControlestart, setShowModalControlestart] = useState(false);
+  const [showModalControlestop, setShowModalControlestop] = useState(false);
+  const [showModalAutomationstart, setShowModalAutomationstart] = useState(false);
+  const [showModalAutomationstop, setShowModalAutomationstop] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
   
@@ -34,28 +36,32 @@ export default function SplitTypetable(SplittypeList) {
     setToggle(!toggle);
   };
 
-  const openModalControleIsStop = (DecviceId,values) => {
+  const openModalControleIsStop = (DecviceId,deviceName) => {
     setDeviceId(DecviceId)
+    setDeviceName(deviceName)
     setValues('off')
-    setShowModalControle(true);
+    setShowModalControlestop(true);
     
   }
-  const openModalControleIsStart = (DecviceId,values) => {
+  const openModalControleIsStart = (DecviceId,deviceName) => {
     setDeviceId(DecviceId)
+    setDeviceName(deviceName)
     setValues('on')
-    setShowModalControle(true);
+    setShowModalControlestart(true);
     
   }
-  const openModalAutomationIsStop = (DecviceId,values) => {
+  const openModalAutomationIsStop = (DecviceId,deviceName) => {
     setDeviceId(DecviceId)
+    setDeviceName(deviceName)
     setValues('off')
-    setShowModalAutomation(true);
+    setShowModalAutomationstop(true);
     
   }
-  const openModalAutomationIsStart = (DecviceId,values) => {
+  const openModalAutomationIsStart = (DecviceId,deviceName) => {
     setDeviceId(DecviceId)
+    setDeviceName(deviceName)
     setValues('on')
-    setShowModalAutomation(true);
+    setShowModalAutomationstart(true);
     
   }
 
@@ -200,8 +206,11 @@ export default function SplitTypetable(SplittypeList) {
     setOpenSettempModal(false)
     setOpenSetFanModal(false)
     setOpenSetModeModal(false)
-    setShowModalControle(false)
-    setShowModalAutomation(false)
+    setShowModalControlestart(false)
+    setShowModalControlestop(false)
+    setShowModalAutomationstop(false)
+    setShowModalAutomationstart(false)
+    setLoading(false)
     setModalError(false)
     setDeviceId(null);
    
@@ -389,8 +398,8 @@ export default function SplitTypetable(SplittypeList) {
                                       }
                                     onClick={() =>
                                       item.control == "on"
-                                        ? openModalControleIsStop(item.id)
-                                        : item.control == "off" ? openModalControleIsStart(item.id) : null
+                                        ? openModalControleIsStop(item.id,item.deviceName)
+                                        : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName) : null
                                     }
                                   >
                                     <Highlighter
@@ -409,8 +418,8 @@ export default function SplitTypetable(SplittypeList) {
        <div className='toggle-container' onClick={() =>
        item.status == "on" ?
        item.automation == "on"
-           ? openModalAutomationIsStop(item.id)
-           : openModalAutomationIsStart(item.id)
+           ? openModalAutomationIsStop(item.id,item.deviceName)
+           : openModalAutomationIsStart(item.id,item.deviceName)
         :  null }>
            <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
                {item.automation=="on" ? "ON" : "OFF"}
@@ -573,7 +582,7 @@ export default function SplitTypetable(SplittypeList) {
             </div>
           </div>
         ) : null}
-        {showModalControle  ? (
+        {showModalControlestart  ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -601,7 +610,35 @@ export default function SplitTypetable(SplittypeList) {
             </div>
           </div>
         ) : null}
-        {showModalAutomation  ? (
+        {showModalControlestop  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device stop {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusControle()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalAutomationstart  ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -628,9 +665,39 @@ export default function SplitTypetable(SplittypeList) {
               </div>
             </div>
           </div>
-        ) : null}
+        ) : 
+        null}
+         {showModalAutomationstop  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device stop {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusAutomation()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : 
+        null}
       </div>
-      <ToastContainer />
+      
     </div>
 
   )

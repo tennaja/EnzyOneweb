@@ -17,35 +17,30 @@ export default function AHUtable(AHUlist) {
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
-  const [showModalAutomation, setShowModalAutomation] = useState(false);
+  const [showModalAutomationstart, setShowModalAutomationstart] = useState(false);
+  const [showModalAutomationstop, setShowModalAutomationstop] = useState(false);
+  const [alerttitle, setAlertTitle] = useState("");
+  const [alertmassage, setAlertmessage] = useState("");
+  
   
 
-  const notifySuccess = () =>
-  toast.success(`Operation Complete
-  `, {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
+  
   const onChangeValue = (event) => {
     setValues(event);
   };
-  const onclickOPenSettemp = (id, DecviceId, values) => {
+  const onclickOPenSettemp = (id, Decvicename, values) => {
     setOpenSettempModal(true)
     setDeviceId(id)
-    setDeviceName(DecviceId)
+    setDeviceName(Decvicename)
     setValues(values)
   }
   const closeModal = () => {
     setOpenSettempModal(false)
     setModalError(false)
     setDeviceId(null);
-    setShowModalAutomation(false)
+    setShowModalAutomationstart(false)
+    setShowModalAutomationstop(false)
+    setLoading(false)
     // setShowModalStop(false);
     // setShowModalStart(false);
 };
@@ -54,29 +49,45 @@ const handleChangeValueSettemp = async () => {
   const res = await ChangeValueSettempAHU(DecviceId, Values);
   if (res.status === 200) {
     console.log(res.data)
-    closeModal();
     setLoading(false);
-    notifySuccess();
+    closeModal();
+    toast.success(
+      `Operation Complete
+    `,
+      {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
   } else if (res.response.status === 401) {
-    closeModal();
     setLoading(false);
+    closeModal();
     setModalError(true)
   } else if (res.response.status === 500) {
-    closeModal();
+    
     setLoading(false);
+    closeModal();
     setModalError(true)
   }
 }
-const openModalAutomationIsStop = (DecviceId,values) => {
+const openModalAutomationIsStop = (DecviceId,Decvicename) => {
   setDeviceId(DecviceId)
+  setDeviceName(Decvicename)
   setValues('off')
-  setShowModalAutomation(true);
+  setShowModalAutomationstop(true);
   
 }
-const openModalAutomationIsStart = (DecviceId,values) => {
+const openModalAutomationIsStart = (DecviceId,Decvicename) => {
   setDeviceId(DecviceId)
+  setDeviceName(Decvicename)
   setValues('on')
-  setShowModalAutomation(true);
+  setShowModalAutomationstart(true);
   
 }
 async function clickChangestatusAutomation() {
@@ -88,7 +99,20 @@ async function clickChangestatusAutomation() {
     setAlertmessage(res.data.message);
     closeModal();
     setLoading(false);
-    notifySuccess();
+    toast.success(
+      `Operation Complete
+    `,
+      {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
   } else if (res.response.status === 401) {
     setAlertTitle(res.response.data.title);
     setAlertmessage(res.response.data.message);
@@ -284,8 +308,8 @@ async function clickChangestatusAutomation() {
                                 <div className='toggle-container' onClick={() =>
                                 item.status == "on" ?
                                 item.automation == "on"
-                                    ? openModalAutomationIsStop(item.id)
-                                    : openModalAutomationIsStart(item.id)
+                                    ? openModalAutomationIsStop(item.id,item.deviceName)
+                                    : openModalAutomationIsStart(item.id,item.deviceName)
                                  :  null }>
                                     <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
                                         {item.automation=="on" ? "ON" : "OFF"}
@@ -364,7 +388,7 @@ async function clickChangestatusAutomation() {
             </div>
           </div>
         ) : null}
-        {showModalAutomation  ? (
+        {showModalAutomationstart  ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -392,6 +416,34 @@ async function clickChangestatusAutomation() {
             </div>
           </div>
         ) : null}
-        <ToastContainer /></div>
+        {showModalAutomationstop  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device stop {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusAutomation()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        </div>
   );
 }

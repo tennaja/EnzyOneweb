@@ -21,6 +21,7 @@ import SplitTypetable from "./SplitTypetable";
 import SmartIRtable from "./SmartIRtable";
 import ChartAHU from "./chartAHU";
 import ChartSplittype from "./chartSplittype";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function FilterCard() {
   const [chartListAHU1, setChartListAHU1] = useState([]);
@@ -58,7 +59,22 @@ export default function FilterCard() {
       // GetSplittypeGraph(floorId);
     }
   }, [floorId]);
-
+  
+  const notifySuccess = () =>
+  toast.success(
+    `Operation Complete
+  `,
+    {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    }
+  );
   const onTableChange = async (floorId) => {
     setFloorId(floorId);
   };
@@ -340,6 +356,7 @@ export default function FilterCard() {
         // external={chartListSplittype4}
         // label={ListLabelSplittype}
       /></div></div>
+      <ToastContainer />
     </div>
   );
 }

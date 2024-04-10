@@ -18,18 +18,7 @@ export default function VAVtable(VAVList) {
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
 
-  const notifySuccess = () =>
-  toast.success(`Operation Complete
-  `, {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
+  
   const onChangeValue = (event) => {
     setValues(event);
   };
@@ -54,7 +43,17 @@ const handleChangeValueSettemp = async () => {
     console.log(res.data)
     closeModal();
     setLoading(false);
-    notifySuccess();
+    toast.success(`Operation Complete
+  `, {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
   } else if (res.response.status === 401) {
     closeModal();
     setLoading(false);
@@ -256,7 +255,7 @@ const handleChangeValueSettemp = async () => {
             </div>
           </div>
         ) : null}
-        <ToastContainer />
+        
     </div>
   )
 }
