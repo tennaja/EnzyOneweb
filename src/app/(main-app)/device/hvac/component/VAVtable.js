@@ -209,19 +209,29 @@ const handleChangeValueSettemp = async () => {
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
 
               <h5 className="mt-5">Temperature</h5>
-              <input
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={0}
+              max={100}
+              value={Values} 
+              decimalScale={2}
+              onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+        setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
+    }}
+              />
+              {/* <input
     type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-    maxLength={Math.max(min.toString().length, max.toString().length + 3)}
     value={Values}
     min={min}
     max={max}
-    onChange={e => setValues(e.target.value)}
+    onChange={e => setValues(e.target.value = Math.max(0, parseFloat(e.target.value)).toString().slice(0,6))}
     onBlur={e => {
-      if (Values && !isNaN(Values))
         setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
     }}
-/>
+/> */}
       
 
               <div className="flex justify-center mt-10 gap-5">

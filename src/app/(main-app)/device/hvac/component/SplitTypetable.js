@@ -448,19 +448,29 @@ export default function SplitTypetable(SplittypeList) {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
-              <input
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={10}
+              max={40}
+              value={Values} 
+              decimalScale={0}
+              onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+        setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
+    }}
+              />
+              {/* <input
     type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-    maxLength={Math.max(min.toString().length, max.toString().length)}
     min={min}
     max={max}
     value={Values}
-    onChange={e => setValues(e.target.value)}
+    onChange={e => setValues(e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,3))}
     onBlur={e => {
-      if (Values && !isNaN(Values))
         setValues(Math.min(max, Math.max(min, Values)));
     }}
-/>
+/> */}
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"

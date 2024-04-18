@@ -609,7 +609,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={marker.id}
                             value={"SPLIT"}
-                            className="w-44"
+                            className="w-44 cursor-pointer"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -671,7 +671,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={marker.id}
                             value={"SPLIT"}
-                            className="w-44"
+                            className="w-44 cursor-pointer"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -739,7 +739,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={marker.id}
                             value={"SPLIT"}
-                            className="w-44"
+                            className="w-44 cursor-pointer"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -804,7 +804,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={marker.id}
                             value={"AHU"}
-                            className="w-56"
+                            className="w-56 cursor-pointer"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -894,7 +894,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={index}
                             value={"VAV"}
-                            className="w-44"
+                            className="w-44 cursor-pointer"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -1050,7 +1050,7 @@ export default function FloorPlan({ FloorId }) {
                           <span class="text-gray-700 text-sm">
                             Damper (%) :{" "}
                             {marker.status == "on" ? <span
-                              className="text-[#5eead4] underline text-sm"
+                              className="text-[#5eead4] underline text-sm cursor-pointer"
                               onClick={() => marker.status == "on" ?
                                 onclickOPenSettempVav(
                                   marker.id,
@@ -1103,7 +1103,7 @@ export default function FloorPlan({ FloorId }) {
                           <span class="text-gray-700 text-sm">
                             Supply Temp. Setpoint (°C) :{" "}
                             {marker.status == "on" ? <span
-                              className="text-[#5eead4] underline text-sm"
+                              className="text-[#5eead4] underline text-sm cursor-pointer"
                               onClick={() => marker.status == "on" ?
                               onclickOPenSettempAHU(
                                   marker.id,
@@ -1236,7 +1236,7 @@ export default function FloorPlan({ FloorId }) {
                           <span class="text-gray-700 text-sm">
                             Set Temp. (°C) : {" "}
                             {marker.status == "on" ? <span
-                              className="text-[#5eead4] underline text-sm"
+                              className="text-[#5eead4] underline text-sm cursor-pointer"
                               onClick={() =>
                                 marker.status == "on" ?
                                 onclickOPenSettemp(
@@ -1285,7 +1285,7 @@ export default function FloorPlan({ FloorId }) {
                           <span class="text-gray-700 text-sm">
                             Fan  : {" "}
                             {marker.status == "on" ? <span
-                              className="text-[#5eead4] underline text-sm"
+                              className="text-[#5eead4] underline text-sm cursor-pointer"
                               onClick={(event) =>
                                 marker.status == "on" ?
                                 onclickOPenSetMode(
@@ -1305,7 +1305,7 @@ export default function FloorPlan({ FloorId }) {
                           <span class="text-gray-700 text-sm ">
                             Mode  : {" "}
                             {marker.status == "on" ? <span
-                              className="text-[#5eead4] underline text-sm"
+                              className="text-[#5eead4] underline text-sm cursor-pointer"
                               onClick={(event) =>
                                 marker.status == "on" ?
                                 onclickOPenSetFan(
@@ -1582,7 +1582,19 @@ export default function FloorPlan({ FloorId }) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
               <h5 className="mt-5">Temperature</h5>
-    <input
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={10}
+              max={40}
+              value={Values} 
+              decimalScale={0}
+              onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+        setValues(Math.min(maxS, Math.max(minS, Values)).toFixed(2));
+    }}
+              />
+    {/* <input
     type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
     maxLength={Math.max(minS.toString().length, maxS.toString().length)}
@@ -1594,7 +1606,7 @@ export default function FloorPlan({ FloorId }) {
       if (Values && !isNaN(Values))
         setValues(Math.min(maxS, Math.max(minS, Values)));
     }}
-/>
+/> */}
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -1756,7 +1768,19 @@ export default function FloorPlan({ FloorId }) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
               <h5 className="mt-5">Temperature</h5>
-      <input
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={0}
+              max={100}
+              value={Values} 
+              decimalScale={2}
+              onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+        setValues(Math.min(maxV, Math.max(minV, Values)).toFixed(2));
+    }}
+              />
+      {/* <input
     type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
     maxLength={Math.max(minV.toString().length, maxV.toString().length + 3)}
@@ -1768,7 +1792,7 @@ export default function FloorPlan({ FloorId }) {
       if (Values && !isNaN(Values))
         setValues(Math.min(maxV, Math.max(minV, Values)).toFixed(2));
     }}
-/>
+/> */}
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -1794,7 +1818,19 @@ export default function FloorPlan({ FloorId }) {
               </h5>
 
               <h5 className="mt-5">Temperature</h5>
-              <input
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={10}
+              max={40}
+              value={Values} 
+              decimalScale={2}
+              onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+        setValues(Math.min(maxA, Math.max(minA, Values)).toFixed(2));
+    }}
+              />
+              {/* <input
     type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
     maxLength={Math.max(minA.toString().length, maxA.toString().length + 3)}
@@ -1806,7 +1842,7 @@ export default function FloorPlan({ FloorId }) {
       if (Values && !isNaN(Values))
         setValues(Math.min(maxA, Math.max(minA, Values)).toFixed(2));
     }}
-/>
+/> */}
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
