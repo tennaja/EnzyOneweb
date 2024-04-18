@@ -53,6 +53,12 @@ export default function FloorPlan({ FloorId }) {
   const [floorplanList, setFloorplanList] = useState([]);
   const [deviceTypeList, setdeviceTypeList] = useState([]);
   const [option, setOption] = useState();
+  const minS = 10;
+  const maxS = 40;
+  const minV = 0;
+  const maxV = 100;
+  const minA = 0;
+  const maxA = 100;
   useEffect(() => {
     if (FloorId != 0) {
       getfloorplan(FloorId);
@@ -65,9 +71,7 @@ export default function FloorPlan({ FloorId }) {
   
   const notifySuccess = () =>
   toast.success(
-    `Operation Complete
-    Your stop operation has been executed successfully
-  `,
+    `Operation Complete`,
     {
       position: "top-right",
       autoClose: 3000,
@@ -1578,30 +1582,17 @@ export default function FloorPlan({ FloorId }) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
               <h5 className="mt-5">Temperature</h5>
-              <TextField
-        className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-        type="number"
-        
-        inputProps={{ min : 10, max : 40}
-      }
-        
-        value={Values}
-        onChange={(e) => {
-          var value = parseInt(e.target.value)
-
-          if (value > 40) value = 40;
-          if (value < 10) value = 10;
-          
-          setValues(value);
-        }
-      }
-      onBlur={(e) => {
-        var num = parseFloat(e.target.value).toFixed(0);
-        // var cleanNum = num.toFixed(2);
-        setValues(num);
-      }}
-        variant="outlined"
-      />
+    <input
+    type="text"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    maxLength={Math.max(minS.toString().length, maxS.toString().length)}
+    value={Values}
+    onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+      if (Values && !isNaN(Values))
+        setValues(Math.min(maxS, Math.max(minS, Values)));
+    }}
+/>
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -1763,30 +1754,17 @@ export default function FloorPlan({ FloorId }) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
               <h5 className="mt-5">Temperature</h5>
-              <TextField
-        className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-        type="number"
-        
-        inputProps={{ min : 0, max : 100}
-      }
-        
-        value={Values}
-        onChange={(e) => {
-          var value = parseFloat(e.target.value)
-
-          if (value > 100) value = 100;
-          if (value < 0) value = 0;
-          
-          setValues(value);
-        }
-      }
-      onBlur={(e) => {
-        var num = parseFloat(e.target.value).toFixed(2);
-        // var cleanNum = num.toFixed(2);
-        setValues(num);
-      }}
-        variant="outlined"
-      />
+      <input
+    type="text"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    maxLength={Math.max(minV.toString().length, maxV.toString().length + 3)}
+    value={Values}
+    onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+      if (Values && !isNaN(Values))
+        setValues(Math.min(maxV, Math.max(minV, Values)).toFixed(2));
+    }}
+/>
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -1812,31 +1790,17 @@ export default function FloorPlan({ FloorId }) {
               </h5>
 
               <h5 className="mt-5">Temperature</h5>
-              <TextField
-              
-              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-              type="number"
-              
-              inputProps={{min : 10, max : 40 }
-            }
-              
-              value={Values}
-              onChange={(e) => {
-                var value = parseFloat(e.target.value)
-      
-                if (value > 40 ) value = 40;
-                if (value < 10) value = 10;
-                
-                setValues(value);
-              }
-            }
-            onBlur={(e) => {
-              var num = parseFloat(e.target.value).toFixed(2);
-              // var cleanNum = num.toFixed(2);
-              setValues(num);
-            }}
-              variant="outlined"
-            />
+              <input
+    type="text"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    maxLength={Math.max(minA.toString().length, maxA.toString().length + 3)}
+    value={Values}
+    onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+      if (Values && !isNaN(Values))
+        setValues(Math.min(maxA, Math.max(minA, Values)).toFixed(2));
+    }}
+/>
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"

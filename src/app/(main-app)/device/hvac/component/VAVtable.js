@@ -4,9 +4,6 @@ import { NumericFormat } from 'react-number-format';
 import Highlighter from "react-highlight-words";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import TextField from '@mui/material/TextField';
-
-import Link from "next/link";
 import {
   ChangeValueDamperVAV
 } from "@/utils/api";
@@ -20,7 +17,8 @@ export default function VAVtable(VAVList) {
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
-  
+  const min = 0;
+  const max = 100;
   const notifySuccess = () =>
     toast.success(`Operation Complete
     `, {
@@ -211,31 +209,17 @@ const handleChangeValueSettemp = async () => {
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
 
               <h5 className="mt-5">Temperature</h5>
-              
-              <TextField
-        className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-        type="number"
-        
-        inputProps={{ min : 0, max : 100}
-      }
-        
-        value={Values}
-        onChange={(e) => {
-          var value = parseFloat(e.target.value)
-
-          if (value > 100) value = 100;
-          if (value < 0) value = 0;
-          
-          setValues(value);
-        }
-      }
-      onBlur={(e) => {
-        var num = parseFloat(e.target.value).toFixed(2);
-        // var cleanNum = num.toFixed(2);
-        setValues(num);
-      }}
-        variant="outlined"
-      />
+              <input
+    type="text"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    maxLength={Math.max(min.toString().length, max.toString().length + 3)}
+    value={Values}
+    onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+      if (Values && !isNaN(Values))
+        setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
+    }}
+/>
       
 
               <div className="flex justify-center mt-10 gap-5">

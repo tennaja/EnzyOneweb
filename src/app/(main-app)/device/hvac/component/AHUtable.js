@@ -22,7 +22,8 @@ export default function AHUtable(AHUlist) {
   const [showModalAutomationstop, setShowModalAutomationstop] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
-  
+  const min = 10;
+  const max = 40;
   
   const notifySuccess = () =>
   toast.success(
@@ -327,32 +328,17 @@ async function clickChangestatusAutomation() {
               <h5 className="mt-5">Set Supply Temp. Setpoint (°C) : {DeviceName}</h5>
 
               <h5 className="mt-5">Temperature</h5>
-              <TextField
-              
-        className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-        type="number"
-        
-        inputProps={{min : 10, max : 40 }
-      }
-        
-        value={Values}
-        onChange={(e) => {
-          var value = parseFloat(e.target.value)
-
-          if (value > 40) value = 40;
-          if (value < 10) value = 10;
-          
-          setValues(value);
-        }
-      }
-      onBlur={(e) => {
-        var num = parseFloat(e.target.value).toFixed(2);
-        // var cleanNum = num.toFixed(2);
-        setValues(num);
-      }}
-        variant="outlined"
-      />
-
+              <input
+    type="text"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    maxLength={Math.max(min.toString().length, max.toString().length + 3)}
+    value={Values}
+    onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+      if (Values && !isNaN(Values))
+        setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
+    }}
+/>
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"

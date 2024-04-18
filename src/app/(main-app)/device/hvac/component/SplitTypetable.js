@@ -29,9 +29,9 @@ export default function SplitTypetable(SplittypeList) {
   const [showModalAutomationstop, setShowModalAutomationstop] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
-  
-
   const [toggle, setToggle] = useState(false);
+  const min = 10;
+  const max = 40;
   const handleToggleChange = () => {
     
     setToggle(!toggle);
@@ -448,24 +448,17 @@ export default function SplitTypetable(SplittypeList) {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
-              <TextField
-        fullWidth
-        type="number"
-        
-        inputProps={{ min : 10, max : 40}
-      }
-        
-        value={Values}
-        onChange={(e) => {
-          var value = parseFloat(e.target.value) 
-
-          if (value > 40) value = 40;
-          if (value < 10) value = 10;
-          
-          setValues(value);
-        }}
-        variant="outlined"
-      />
+              <input
+    type="text"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    maxLength={Math.max(min.toString().length, max.toString().length)}
+    value={Values}
+    onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+      if (Values && !isNaN(Values))
+        setValues(Math.min(max, Math.max(min, Values)));
+    }}
+/>
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
