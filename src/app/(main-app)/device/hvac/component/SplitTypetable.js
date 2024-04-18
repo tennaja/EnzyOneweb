@@ -449,9 +449,11 @@ export default function SplitTypetable(SplittypeList) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
               <input
-    type="text"
+    type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
     maxLength={Math.max(min.toString().length, max.toString().length)}
+    min={min}
+    max={max}
     value={Values}
     onChange={e => setValues(e.target.value)}
     onBlur={e => {

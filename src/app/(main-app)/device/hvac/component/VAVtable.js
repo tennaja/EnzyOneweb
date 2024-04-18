@@ -210,10 +210,12 @@ const handleChangeValueSettemp = async () => {
 
               <h5 className="mt-5">Temperature</h5>
               <input
-    type="text"
+    type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
     maxLength={Math.max(min.toString().length, max.toString().length + 3)}
     value={Values}
+    min={min}
+    max={max}
     onChange={e => setValues(e.target.value)}
     onBlur={e => {
       if (Values && !isNaN(Values))

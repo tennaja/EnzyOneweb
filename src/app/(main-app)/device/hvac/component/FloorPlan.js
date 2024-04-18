@@ -57,8 +57,8 @@ export default function FloorPlan({ FloorId }) {
   const maxS = 40;
   const minV = 0;
   const maxV = 100;
-  const minA = 0;
-  const maxA = 100;
+  const minA = 10;
+  const maxA = 40;
   useEffect(() => {
     if (FloorId != 0) {
       getfloorplan(FloorId);
@@ -1583,10 +1583,12 @@ export default function FloorPlan({ FloorId }) {
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
               <h5 className="mt-5">Temperature</h5>
     <input
-    type="text"
+    type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
     maxLength={Math.max(minS.toString().length, maxS.toString().length)}
     value={Values}
+    min={minS}
+    max={maxS}
     onChange={e => setValues(e.target.value)}
     onBlur={e => {
       if (Values && !isNaN(Values))
@@ -1755,9 +1757,11 @@ export default function FloorPlan({ FloorId }) {
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
               <h5 className="mt-5">Temperature</h5>
       <input
-    type="text"
+    type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
     maxLength={Math.max(minV.toString().length, maxV.toString().length + 3)}
+    min={minV}
+    max={maxV}
     value={Values}
     onChange={e => setValues(e.target.value)}
     onBlur={e => {
@@ -1791,9 +1795,11 @@ export default function FloorPlan({ FloorId }) {
 
               <h5 className="mt-5">Temperature</h5>
               <input
-    type="text"
+    type="number"
     className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
     maxLength={Math.max(minA.toString().length, maxA.toString().length + 3)}
+    min={minA}
+    max={maxA}
     value={Values}
     onChange={e => setValues(e.target.value)}
     onBlur={e => {
