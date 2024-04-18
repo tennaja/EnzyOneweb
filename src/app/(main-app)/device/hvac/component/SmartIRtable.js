@@ -55,7 +55,8 @@ export default function SmartIRtable(IotList) {
                     return (
                       item.deviceName.includes(searchTable) ||
                       item.deviceName.toLowerCase().includes(searchTable) ||
-                      // item.status.includes(searchTable) ||
+                      item.status.includes(searchTable) ||
+                      item.status.toUpperCase().includes(searchTable) ||
                       String(item.temp).includes(searchTable) ||
                       String(item.humidity).includes(searchTable) ||
                       String(item.co2).includes(searchTable) 
@@ -94,30 +95,33 @@ export default function SmartIRtable(IotList) {
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" :  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.temp)} // Replace this with your text
-                                  />
+                                  />}
+                       
       
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.humidity)} // Replace this with your text
-                                  />
+                                  />}
+                        
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.co2)} // Replace this with your text
-                                  />
+                                  />}
+                        
                           
                         </td>
                         

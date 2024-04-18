@@ -4,6 +4,8 @@ import { NumericFormat } from 'react-number-format';
 import Highlighter from "react-highlight-words";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import TextField from '@mui/material/TextField';
+
 import Link from "next/link";
 import {
   ChangeValueDamperVAV
@@ -18,7 +20,7 @@ export default function VAVtable(VAVList) {
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
-
+  
   const notifySuccess = () =>
     toast.success(`Operation Complete
     `, {
@@ -33,7 +35,9 @@ export default function VAVtable(VAVList) {
     });
 
   const onChangeValue = (event) => {
-    setValues(event);
+    let { value, min, max } = event.target;
+    value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+    setValues(value);
   };
   const onclickOPenSettemp = (id, DecviceId, values) => {
     setOpenSettempModal(true)
@@ -67,6 +71,8 @@ const handleChangeValueSettemp = async () => {
     setModalError(true)
   }
 }
+
+
     
   return (
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
@@ -157,33 +163,35 @@ const handleChangeValueSettemp = async () => {
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" :  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.temp)} // Replace this with your text
                                   />
-      
+       }
+                       
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.airFlow)} // Replace this with your text
-                                  />
+                                  />}
+                        
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center" >
-                       
-                        <Highlighter
+                        {item.status == "offline" ? "-" : <Highlighter
                         className="text-[#5eead4] underline font-bold cursor-pointer"
                         onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.damper ,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.damper)} // Replace this with your text
-                                  />
+                                  />}
+                        
                           
                         </td>
                         
@@ -203,18 +211,32 @@ const handleChangeValueSettemp = async () => {
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
 
               <h5 className="mt-5">Temperature</h5>
-              <NumericFormat 
-              type="number" 
-              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-              min={0}
-              max={100}
-              value={Values} 
-              decimalScale={2}
-              onChange={(e) => {
-                onChangeValue(e.target.value);
-                e.preventDefault();
-              }}
-              />
+              
+              <TextField
+        className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+        type="number"
+        
+        inputProps={{ min : 0, max : 100}
+      }
+        
+        value={Values}
+        onChange={(e) => {
+          var value = parseFloat(e.target.value)
+
+          if (value > 100) value = 100;
+          if (value < 0) value = 0;
+          
+          setValues(value);
+        }
+      }
+      onBlur={(e) => {
+        var num = parseFloat(e.target.value).toFixed(2);
+        // var cleanNum = num.toFixed(2);
+        setValues(num);
+      }}
+        variant="outlined"
+      />
+      
 
               <div className="flex justify-center mt-10 gap-5">
                 <button

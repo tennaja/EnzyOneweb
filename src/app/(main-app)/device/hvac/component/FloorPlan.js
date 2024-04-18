@@ -3,7 +3,7 @@ import { NumericFormat } from 'react-number-format';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect, useState, useRef } from "react";
-import ImageMarker, { Marker } from "react-image-marker";
+import TextField from '@mui/material/TextField';
 import {
   ChangeValueSettempSplttpye,
   ChangeValueSetMode,
@@ -66,6 +66,7 @@ export default function FloorPlan({ FloorId }) {
   const notifySuccess = () =>
   toast.success(
     `Operation Complete
+    Your stop operation has been executed successfully
   `,
     {
       position: "top-right",
@@ -1577,18 +1578,30 @@ export default function FloorPlan({ FloorId }) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
               <h5 className="mt-5">Temperature</h5>
-              <NumericFormat 
-              type="number" 
-              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-              min={10}
-              max={40}
-              decimalScale={2}
-              value={Values}
-              onChange={(e) => {
-                onChangeValueSettemp(e.target.value);
-                e.preventDefault();
-              }}
-              />
+              <TextField
+        className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+        type="number"
+        
+        inputProps={{ min : 10, max : 40}
+      }
+        
+        value={Values}
+        onChange={(e) => {
+          var value = parseInt(e.target.value)
+
+          if (value > 40) value = 40;
+          if (value < 10) value = 10;
+          
+          setValues(value);
+        }
+      }
+      onBlur={(e) => {
+        var num = parseFloat(e.target.value).toFixed(0);
+        // var cleanNum = num.toFixed(2);
+        setValues(num);
+      }}
+        variant="outlined"
+      />
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -1750,18 +1763,30 @@ export default function FloorPlan({ FloorId }) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
               <h5 className="mt-5">Temperature</h5>
-              <NumericFormat 
-              type="number" 
-              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-              min={0}
-              max={100}
-              value={Values}
-              decimalScale={2}
-              onChange={(e) => {
-                onChangeValueSettempVav(e.target.value);
-                e.preventDefault();
-              }}
-              />
+              <TextField
+        className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+        type="number"
+        
+        inputProps={{ min : 0, max : 100}
+      }
+        
+        value={Values}
+        onChange={(e) => {
+          var value = parseFloat(e.target.value)
+
+          if (value > 100) value = 100;
+          if (value < 0) value = 0;
+          
+          setValues(value);
+        }
+      }
+      onBlur={(e) => {
+        var num = parseFloat(e.target.value).toFixed(2);
+        // var cleanNum = num.toFixed(2);
+        setValues(num);
+      }}
+        variant="outlined"
+      />
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -1787,18 +1812,31 @@ export default function FloorPlan({ FloorId }) {
               </h5>
 
               <h5 className="mt-5">Temperature</h5>
-              <NumericFormat 
-              type="number" 
+              <TextField
+              
               className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-              min={10}
-              max={40}
-              value={Values} 
-              decimalScale={2}
+              type="number"
+              
+              inputProps={{min : 10, max : 40 }
+            }
+              
+              value={Values}
               onChange={(e) => {
-                onChangeValueSettempAHU(e.target.value);
-                e.preventDefault();
-              }}
-              />
+                var value = parseFloat(e.target.value)
+      
+                if (value > 40 ) value = 40;
+                if (value < 10) value = 10;
+                
+                setValues(value);
+              }
+            }
+            onBlur={(e) => {
+              var num = parseFloat(e.target.value).toFixed(2);
+              // var cleanNum = num.toFixed(2);
+              setValues(num);
+            }}
+              variant="outlined"
+            />
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"

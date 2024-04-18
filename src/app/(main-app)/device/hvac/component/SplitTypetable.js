@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
+import TextField from '@mui/material/TextField';
 import {
   ChangeValueSettempSplttpye, ChangeValueSetMode, ChangeValueSetFan ,ChangeControlSplittype ,ChangeAutomationSplittype
 } from "@/utils/api";
@@ -64,6 +65,7 @@ export default function SplitTypetable(SplittypeList) {
     setShowModalAutomationstart(true);
     
   }
+
 
   const notifySuccess = () =>
     toast.success(`Operation Complete
@@ -176,9 +178,11 @@ export default function SplitTypetable(SplittypeList) {
       setModalError(true)
     }
   }
-  const onChangeValue = (event) => {
-    setValues(event);
-  };
+  // const onChangeValue = (event) => {
+  //   let { value, min, max } = event.target;
+  //   value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+  //   setValues(value);
+  // };
 
   const onclickOPenSettemp = (id, DecviceId, values) => {
     console.log(id)
@@ -330,65 +334,67 @@ export default function SplitTypetable(SplittypeList) {
 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-
-                                <Highlighter
+                              {item.status == "offline" ? "-" : 
+                              <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={String(item.roomTemp)} // Replace this with your text
 
-                                />
+                                />}
+                                
 
 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                <Highlighter
+                              {item.status == "offline" ? "-" :  <Highlighter
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={String(item.humidity)} // Replace this with your text
-                                />
+                                />}
+                               
 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center ">
-                                
-                                <Highlighter
+                              {item.status == "offline" ? "-" : <Highlighter
                                 className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.setTemp ,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={String(item.setTemp)} // Replace this with your text
                                   
-                                />
+                                />}
+                                
 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center ">
-                              
-                                <Highlighter
+                              {item.status == "offline" ? "-" :  <Highlighter
                                 className="text-[#5eead4] underline font-bold cursor-pointer"onClick={(event) => item.status == "on" ? onclickOPenSetMode(item.id, item.deviceName,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={item.fan} // Replace this with your text
                                  
-                                />
+                                />}
+                               
                                 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center ">
-                        
-                                
-                                <Highlighter
+                              {item.status == "offline" ? "-" : <Highlighter
                                 className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id, item.deviceName,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={item.mode} // Replace this with your text
-                                />
+                                />}
+                                
+                                
                                 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center">
-                               
-                                <button
+                              {item.status == "offline" ? "-" : 
+                              <button
                                     type="button"
                                     className={
                                       item.control == "on"
@@ -408,14 +414,12 @@ export default function SplitTypetable(SplittypeList) {
                                   autoEscape={true}
                                   textToHighlight={item.control} // Replace this with your text
                                 />
-                                  </button>
+                                  </button>}
+                                
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 flex justify-center items-center font-extrabold">
                                 
-                               
-
-       
-       <div className='toggle-container' onClick={() =>
+                              {item.status == "offline" ? "-" :  <div className='toggle-container' onClick={() =>
        item.status == "on" ?
        item.automation == "on"
            ? openModalAutomationIsStop(item.id,item.deviceName)
@@ -424,7 +428,10 @@ export default function SplitTypetable(SplittypeList) {
            <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
                {item.automation=="on" ? "ON" : "OFF"}
            </div>
-       </div>
+       </div>}
+
+       
+      
 
                               </td>
 
@@ -441,19 +448,24 @@ export default function SplitTypetable(SplittypeList) {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
-              <h5 className="mt-5">Temperature</h5>
-              <NumericFormat 
-              type="number" 
-              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-              min={10}
-              max={40}
-              value={Values} 
-              decimalScale={2}
-              onChange={(e) => {
-                onChangeValue(e.target.value);
-                e.preventDefault();
-              }}
-              />
+              <TextField
+        fullWidth
+        type="number"
+        
+        inputProps={{ min : 10, max : 40}
+      }
+        
+        value={Values}
+        onChange={(e) => {
+          var value = parseFloat(e.target.value) 
+
+          if (value > 40) value = 40;
+          if (value < 10) value = 10;
+          
+          setValues(value);
+        }}
+        variant="outlined"
+      />
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"

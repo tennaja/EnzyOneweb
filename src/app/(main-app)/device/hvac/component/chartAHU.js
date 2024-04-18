@@ -100,7 +100,7 @@ export default function ChartAHU({ FloorId }) {
 
         title: {
           display: true,
-          text: "Controle Value %",
+          text: "Controle Valve %",
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
       },

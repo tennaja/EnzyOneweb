@@ -9,7 +9,7 @@ import {
   ChangeValueSettempAHU,ChangeAutomationAHU
 } from "@/utils/api";
 import Loading from "./Loading";
-
+import TextField from '@mui/material/TextField';
 export default function AHUtable(AHUlist) {
   const [searchTable, setSerachTable] = useState("");
   const [DecviceId, setDeviceId] = useState(null);
@@ -223,78 +223,80 @@ async function clickChangestatusAutomation() {
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        
-                        <Highlighter
+                        {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.supplyTemp)} // Replace this with your text
-                                  />
+                                  />}
+                        
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center ">
-                       
-                        <Highlighter
+                        {item.status == "offline" ? "-" : <Highlighter
                                     className="text-[#5eead4] underline font-bold cursor-pointer"
                                     onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
-                                  />
+                                  />}
+                        
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" :  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.returnTemp)} // Replace this with your text
-                                  />
+                                  />}
+                       
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.vsdDrive)} // Replace this with your text
-                                  />
+                                  />}
+                        
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.vsdPower)} // Replace this with your text
-                                  />
+                                  />}
+                        
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" :  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.vsdSpeed)} // Replace this with your text
-                                  />
+                                  />}
+                       
                 
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
+                        {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.controlValve)} // Replace this with your text
                                   />
-                          
+                          }
+                        
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 flex justify-center items-center font-extrabold">
                                 
-                               
-
-       
-                                <div className='toggle-container' onClick={() =>
+                        {item.status == "offline" ? "-" : <div className='toggle-container' onClick={() =>
                                 item.status == "on" ?
                                 item.automation == "on"
                                     ? openModalAutomationIsStop(item.id,item.deviceName)
@@ -303,7 +305,10 @@ async function clickChangestatusAutomation() {
                                     <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
                                         {item.automation=="on" ? "ON" : "OFF"}
                                     </div>
-                                </div>
+                                </div>}
+
+       
+                                
                          
                                                        </td>
                         
@@ -322,18 +327,31 @@ async function clickChangestatusAutomation() {
               <h5 className="mt-5">Set Supply Temp. Setpoint (°C) : {DeviceName}</h5>
 
               <h5 className="mt-5">Temperature</h5>
-              <NumericFormat 
-              type="number" 
-              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-              min={10}
-              max={40}
-              value={Values} 
-              decimalScale={2}
-              onChange={(e) => {
-                onChangeValue(e.target.value);
-                e.preventDefault();
-              }}
-              />
+              <TextField
+              
+        className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+        type="number"
+        
+        inputProps={{min : 10, max : 40 }
+      }
+        
+        value={Values}
+        onChange={(e) => {
+          var value = parseFloat(e.target.value)
+
+          if (value > 40) value = 40;
+          if (value < 10) value = 10;
+          
+          setValues(value);
+        }
+      }
+      onBlur={(e) => {
+        var num = parseFloat(e.target.value).toFixed(2);
+        // var cleanNum = num.toFixed(2);
+        setValues(num);
+      }}
+        variant="outlined"
+      />
 
               <div className="flex justify-center mt-10 gap-5">
                 <button

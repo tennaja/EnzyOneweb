@@ -602,39 +602,43 @@ export default function SummaryCard() {
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  <Highlighter
+                                {item.status == "offline" ? "-" :  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.pressure)} // Replace this with your text
-                                  />
+                                  />}
+                                 
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  <Highlighter
+                                {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.power)} // Replace this with your text
-                                  />
+                                  />}
+                                  
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  <Highlighter
+                                {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.efficiency)} // Replace this with your text
-                                  />
+                                  />}
+                                  
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                  <Highlighter
+                                {item.status == "offline" ? "-" : <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.workingHours)} // Replace this with your text
-                                  />
+                                  />}
+                                  
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center">
-                                  <button
+                                {item.status == "offline" ? "-" : <button
                                     type="button"
                                     className={
                                       item.status == "On"
@@ -648,7 +652,8 @@ export default function SummaryCard() {
                                     }
                                   >
                                     {item.status == "On" ? "On" : "Off"}
-                                  </button>
+                                  </button>}
+                                  
                                 </td>
                               </tr>
                             );
