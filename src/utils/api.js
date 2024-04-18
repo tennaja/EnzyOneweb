@@ -747,4 +747,22 @@ export async function getHeaterWater(floorId) {
   } catch (error) {
     return error;
   }
-}                    
+}    
+
+export async function getIotModuleGraph(req) {
+  
+  const deviceParameterId = req.deviceParameterId;
+  const dateFrom = req.dateFrom
+  const dateTo = req.dateTo
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/graph/${deviceParameterId}?dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",},
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}

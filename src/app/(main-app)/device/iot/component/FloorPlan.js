@@ -5,21 +5,29 @@ import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect, useState, useRef } from "react";
 import ImageMarker, { Marker } from "react-image-marker";
 import {
-  ChangeValueSettempSplttpye,
-  ChangeValueSetMode,
-  ChangeValueSetFan,
-  ChangeControlSplittype,
-  ChangeValueDamperVAV,
-  ChangeValueSettempAHU,
-  ChangeAutomationSplittype,
-  ChangeAutomationAHU,
-  getFloorplanIoT,
-  getAHU,
-  getVAV,
-  getSplittype,
-  getIOT,
+  getFloorplanIoT,getdeviceparameter,getindoortemphumid,getoutdoortemphumid,getPressuregauge,getPowerMeter,getInveter,getFlowMeter,getMotionSensor,getLighting,getCounter,getSmartIR,getEfficiency,getCCTV,getCO2Sensor,
+  getWaterMeter,getHeater,getHeaterWater
 } from "@/utils/api";
-
+import Heatertable from "./Heatertable";
+import VAVtable from "./Outdoorhumidtable";
+import SmartIRtable from "./SmartIRtable";
+import WaterMetertable from "./WaterMetertable";
+import ChartAHU from "./chart";
+import ChartSplittype from "./chartSplittype";
+import CO2Sensor from "./CO2tble";
+import HeaterWatertable from "./Heaterwater";
+import CCTV from "./CCTVtable";
+import Efficiency from "./Efficiencytable";
+import OutdoorHumid from "./Outdoorhumidtable";
+import IndoorHumid from "./Indoorhumidtable";
+import Pressuregauge from "./Pressuregaugetable";
+import Chart from "./chart";
+import PowerMeter from "./Powermetertable";
+import Inverter from "./Invertertable";
+import FlowMeter from "./FlowMetertable";
+import MotionSensor from "./Motiontable";
+import Counter from "./Motiontable copy";
+import Ligthing from "./Ligthingtable";
 export default function FloorPlan({ FloorId }) {
   console.log(FloorId);
   const [Values, setValues] = useState();
@@ -45,70 +53,184 @@ export default function FloorPlan({ FloorId }) {
   const [showModalAutomationAHUOff, setShowModalAutomationAHUOff] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
-  const [AHUList, setAHUList] = useState([]);
-  const [VAVList, setVAVList] = useState([]);
-  const [SplittypeList, setSplittypeList] = useState([]);
-  const [IOTList, setIOTList] = useState([]);
+  const [indoortemphumidList, setIndoortemphumidList] = useState([]);
+  const [outdoortemphumidList, setOutdoortemphumidList] = useState([]);
+  const [PressuregaugeList, setPressuregaugeList] = useState([]);
+  const [PowerMeterList, setPowerMeterList] = useState([]);
+  const [InveterList, setInveterList] = useState([]);
+  const [FlowMeterList, setFlowMeterList] = useState([]);
+  const [MotionSensorList, setMotionSensorList] = useState([]);
+  const [LightingList, setLightingList] = useState([]);
+  const [CounterList, setCounterList] = useState([]);
+  const [SmartIRList, setSmartIRList] = useState([]);
+  const [EfficiencyList, setEfficiencyList] = useState([]);
+  const [CCTVList, setCCTVList] = useState([]);
+  const [CO2SensorList, setCO2SensorList] = useState([]);
+  const [WaterMeterList, setWaterMeterList] = useState([]);
+  const [HeaterList, setHeaterList] = useState([]);
+  const [HeaterWaterList, setHeaterWaterList] = useState([]);
+  const [deviceTypeId,setdeviceTypeId] = useState("") 
   const [floorId, setFloorId] = useState();
   const [floorplanList, setFloorplanList] = useState([]);
   const [deviceTypeList, setdeviceTypeList] = useState([]);
-  const [option, setOption] = useState();
+  const [option, setOption] = useState("Indoor Temp & Humid");
   useEffect(() => {
-    if (FloorId != 0) {
+    if (FloorId != 0 && option) {
+      console.log(option)
       getfloorplan(FloorId);
-      getAHUList(FloorId);
-      getVAVList(FloorId);
-      getSplittypeList(FloorId);
-      getIOTList(FloorId);
+      OnchangeListFloorplan(option)
+      // getIndoortemphumidList(FloorId);
+      // getoutdoortemphumidList(FloorId);
+      // getPressuregaugeList(FloorId);
+      // getPressuregaugeList(FloorId);
+      // getPowerMeterList(FloorId);
+      // getInveterList(FloorId);
+      // getFlowMeterList(FloorId);
+      // getMotionSensorList(FloorId);
+      // getLightingList(FloorId);
+      // getCounterList(FloorId);
+      // getSmartIRList(FloorId);
+      // getEfficiencyList(FloorId);
+      // getCCTVList(FloorId);
+      // getCO2SensorList(FloorId);
+      // getWaterMeterList(FloorId);
+      // getHeaterList(FloorId);
+      // getHeaterWaterList(FloorId);
     }
-  }, [FloorId]);
+  }, [FloorId,option]);
 
   const getfloorplan = async (floorId) => {
     setFloorId(floorId);
     const result = await getFloorplanIoT(floorId);
     let data = [];
     data.push(result.data);
-    console.log(result.data);
+    // console.log(result.data);
     setFloorplanList(data);
 
-    console.log(result.data.deviceType);
+    // console.log(result.data.deviceType);
     setdeviceTypeList(result.data.deviceType);
     // if (result.data.deviceType.length > 0) {
     //   console.log(result.data.deviceType)
     //   setdeviceTypeList(result.data.deviceType)
     // }
   };
+  const getIndoortemphumidList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getindoortemphumid(floorId);
+    console.log(result.data);
+    setIndoortemphumidList(result.data);
+    };
+  const getoutdoortemphumidList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getoutdoortemphumid(floorId);
+    console.log(result.data);
+    setOutdoortemphumidList(result.data);
+    console.log(result.data.id)
+    setdeviceTypeId(result.data.id)
+  };
+  const getPressuregaugeList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getPressuregauge(floorId);
+    console.log(result.data);
+    setPressuregaugeList(result.data);
+  };
+  const getPowerMeterList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getPowerMeter(floorId);
+    console.log(result.data);
+    setPowerMeterList(result.data);
+  };
+  const getInveterList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getInveter(floorId);
+    console.log(result.data);
+    setInveterList(result.data);
+  };
+  const getFlowMeterList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getFlowMeter(floorId);
+    console.log(result.data);
+    setFlowMeterList(result.data);
+  };
+  const getMotionSensorList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getMotionSensor(floorId);
+    console.log(result.data);
+    setMotionSensorList(result.data);
+  };
+  const getLightingList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getLighting(floorId);
+    console.log(result.data);
+    setLightingList(result.data);
+  };
+  const getCounterList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getCounter(floorId);
+    console.log(result.data);
+    setCounterList(result.data);
+  };
+  const getSmartIRList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getSmartIR(floorId);
+    console.log(result.data);
+    setSmartIRList(result.data);
+  };
+  const getEfficiencyList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getEfficiency(floorId);
+    console.log(result.data);
+    setEfficiencyList(result.data);
+  };
+  const getCCTVList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getCCTV(floorId);
+    console.log(result.data);
+    setCCTVList(result.data);
+  };
+  const getCO2SensorList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getCO2Sensor(floorId);
+    console.log(result.data);
+    setCO2SensorList(result.data);
+  };
+  const getWaterMeterList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getWaterMeter(floorId);
+    console.log(result.data);
+    setWaterMeterList(result.data);
+  };
+  const getHeaterList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getHeater(floorId);
+    console.log(result.data);
+    setHeaterList(result.data);
+  };
+  const getHeaterWaterList = async (floorId) => {
+    setFloorId(floorId);
+    console.log(floorId);
+    const result = await getHeaterWater(floorId);
+    console.log(result.data);
+    setHeaterWaterList(result.data);
+  };
 
-  const getAHUList = async (floorId) => {
-    setFloorId(floorId);
-    console.log(floorId);
-    const result = await getAHU(floorId);
-    console.log(result.data);
-    setAHUList(result.data);
-  };
-  const getVAVList = async (floorId) => {
-    setFloorId(floorId);
-    console.log(floorId);
-    const result = await getVAV(floorId);
-    console.log(result.data);
-    setVAVList(result.data);
-  };
 
-  const getSplittypeList = async (floorId) => {
-    setFloorId(floorId);
-    console.log(floorId);
-    const result = await getSplittype(floorId);
-    console.log(result.data);
-    setSplittypeList(result.data);
-  };
 
-  const getIOTList = async (floorId) => {
-    setFloorId(floorId);
-    console.log(floorId);
-    const result = await getIOT(floorId);
-    console.log(result.data);
-    setIOTList(result.data);
-  };
 
   const handleToggleChange = () => {
     setToggle(!toggle);
@@ -387,6 +509,46 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
     }
   }
+  const OnchangeListFloorplan = (event) => {
+    setOption(event)
+    console.log(option)
+    if (option == "All Type"){
+      getIndoortemphumidList(FloorId);
+      getoutdoortemphumidList(FloorId);
+      getPressuregaugeList(FloorId);
+      getPowerMeterList(FloorId);
+      getInveterList(FloorId);
+      getFlowMeterList(FloorId);
+      getMotionSensorList(FloorId);
+      getLightingList(FloorId);
+      getCounterList(FloorId);
+      getSmartIRList(FloorId);
+      getEfficiencyList(FloorId);
+      getCCTVList(FloorId);
+      getCO2SensorList(FloorId);
+      getWaterMeterList(FloorId);
+      getHeaterList(FloorId);
+      getHeaterWaterList(FloorId);
+      console.log(option)
+      
+    }
+    else if(option == "Indoor Temp & Humid"){getIndoortemphumidList(FloorId);}
+    else if(option == "Outdoor Temp & Humid"){getoutdoortemphumidList(FloorId);}
+    else if(option == "Pressure Gauge"){getPressuregaugeList(FloorId);}
+    else if(option == "Power Meter"){getPowerMeterList(FloorId);}
+    else if(option == "Inverter"){getInveterList(FloorId);}
+    else if(option == "Flow Meter"){getFlowMeterList(FloorId);}
+    else if(option == "Motion Sensor"){getMotionSensorList(FloorId);}
+    else if(option == "Lighting"){getLightingList(FloorId);}
+    else if(option == "Counter"){getCounterList(FloorId);}
+    else if(option == "Smart IR"){getSmartIRList(FloorId);}
+    else if(option == "Efficiency"){getEfficiencyList(FloorId);}
+    else if(option == "CCTV"){getCCTVList(FloorId);}
+    else if(option == "CO2 Sensor"){getCO2SensorList(FloorId);}
+    else if(option == "Water Meter"){getWaterMeterList(FloorId);}
+    else if(option == "Heater"){getHeaterList(FloorId);}
+    else if(option == "Heater Water"){getHeaterWaterList(FloorId);}
+  }
 
   const closeModal = () => {
     setOpenSettempModal(false);
@@ -413,7 +575,7 @@ export default function FloorPlan({ FloorId }) {
         
               {floorplanList.length > 0 &&
                 floorplanList.map((item, index) => {
-                  console.log(item);
+                  
                   return (
                     <div key={item.id}>
                       <div className="flex flex-row gap-4 p-2">
@@ -421,12 +583,13 @@ export default function FloorPlan({ FloorId }) {
                       <span className="text-lg  font-bold">{item.name}</span>
             <select
               className="w-auto border border-slate-300 mx-2 rounded-md h-9 px-3"
-              onChange={(e) => setOption(e.target.value)}
+              onChange={(e) => OnchangeListFloorplan(e.target.value)}
+              value={option}
             >
-              <option>-</option>
+              
               {deviceTypeList.length > 0 &&
                 deviceTypeList.map((item) => {
-                  console.log(item);
+                  
                   return (
                   <option className="rounded-lg" key={item.id}>{item.displayName}</option>)
                 })}
@@ -443,8 +606,53 @@ export default function FloorPlan({ FloorId }) {
                     
               {option == "All Type" ? (
                 <div>
-                  {AHUList.length > 0 &&
-                    AHUList.map((marker, index) => {
+                  {indoortemphumidList.length > 0 &&
+                    indoortemphumidList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-auto"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                            onClick={() => onChangeValue("SPLIT", [marker])}
+                          >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                     {outdoortemphumidList.length > 0 &&
+                    outdoortemphumidList.map((marker, index) => {
                       console.log(marker);
                       return (
                         <div key={marker.id}>
@@ -465,7 +673,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={marker.id}
                             value={"AHU"}
-                            className="w-56"
+                            className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -485,53 +693,12 @@ export default function FloorPlan({ FloorId }) {
                             >
                               {marker.deviceName}
                             </div>
-                            <div className="bg-white ml-4 border border-black">
-                              <div class="px-3 py-2">
-                                <span class="text-gray-700 text-xs">
-                                  Supply Temp. (°C) :{" "}
-                                  {String(marker.supplyTemp)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs ">
-                                  Supply Temp. Setpoint (°C) :{" "}
-                                  {String(marker.supplyTempSetPoint)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Return Temp. (°C) :{" "}
-                                  {String(marker.returnTemp)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD %Drive (Hz) : {String(marker.vsdDrive)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD Power (kW) : {String(marker.vsdPower)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD Speed (rpm) : {String(marker.vsdSpeed)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Control Valve (%) :{" "}
-                                  {String(marker.controlValve)}
-                                </span>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       );
                     })}
-                  {VAVList.length > 0 &&
-                    VAVList.map((marker, index) => {
+                    {PressuregaugeList.length > 0 &&
+                   PressuregaugeList.map((marker, index) => {
                       console.log(marker);
                       return (
                         <div key={index}>
@@ -552,7 +719,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={index}
                             value={"VAV"}
-                            className="w-44"
+                            className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -572,36 +739,19 @@ export default function FloorPlan({ FloorId }) {
                             >
                               {marker.deviceName}
                             </div>
-                            <div className="bg-white border border-black ml-4">
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Temp. (°C) : {marker.temp}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Air Flow (CFM) : {marker.airFlow}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Damper (%) : {marker.damper}
-                                </span>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       );
                     })}
-                  {SplittypeList.length > 0 &&
-                    SplittypeList.map((marker, index) => {
+                    {PowerMeterList.length > 0 &&
+                    PowerMeterList  .map((marker, index) => {
                       return (
                         <div key={marker.id}>
                           <div
                             className={
-                              marker.control == "on"
+                              marker.status == "on"
                                 ? "bg-[#5eead4] rounded-full px-1 py-1"
-                                : marker.control == "offline"
+                                : marker.status == "offline"
                                 ? " bg-red-500 rounded-full px-1 py-1"
                                 : " bg-gray-300 rounded-full px-1 py-1"
                             }
@@ -611,53 +761,163 @@ export default function FloorPlan({ FloorId }) {
                               position: "absolute",
                             }}
                           ></div>
-
                           <div
                             key={marker.id}
                             value={"SPLIT"}
-                            className="w-44"
+                            className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("SPLIT", [marker])}
                           >
                             <div
                               class={
-                                marker.control == "on"
+                                marker.status == "on"
                                   ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
-                                  : marker.control == "offline"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div></div>
+                        </div>
+                      );
+                    })}
+                    {InveterList.length > 0 &&
+                    InveterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-auto"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
                                   ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
                                   : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
                               }
                             >
                               {marker.deviceName}
                             </div>
-                            <div className="bg-white border border-black ml-4">
-                              <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                  Room Temp. (°C) : {String(marker.roomTemp)}
-                                </span>
-                              </div>
-                              <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                  Humidity (%) : {String(marker.humidity)}
-                                </span>
-                              </div>
-                              <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                  Set Temp. (°C) : {String(marker.setTemp)}
-                                </span>
-                              </div>
-                            </div>
+                           
                           </div>
                         </div>
                       );
                     })}
-
-                  {IOTList.length > 0 &&
-                    IOTList.map((marker, index) => {
+                    {FlowMeterList.length > 0 &&
+                      FlowMeterList.map((marker, index) => {
+                        return (
+                          <div key={marker.id}>
+                            <div
+                              className={
+                                marker.status == "on"
+                                  ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                  : marker.status == "offline"
+                                  ? " bg-red-500 rounded-full px-1 py-1"
+                                  : " bg-gray-300 rounded-full px-1 py-1"
+                              }
+                              style={{
+                                left: marker.position.x,
+                                top: marker.position.y,
+                                position: "absolute",
+                              }}
+                            ></div>
+                            <div
+                              key={marker.id}
+                              value={"SPLIT"}
+                              className="w-auto"
+                              style={{
+                                left: marker.position.x,
+                                top: marker.position.y,
+                                position: "absolute",
+                              }}
+                             >
+                              <div
+                                class={
+                                  marker.status == "on"
+                                    ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                    : marker.status == "offline"
+                                    ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                    : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                                }
+                              >
+                                {marker.deviceName}
+                              </div>
+                              
+                            </div>
+                          </div>  
+                        );
+                      })}
+                    {MotionSensorList.length > 0 &&
+                    MotionSensorList .map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-auto "
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            
+                          </div>
+                        </div>
+                      );
+                    })}
+                     {LightingList.length > 0 &&
+                    LightingList.map((marker, index) => {
                       return (
                         <div key={marker.id}>
                           <div
@@ -683,13 +943,7 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            // onClick={() =>
-                            //   onChangeValue(
-                            //     "SPLIT",
-                            //     [marker]
-                            //   )
-                            // }
-                          >
+                           >
                             <div
                               class={
                                 marker.status == "on"
@@ -701,21 +955,352 @@ export default function FloorPlan({ FloorId }) {
                             >
                               {marker.deviceName}
                             </div>
-                            <div className="bg-white ml-4 border border-black">
-                              <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                  Room Temp. (°C) : {marker.roomTemp}
-                                </span></div>
-                                <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                  Humidity (%) : {marker.humidity}
-                                </span></div>
-                                <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                  Set Temp. (°C) : {marker.setTemp}
-                                </span></div>
-                              
+                            
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {CounterList.length > 0 &&
+                    CounterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                            >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
                             </div>
+                            
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {SmartIRList.length > 0 &&
+                    SmartIRList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                         >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {EfficiencyList.length > 0 &&
+                    EfficiencyList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {CCTVList.length > 0 &&
+                    CCTVList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }} >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div> 
+                            </div>
+                        </div>
+                      );
+                    })}
+                    {CO2SensorList.length > 0 &&
+                    CO2SensorList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }} >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {WaterMeterList.length > 0 &&
+                    WaterMeterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {HeaterList.length > 0 &&
+                    HeaterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                           
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {HeaterWaterList.length > 0 &&
+                    HeaterWaterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"SPLIT"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                           
                           </div>
                         </div>
                       );
@@ -723,15 +1308,15 @@ export default function FloorPlan({ FloorId }) {
                 </div>
               ) : option == "Indoor Temp & Humid" ? (
                 <div>
-                  {SplittypeList.length > 0 &&
-                    SplittypeList.map((marker, index) => {
+                  {indoortemphumidList.length > 0 &&
+                    indoortemphumidList.map((marker, index) => {
                       return (
                         <div key={marker.id}>
                           <div
                             className={
-                              marker.control == "on"
+                              marker.status == "on"
                                 ? "bg-[#5eead4] rounded-full px-1 py-1"
-                                : marker.control == "offline"
+                                : marker.status == "offline"
                                 ? " bg-red-500 rounded-full px-1 py-1"
                                 : " bg-gray-300 rounded-full px-1 py-1"
                             }
@@ -744,20 +1329,20 @@ export default function FloorPlan({ FloorId }) {
 
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
-                            className="w-44"
+                            value={"1"}
+                            className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("SPLIT", [marker])}
+                            onClick={() => onChangeValue("1", [marker])}
                           >
                             <div
                               class={
-                                marker.control == "on"
+                                marker.status == "on"
                                   ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
-                                  : marker.control == "offline"
+                                  : marker.status == "offline"
                                   ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
                                   : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
                               }
@@ -767,17 +1352,12 @@ export default function FloorPlan({ FloorId }) {
                             <div className="bg-white border border-black ml-4">
                               <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                  Room Temp. (°C) : {String(marker.roomTemp)}
+                                Room Temp. (°C) : {String(marker.roomTemp)}
                                 </span>
                               </div>
                               <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                  Humidity (%) : {String(marker.humidity)}
-                                </span>
-                              </div>
-                              <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                  Set Temp. (°C) : {String(marker.setTemp)}
+                                Humidity (%) : {String(marker.humidity)}
                                 </span>
                               </div>
                             </div>
@@ -788,8 +1368,8 @@ export default function FloorPlan({ FloorId }) {
                 </div>
               ) : option == "Outdoor Temp & Humid" ? (
                 <div>
-                  {AHUList.length > 0 &&
-                    AHUList.map((marker, index) => {
+                  {outdoortemphumidList.length > 0 &&
+                    outdoortemphumidList.map((marker, index) => {
                       console.log(marker);
                       return (
                         <div key={marker.id}>
@@ -809,14 +1389,14 @@ export default function FloorPlan({ FloorId }) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"AHU"}
-                            className="w-56"
+                            value={"2"}
+                            className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("AHU", [marker])}
+                            onClick={() => onChangeValue("2", [marker])}
                             // onClick={() => onChangeValue('AHU',item.deviceName)}
                           >
                             <div
@@ -833,41 +1413,14 @@ export default function FloorPlan({ FloorId }) {
                             <div className="bg-white ml-4 border border-black">
                               <div class="px-3 py-2">
                                 <span class="text-gray-700 text-xs">
-                                  Supply Temp. (°C) :{" "}
-                                  {String(marker.supplyTemp)}
+                                Temp. (°C) :{" "}
+                                  {String(marker.roomTemp )}
                                 </span>
                               </div>
                               <div class="px-3">
                                 <span class="text-gray-700 text-xs ">
-                                  Supply Temp. Setpoint (°C) :{" "}
-                                  {String(marker.supplyTempSetPoint)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Return Temp. (°C) :{" "}
-                                  {String(marker.returnTemp)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD %Drive (Hz) : {String(marker.vsdDrive)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD Power (kW) : {String(marker.vsdPower)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD Speed (rpm) : {String(marker.vsdSpeed)}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Control Valve (%) :{" "}
-                                  {String(marker.controlValve)}
+                                Humidity (%) :{" "}
+                                  {String(marker.humidity)}
                                 </span>
                               </div>
                             </div>
@@ -878,8 +1431,8 @@ export default function FloorPlan({ FloorId }) {
                 </div>
               ) : option == "Pressure Gauge" ? (
                 <div>
-                  {VAVList.length > 0 &&
-                    VAVList.map((marker, index) => {
+                  {PressuregaugeList.length > 0 &&
+                   PressuregaugeList.map((marker, index) => {
                       console.log(marker);
                       return (
                         <div key={index}>
@@ -899,14 +1452,14 @@ export default function FloorPlan({ FloorId }) {
                           ></div>
                           <div
                             key={index}
-                            value={"VAV"}
-                            className="w-44"
+                            value={"3"}
+                            className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("VAV", [marker])}
+                            onClick={() => onChangeValue("3", [marker])}
                             // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
                           >
                             <div
@@ -923,17 +1476,7 @@ export default function FloorPlan({ FloorId }) {
                             <div className="bg-white border border-black ml-4">
                               <div class="px-3">
                                 <span class="text-gray-700 text-xs">
-                                  Temp. (°C) : {marker.temp}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Air Flow (CFM) : {marker.airFlow}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Damper (%) : {marker.damper}
+                                  Pressure : {marker.pressure}
                                 </span>
                               </div>
                             </div>
@@ -944,8 +1487,8 @@ export default function FloorPlan({ FloorId }) {
                 </div>
               ) : option == "Power Meter" ? (
                 <div>
-                   {IOTList.length > 0 &&
-                    IOTList.map((marker, index) => {
+                   {PowerMeterList.length > 0 &&
+                    PowerMeterList  .map((marker, index) => {
                       return (
                         <div key={marker.id}>
                           <div
@@ -964,19 +1507,14 @@ export default function FloorPlan({ FloorId }) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
-                            className="w-44"
+                            value={"4"}
+                            className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            // onClick={() =>
-                            //   onChangeValue(
-                            //     "SPLIT",
-                            //     [marker]
-                            //   )
-                            // }
+                            onClick={() => onChangeValue("4", [marker])}
                           >
                             <div
                               class={
@@ -992,15 +1530,23 @@ export default function FloorPlan({ FloorId }) {
                             <div className="bg-white ml-4 border border-black">
                               <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                  Room Temp. (°C) : {marker.roomTemp}
+                                Power (kW) : {marker.power}
                                 </span></div>
                                 <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                  Humidity (%) : {marker.humidity}
+                                Current (A) : {marker.current}
                                 </span></div>
                                 <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                  Set Temp. (°C) : {marker.setTemp}
+                                Volt (V) : {marker.volt}
+                                </span></div>
+                                <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Energy import (kWh) : {marker.energy_import}
+                                </span></div>
+                                <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Energy export (kWh) : {marker.energy_export}
                                 </span></div>
                               
                             </div>
@@ -1011,8 +1557,8 @@ export default function FloorPlan({ FloorId }) {
                 </div>
               ) : option == "Inverter" ? (
                 <div>
-                   {IOTList.length > 0 &&
-                    IOTList.map((marker, index) => {
+                   {InveterList.length > 0 &&
+                    InveterList.map((marker, index) => {
                       return (
                         <div key={marker.id}>
                           <div
@@ -1031,19 +1577,14 @@ export default function FloorPlan({ FloorId }) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
-                            className="w-44"
+                            value={"5"}
+                            className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            // onClick={() =>
-                            //   onChangeValue(
-                            //     "SPLIT",
-                            //     [marker]
-                            //   )
-                            // }
+                            onClick={() => onChangeValue("5", [marker])}
                           >
                             <div
                               class={
@@ -1059,15 +1600,19 @@ export default function FloorPlan({ FloorId }) {
                             <div className="bg-white ml-4 border border-black">
                               <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                  Room Temp. (°C) : {marker.roomTemp}
+                                Power (kW) : {marker.power}
                                 </span></div>
                                 <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                  Humidity (%) : {marker.humidity}
+                                Current (A) : {marker.current}
                                 </span></div>
                                 <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                  Set Temp. (°C) : {marker.setTemp}
+                                Volt (V) : {marker.volt}
+                                </span></div>
+                                <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Energy (kWh)  : {marker.energy}
                                 </span></div>
                               
                             </div>
@@ -1076,11 +1621,592 @@ export default function FloorPlan({ FloorId }) {
                       );
                     })}
                 </div>
-              ) : null}
+              ) : option == "Flow Meter" ? (
+                <div>
+                   {FlowMeterList.length > 0 &&
+                    FlowMeterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"6"}
+                            className="w-auto"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                            onClick={() => onChangeValue("6", [marker])}
+                           >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Flow (gal/min) : {marker.flow}
+                                </span></div>
+                            </div>
+                          </div>
+                        </div>  
+                      );
+                    })}
+                </div>
+              ) : option == "Motion Sensor" ? (
+                <div>
+                   {MotionSensorList.length > 0 &&
+                    MotionSensorList .map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"7"}
+                            className="w-auto "
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                            onClick={() => onChangeValue("7", [marker])}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Detected : {marker.detect}
+                                </span></div>
+                                </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "Lighting" ? (
+                <div>
+                   {LightingList.length > 0 &&
+                    LightingList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"8"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                            onClick={() =>
+                              onChangeValue(
+                                "8",
+                                [marker]
+                              )
+                            }
+                          >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "Counter" ? (
+                <div>
+                   {CounterList.length > 0 &&
+                    CounterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"9"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                            onClick={() => onChangeValue("9", [marker])}
+                            >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                  Pieces : {marker.pieces}
+                                </span></div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "Smart IR" ? (
+                <div>
+                   {SmartIRList.length > 0 &&
+                    SmartIRList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"10"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                            onClick={() =>
+                              onChangeValue(
+                                "10",
+                                [marker]
+                              )
+                            }
+                          >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                  Set Temp. (°C) : {marker.setTemp}
+                                </span></div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "Efficiency" ? (    
+                <div>
+                   {EfficiencyList.length > 0 &&
+                    EfficiencyList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"11"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                            onClick={() =>
+                              onChangeValue(
+                                "11",
+                                [marker]
+                              )
+                            }
+                          >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Efficiency : {marker.efficiency}
+                                </span></div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "CCTV" ? ( 
+                <div>
+                   {CCTVList.length > 0 &&
+                    CCTVList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"12"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}  onClick={() => onChangeValue("12", [marker])}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div> 
+                            </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "CO2 Sensor" ? (
+                <div>
+                   {CO2SensorList.length > 0 &&
+                    CO2SensorList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"13"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }} onClick={() => onChangeValue("13", [marker])} >
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                  CO2 (ppm) : {marker.co2}
+                                </span></div>
+                                 </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "Water Meter" ? (
+                <div>
+                   {WaterMeterList.length > 0 &&
+                    WaterMeterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"14"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }} onClick={() => onChangeValue("14", [marker])}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Flow (m3/min) : {marker.flow}
+                                </span></div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "Heater" ? (
+                <div>
+                   {HeaterList.length > 0 &&
+                    HeaterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"15"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }} onClick={() => onChangeValue("15", [marker])}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Temp (°C) : {marker.temp}
+                                </span></div>
+                                <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Power (kW) : {marker.power}
+                                </span></div> 
+                               </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : option == "Heater Water" ? (
+                <div>
+                {HeaterWaterList.length > 0 &&
+                 HeaterWaterList.map((marker, index) => {
+                      return (
+                        <div key={marker.id}>
+                          <div
+                            className={
+                              marker.status == "on"
+                                ? "bg-[#5eead4] rounded-full px-1 py-1"
+                                : marker.status == "offline"
+                                ? " bg-red-500 rounded-full px-1 py-1"
+                                : " bg-gray-300 rounded-full px-1 py-1"
+                            }
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}
+                          ></div>
+                          <div
+                            key={marker.id}
+                            value={"16"}
+                            className="w-44"
+                            style={{
+                              left: marker.position.x,
+                              top: marker.position.y,
+                              position: "absolute",
+                            }}  onClick={() => onChangeValue("16", [marker])}>
+                            <div
+                              class={
+                                marker.status == "on"
+                                  ? "bottom-arrow font-bold text-xs bg-[#5eead4] text-center text-white py-2 border border-black"
+                                  : marker.status == "offline"
+                                  ? "  bottom-arrow font-bold text-xs bg-red-500 text-center text-white py-2 border border-black"
+                                  : "bottom-arrow font-bold text-xs bg-gray-300 text-center text-white py-2 border border-black"
+                              }
+                            >
+                              {marker.deviceName}
+                            </div>
+                            <div className="bg-white ml-4 border border-black">
+                              <div class="px-3 ">
+                                <span class="text-gray-700 text-xs">
+                                Temp (°F) : {marker.temp}
+                                </span></div>
+                               </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : 
+              null}
             </div>
           </div>
           <div className="flex justify-end w-auto">
-            {Decvicetype == "VAV"
+            {Decvicetype == "1"
               ? Listcontrol.length > 0 && 
                 Listcontrol.map((marker, index) => {
                   console.log(marker);
@@ -1092,36 +2218,261 @@ export default function FloorPlan({ FloorId }) {
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Supply Temp. (°C) : {marker.temp}
+                            Status : <span className={
+                            marker.status == "on"
+                              ? " text-center text-green-500 font-extrabold"
+                              : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                              : " text-center text-gray-500 font-extrabold"
+                          }>
+                          {marker.status}
+                          </span> 
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Air Flow (CFM) : {marker.airFlow}
+                          Room Temp. (°C) : {marker.roomTemp}
                           </span>
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Damper (%) :{" "}
-                            <span
-                              className="text-[#5eead4] underline text-sm"
-                              onClick={() => marker.status == "on" ?
-                                onclickOPenSettempVav(
-                                  marker.id,
-                                  marker.deviceName,
-                                  marker.damper
-                                ) : null
-                              }
-                            >
-                              {marker.damper}
-                            </span>
+                          Humidity (%) : {marker.humidity }
                           </span>
                         </div>
                       </div>
                     </div>
                   );
                 })
-              : Decvicetype == "AHU"
+              : Decvicetype == "2"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Room Temp. (°C) : {marker.roomTemp}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Humidity (%) : {marker.humidity }
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "3"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Pressure (bar) : {marker.pressure}
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "4"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Power (kW) : {marker.power}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Current (A) : {marker.current}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Volt (V) : {marker.volt}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Energy import (kWh) : {marker.energy_import}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Energy export (kWh) : {marker.energy_export}
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "5"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Power (kW) : {marker.power}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Current (A) : {marker.current}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Volt (V) : {marker.volt}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Energy (kWh) : {marker.energy}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "6"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Flow (gal/min) : {marker.flow}
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "7"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Detected : {marker.detect}
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "8"
               ? Listcontrol.length > 0 &&
                 Listcontrol.map((marker, index) => {
                   console.log(marker);
@@ -1132,123 +2483,18 @@ export default function FloorPlan({ FloorId }) {
                           {marker.deviceName}
                         </div>
                         <div class="px-3">
-                          <span class="text-gray-700 text-sm">
-                            Supply Temp. (°C) : {marker.supplyTemp}
-                          </span>
-                        </div>
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
-                            Supply Temp. Setpoint (°C) :{" "}
-                            <span
-                              className="text-[#5eead4] underline text-sm"
-                              onClick={() =>
-                                marker.status == "on" ?
-                                onclickOPenSettempAHU(
-                                  marker.id,
-                                  marker.deviceName,
-                                  marker.supplyTempSetPoint
-                                ) : null
-                              }
-                            >
-                              {marker.supplyTempSetPoint}
-                            </span>
-                          </span>
-                        </div>
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
-                            Return Temp. (°C) : {marker.returnTemp}
-                          </span>
-                        </div>
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
-                            VSD %Drive (Hz) : {marker.vsdDrive}
-                          </span>
-                        </div>
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
-                            VSD Power (kW) : {marker.vsdPower}
-                          </span>
-                        </div>
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
-                            VSD Speed (rpm) : {marker.vsdSpeed}
-                          </span>
-                        </div>
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
-                            Control Valve (%) : {marker.controlValve}
-                          </span>
-                        </div>
-                        <div class="px-3 flex gap-2">
-                          <span class="text-gray-700 text-sm">
-                            Automation :{" "}
-                          </span>
-                          <div
-                            className="toggle-container"
-                            onClick={() =>
-                              marker.status == "on" ?
-                              marker.automation == "on"
-                                ? openModalAutomationAHUIsStop(
-                                    marker.id,
-                                    marker.deviceName
-                                  )
-                                : openModalAutomationAHUIsStart(
-                                    marker.id,
-                                    marker.deviceName
-                                  ) : null
-                            }
-                          >
-                            <div
-                              className={`toggle-btn ${
-                                marker.automation == "off" ? "disable" : ""
-                              }`}
-                            >
-                              {marker.automation == "on" ? "ON" : "OFF"}
-                            </div>
-                          </div>
-                        </div>
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
                       </div>
-                    </div>
-                  );
-                })
-              : Decvicetype == "SPLIT"
-              ? Listcontrol.length > 0 &&
-                Listcontrol.map((marker, index) => {
-                  console.log(marker);
-                  return (
-                    <div key={marker.id}>
-                      <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
-                        <div class="font-bold text-lg text-center py-2">
-                          {marker.deviceName}
-                        </div>
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
-                            Room Temp. (°C) : {marker.roomTemp}
-                          </span>
-                        </div>
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
-                            Humidity (%) : {marker.humidity}
-                          </span>
-                        </div>
-                        <div class="px-3 flex gap-2">
-                          <span class="text-gray-700 text-sm">
-                            Set Temp. (°C) :{" "}
-                            <span
-                              className="text-[#5eead4] underline text-sm"
-                              onClick={() =>
-                                marker.status == "on" ?
-                                onclickOPenSettemp(
-                                  marker.id,
-                                  marker.deviceName,
-                                  marker.setTemp
-                                ) : null
-                              }
-                            >
-                              {marker.setTemp}
-                            </span>
-                          </span>
-                        </div>
+                        
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
                             Control :{" "}
@@ -1277,74 +2523,397 @@ export default function FloorPlan({ FloorId }) {
                             </button>
                           </span>
                         </div>
-                        <div class="px-3 flex gap-2">
-                          <span class="text-gray-700 text-sm">
-                            Fan :{" "}
-                            <span
-                              className="text-[#5eead4] underline text-sm"
-                              onClick={(event) =>
-                                marker.status == "on" ?
-                                onclickOPenSetMode(
-                                  marker.id,
-                                  marker.deviceName,
-                                  event.preventDefault()
-                                ) : null
-                              }
-                            >
-                              {marker.fan}
-                            </span>
-                          </span>
-                        </div>
-                        <div class="px-3 flex gap-2">
-                          <span class="text-gray-700 text-sm ">
-                            Mode :{" "}
-                            <span
-                              className="text-[#5eead4] underline text-sm"
-                              onClick={(event) =>
-                                marker.status == "on" ?
-                                onclickOPenSetFan(
-                                  marker.id,
-                                  marker.deviceName,
-                                  event.preventDefault()
-                                ) : null
-                              }
-                            >
-                              {marker.mode}
-                            </span>
-                          </span>
-                        </div>
-                        <div class="px-3 flex gap-2">
-                          <span class="text-gray-700 text-sm">
-                            Automation :{" "}
-                          </span>
-                          <div
-                            className="toggle-container"
-                            onClick={() => 
-                              marker.status == "on" ?
-                              marker.automation == "on"
-                                ? openModalAutomationIsStop(
-                                    marker.id,
-                                    marker.deviceName
-                                  )
-                                : openModalAutomationIsStart(
-                                    marker.id,
-                                    marker.deviceName
-                                  )
-                            : null}
-                          >
-                            <div
-                              className={`toggle-btn ${
-                                marker.automation == "off" ? "disable" : ""
-                              }`}
-                            >
-                              {marker.automation == "on" ? "ON" : "OFF"}
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   );
                 })
+                : Decvicetype == "9"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Pieces : {marker.pieces}
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "10"
+              ? Listcontrol.length > 0 &&
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3 flex gap-2">
+                        <span class="text-gray-700 text-sm">
+                          Set Temp. (°C) : {" "}
+                          {marker.status == "on" ? <span
+                            className="text-[#5eead4] underline text-sm"
+                            onClick={() =>
+                              marker.status == "on" ?
+                              onclickOPenSettemp(
+                                marker.id,
+                                marker.deviceName,
+                                marker.setTemp
+                              ) : null
+                            }
+                          >
+                            {marker.setTemp}
+                          </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                           {marker.setTemp}
+                        </span> : "-"}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Control :{" "}
+                          {marker.status == "offline" ? "-" : <button
+                            type="button"
+                            className={
+                              marker.control == "on"
+                                ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                : marker.control == "off"
+                                ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
+                            }
+                            onClick={() =>
+                              marker.control == "on"
+                                ? openModalControleIsStop(
+                                    marker.id,
+                                    marker.deviceName
+                                  )
+                                : marker.control == "off" ? openModalControleIsStart(
+                                    marker.id,
+                                    marker.deviceName
+                                  ) : null
+                            }
+                          >
+                            {marker.control}
+                          </button>}
+                          
+                        </span>
+                      </div>
+                      <div class="px-3 flex gap-2">
+                        <span class="text-gray-700 text-sm">
+                          Fan  : {" "}
+                          {marker.status == "on" ? <span
+                            className="text-[#5eead4] underline text-sm"
+                            onClick={(event) =>
+                              marker.status == "on" ?
+                              onclickOPenSetMode(
+                                marker.id,
+                                marker.deviceName,
+                                event.preventDefault()
+                              ) : null
+                            }
+                          >
+                            {marker.fan}
+                          </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                           {marker.fan}
+                        </span> : "-"}
+                        </span>
+                      </div>
+                      <div class="px-3 flex gap-2">
+                        <span class="text-gray-700 text-sm ">
+                          Mode  : {" "}
+                          {marker.status == "on" ? <span
+                            className="text-[#5eead4] underline text-sm"
+                            onClick={(event) =>
+                              marker.status == "on" ?
+                              onclickOPenSetFan(
+                                marker.id,
+                                marker.deviceName,
+                                event.preventDefault()
+                              ) : null
+                            }
+                          >
+                            {marker.mode}
+                          </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
+                           {marker.mode}
+                        </span> : "-"}
+                        </span>
+                      </div>
+                     
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "11"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Efficiency (%) : {marker.efficiency}
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "12"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      
+                      
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "13"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        CO2 (ppm) : {marker.co2}
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "14"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Flow (m3/min) : {marker.flow}
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "15"
+              ? Listcontrol.length > 0 &&
+              Listcontrol.map((marker, index) => { 
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Temp. (°C) : {marker.temp}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Power (kW) : {marker.power}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Model : {marker.model}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Waste : {marker.waste}
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Counter : {marker.counter}
+                        </span>
+                      </div>
+                    
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Control :{" "}
+                          {marker.status == "offline" ? "-" : <button
+                            type="button"
+                            className={
+                              marker.control == "on"
+                                ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                : marker.control == "off"
+                                ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
+                            }
+                            onClick={() =>
+                              marker.control == "on"
+                                ? openModalControleIsStop(
+                                    marker.id,
+                                    marker.deviceName
+                                  )
+                                : marker.control == "off" ? openModalControleIsStart(
+                                    marker.id,
+                                    marker.deviceName
+                                  ) : null
+                            }
+                          >
+                            {marker.control}
+                          </button>}
+                          
+                        </span>
+                      </div>
+                     
+                     
+                    </div>
+                  </div>
+                );
+              })
+              : Decvicetype == "16"
+              ? Listcontrol.length > 0 && 
+              Listcontrol.map((marker, index) => {
+                console.log(marker);
+                return (
+                  <div key={marker.id}>
+                    <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
+                      <div class="font-bold text-lg text-center py-2">
+                        {marker.deviceName}
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                          Status : <span className={
+                          marker.status == "on"
+                            ? " text-center text-green-500 font-extrabold"
+                            : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
+                            : " text-center text-gray-500 font-extrabold"
+                        }>
+                        {marker.status}
+                        </span> 
+                        </span>
+                      </div>
+                      <div class="px-3">
+                        <span class="text-gray-700 text-sm">
+                        Temp (°F) : {marker.temp}
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                );
+              })
               : null}
           </div>
           </div></div>
@@ -1355,161 +2924,11 @@ export default function FloorPlan({ FloorId }) {
 
           
         </div>
-        {/* 
-        {VSVlist.length > 0 &&
-          VSVlist.map((item) => {
-            return (
-              <div
-                key={item.id}
-                value={"VAV"}
-                class="max-w-48 rounded overflow-hidden shadow-lg border border-black"
-                style={{ left: item.position.x, top: item.position.y }}
-                // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
-              >
-                <div class="font-bold text-xs bg-red-600 text-center text-white py-2">
-                  {item.deviceName}
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Temp. (°C) : {String(item.temp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Air Flow (CFM) : {String(item.airFlow)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Damper (%) : {String(item.damper)}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        {AHUlist.length > 0 &&
-          AHUlist.map((item) => {
-            return (
-              <div
-                key={item.id}
-                value={"AHU"}
-                class="max-w-48 rounded overflow-hidden shadow-lg border border-black"
-                style={{ left: item.position.x, top: item.position.y }}
-                // onClick={() => onChangeValue('AHU',item.deviceName)}
-              >
-                <div class="font-bold text-xs bg-gray-400 text-center text-white py-2">
-                  {item.deviceName}
-                </div>
-                <div class="px-3 py-2">
-                  <span class="text-gray-700 text-xs">
-                    Supply Temp. (°C) : {String(item.supplyTemp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs ">
-                    Supply Temp. Setpoint (°C) :{" "}
-                    {String(item.supplyTempSetPoint)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Return Temp. (°C) : {String(item.returnTemp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    VSD %Drive (Hz) : {String(item.vsdDrive)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    VSD Power (kW) : {String(item.vsdPower)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    VSD Speed (rpm) : {String(item.vsdSpeed)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Control Valve (%) : {String(item.controlValve)}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-
-        {Splittypelist.length > 0 &&
-          Splittypelist.map((item) => {
-            return (
-              <div
-                key={item.id}
-                value={"SPLIT"}
-                class="max-w-48 rounded overflow-hidden shadow-lg border border-black"
-                style={{ left: item.position.x, top: item.position.y }}
-                onClick={() =>
-                  onChangeValue("SPLIT", item.deviceName, item.id, item.setTemp)
-                }
-              >
-                <div class="font-bold text-xs bg-red-600 text-center text-white py-2">
-                  {item.deviceName}
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Room Temp. (°C) : {String(item.roomTemp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Humidity (%) : {String(item.humidity)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Set Temp. (°C) : {String(item.setTemp)}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-
-        {IOTlist.length > 0 &&
-          IOTlist.map((item) => {
-            return (
-              <div
-                key={item.id}
-                value={"IOT"}
-                class="max-w-48 rounded overflow-hidden shadow-lg border border-black"
-                style={{ left: item.position.x, top: item.position.y }}
-                onClick={(e) => {
-                  onChangeValue(e.target.value);
-                }}
-              >
-                <div class="font-bold text-xs bg-red-600 text-center text-white py-2">
-                  {item.deviceName}
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Temp. (°C) : {String(item.temp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Humidity (%) : {String(item.humidity)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    CO2 (ppm) : {String(item.co2)}
-                  </span>
-                </div>
-              </div>
-            );
-          })} */}
+       
 
         <div></div>
-
+      
+      
         {OpenSettempModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
@@ -1819,7 +3238,6 @@ export default function FloorPlan({ FloorId }) {
             </div>
           </div>
         ) : null}
-        
         {showModalAutomationOn ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
@@ -1882,10 +3300,7 @@ export default function FloorPlan({ FloorId }) {
             </div>
           </div>
         ) : null}
-
-
-       
-        {showModalAutomationAHUOn ? (
+         {showModalAutomationAHUOn ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -1948,7 +3363,64 @@ export default function FloorPlan({ FloorId }) {
           </div>
         ) : null}
       </div>
-      
+
+              {option == "All Type" ? (
+                <div>
+                 <IndoorHumid Indoorlist={indoortemphumidList} />
+                 <OutdoorHumid Outdoorlist={outdoortemphumidList} />
+                 <Pressuregauge Pressuregaugelist={PressuregaugeList} />
+                 <PowerMeter PowerMeterlist={PowerMeterList} />
+                 <Inverter Inverterlist={InveterList} />
+                 <FlowMeter FlowMeterlist={FlowMeterList} />
+                 <MotionSensor Motionsensorlist={MotionSensorList} />
+                 <Ligthing Ligthinglist={LightingList} />
+                 <Counter Counterlist={CounterList} />
+                 <SmartIRtable SmartIRlist={SmartIRList} />
+                 <Efficiency Efficiencylist={EfficiencyList} />
+                 <CCTV CCTVlist={CCTVList} />
+                 <CO2Sensor CO2Sensorlist={CO2SensorList} />
+                 <WaterMetertable Watermeterlist={WaterMeterList} />
+                 <Heatertable Heaterlist={HeaterList} />
+                 <HeaterWatertable HeaterWaterlist={HeaterWaterList} />
+                 </div>
+              ) : option == "Indoor Temp & Humid" ? (
+                <IndoorHumid Indoorlist={indoortemphumidList} />
+              ) : option == "Outdoor Temp & Humid" ? (
+                <OutdoorHumid Outdoorlist={outdoortemphumidList} />
+              ) : option == "Pressure Gauge" ? (
+                <Pressuregauge Pressuregaugelist={PressuregaugeList} />
+              ) : option == "Power Meter" ? (
+                <PowerMeter PowerMeterlist={PowerMeterList} />
+              ) : option == "Inverter" ? (
+                <Inverter Inverterlist={InveterList} />
+              ) : option == "Flow Meter" ? (
+                <FlowMeter FlowMeterlist={FlowMeterList} />
+              ) : option == "Motion Sensor" ? (
+                <MotionSensor Motionsensorlist={MotionSensorList} />
+              ) : option == "Lighting" ? (
+                <Ligthing Ligthinglist={LightingList} />
+              ) : option == "Counter" ? (
+                <Counter Counterlist={CounterList} />
+              ) : option == "Smart IR" ? (
+                <SmartIRtable SmartIRlist={SmartIRList} />
+              ) : option == "Efficiency" ? (    
+                <Efficiency Efficiencylist={EfficiencyList} />
+              ) : option == "CCTV" ? ( 
+                <CCTV CCTVlist={CCTVList} />
+              ) : option == "CO2 Sensor" ? (
+                <CO2Sensor CO2Sensorlist={CO2SensorList} />
+              ) : option == "Water Meter" ? (
+                <WaterMetertable Watermeterlist={WaterMeterList} />
+              ) : option == "Heater" ? (
+                <Heatertable Heaterlist={HeaterList} />
+              ) : option == "Heater Water" ? (
+                <HeaterWatertable HeaterWaterlist={HeaterWaterList} />
+              ) : 
+              null}
+               
+              {option != "All Type" ? (
+                <Chart deviceParameterid={1} deviceTypeId={1} />
+               ): null}
       <ToastContainer />
     </div>
   );

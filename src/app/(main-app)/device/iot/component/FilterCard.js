@@ -15,11 +15,11 @@ import {
   getAHUGraph,
 } from "@/utils/api";
 import FloorPlan from "./FloorPlan";
-import AHUtable from "./AHUtable";
-import VAVtable from "./VAVtable";
-import SplitTypetable from "./SplitTypetable";
-import SmartIRtable from "./SmartIRtable";
-import ChartAHU from "./chartAHU";
+import Heatertable from "./Heatertable";
+import VAVtable from "./Outdoorhumidtable";
+import SplitTypetable from "./SmartIRtable";
+import SmartIRtable from "./WaterMetertable";
+import ChartAHU from "./chart";
 import ChartSplittype from "./chartSplittype";
 
 export default function FilterCard() {
@@ -185,42 +185,42 @@ export default function FilterCard() {
     // setFloorplanList(data);
     // console.log(result.data)
     setIsFirst(false);
-    getAHUList(floorId);
-    getVAVList(floorId);
-    getSplittypeList(floorId);
-    getIOTList(floorId);
+    // getAHUList(floorId);
+    // getVAVList(floorId);
+    // getSplittypeList(floorId);
+    // getIOTList(floorId);
     // GetAHUGraph(floorId)
     // GetSplittypeGraph(floorId)
   };
 
-  const getAHUList = async (floorId) => {
-    setFloorId(floorId);
-    console.log(floorId)
-    const result = await getAHU(floorId);
-    // console.log(result.data)
-    setAHUList(result.data);
-  };
+  // const getAHUList = async (floorId) => {
+  //   setFloorId(floorId);
+  //   console.log(floorId)
+  //   const result = await getAHU(floorId);
+  //   // console.log(result.data)
+  //   setAHUList(result.data);
+  // };
 
-  const getVAVList = async (floorId) => {
-    setFloorId(floorId);
-    const result = await getVAV(floorId);
-    // console.log(result.data)
-    setVAVList(result.data);
-  };
+  // const getVAVList = async (floorId) => {
+  //   setFloorId(floorId);
+  //   const result = await getVAV(floorId);
+  //   // console.log(result.data)
+  //   setVAVList(result.data);
+  // };
 
-  const getSplittypeList = async (floorId) => {
-    setFloorId(floorId);
-    const result = await getSplittype(floorId);
-    // console.log(result.data)
-    setSplittypeList(result.data);
-  };
+  // const getSplittypeList = async (floorId) => {
+  //   setFloorId(floorId);
+  //   const result = await getSplittype(floorId);
+  //   // console.log(result.data)
+  //   setSplittypeList(result.data);
+  // };
 
-  const getIOTList = async (floorId) => {
-    setFloorId(floorId);
-    const result = await getIOT(floorId);
-    // console.log(result.data)
-    setIOTList(result.data);
-  };
+  // const getIOTList = async (floorId) => {
+  //   setFloorId(floorId);
+  //   const result = await getIOT(floorId);
+  //   // console.log(result.data)
+  //   setIOTList(result.data);
+  // };
 
   return (
     <div>
@@ -315,7 +315,7 @@ export default function FilterCard() {
         // Splittypelist = {SplittypeList}
         // IOTlist = {IOTList}
       />
-      <AHUtable AHUlist={AHUList} />
+      {/* <AHUtable AHUlist={AHUList} />
       <VAVtable VAVList={VAVList} />
       <SmartIRtable IotList={IOTList} />
       <SplitTypetable SplittypeList={SplittypeList} />
@@ -339,7 +339,7 @@ export default function FilterCard() {
         // roomtemp={chartListSplittype3}
         // external={chartListSplittype4}
         // label={ListLabelSplittype}
-      /></div></div>
+      /></div></div> */}
     </div>
   );
 }

@@ -9,7 +9,7 @@ import {
 } from "@/utils/api";
 import Loading from "./Loading";
 
-export default function VAVtable(VAVList) {
+export default function OutdoorHumid(Outdoorlist) {
     const [searchTable, setSerachTable] = useState("");
     const [DecviceId, setDeviceId] = useState(null);
   const [DeviceName, setDeviceName] = useState('');
@@ -70,7 +70,7 @@ const handleChangeValueSettemp = async () => {
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
         <div className="flex flex-col gap-4 p-2">
           <div className="flex justify-between">
-            <span className="text-lg  font-bold">VAV</span>
+            <span className="text-lg  font-bold">Outdoor Temp & Humid</span>
             <input
               type="text"
               placeholder="ค้นหา"
@@ -98,21 +98,14 @@ const handleChangeValueSettemp = async () => {
                   Temp. (°C)
                   </th>
                   <th scope="col" className="px-6 py-4 text-center">
-                  Air Flow (CFM)
-                  </th>
-                  <th scope="col" className="px-6 py-4 text-center">
-                  Damper (%)
+                  Humidity (%)
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {VAVList.VAVList.length > 0 &&
-                  VAVList.VAVList.filter((item) => {
-                    // let data = []
-                    //  if (item.power.toString().includes(searchTable)){
-                    //   data = item
-                    // }
-                    // console.log(data)
+                {Outdoorlist.Outdoorlist.length > 0 &&
+                  Outdoorlist.Outdoorlist.filter((item) => {
+                  
                     return (
                       item.deviceName.includes(searchTable) ||
                       item.deviceName.toLowerCase().includes(searchTable) ||
@@ -159,7 +152,7 @@ const handleChangeValueSettemp = async () => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.temp)} // Replace this with your text
+                                    textToHighlight={String(item.roomTemp)} // Replace this with your text
                                   />
       
                         </td>
@@ -168,22 +161,10 @@ const handleChangeValueSettemp = async () => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.airFlow)} // Replace this with your text
+                                    textToHighlight={String(item.humidity)} // Replace this with your text
                                   />
                           
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.damper ,event.preventDefault()) : null}>
-                       
-                        <Highlighter
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={String(item.damper)} // Replace this with your text
-                                  />
-                          
-                        </td>
-                        
-                        
+                        </td> 
                       </tr>
                     );
                   })}
