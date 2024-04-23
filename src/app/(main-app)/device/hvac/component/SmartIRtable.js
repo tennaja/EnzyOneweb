@@ -90,7 +90,12 @@ export default function SmartIRtable(IotList) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={item.status}// Replace this with your text
+                                    textToHighlight={
+                                      item.status == "on"
+                                        ? "On"
+                                        : item.status == "offline" ? " Offline"
+                                        : " Off"
+                                    }// Replace this with your text
                                   />
                           
                         </td>
