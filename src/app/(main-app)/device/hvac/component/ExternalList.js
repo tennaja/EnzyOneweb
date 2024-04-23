@@ -27,7 +27,7 @@ export default function ExternalList({FloorId}) {
       };
   return (
     externalList.map((item) => {
-        return <Card sx={{ display: 'flex', }}>
+        return <Card key={item.id} sx={{ display: 'flex', }}>
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <CardContent sx={{ flex: '1 0 auto' }}>
         <Typography component="div" variant="h5">
