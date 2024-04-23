@@ -582,7 +582,7 @@ export default function FloorPlan({ FloorId }) {
               {deviceTypeList.length > 0 &&
                 deviceTypeList.map((item,index) => {
                   return (
-                  <option className="rounded-lg" id={item.id}> {item.displayName}</option>)
+                  <option className="rounded-lg" key={item.id}> {item.displayName}</option>)
                 })}
             </select>
             </div>
