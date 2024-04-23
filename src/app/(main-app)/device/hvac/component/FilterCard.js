@@ -242,7 +242,7 @@ export default function FilterCard() {
     <div>
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
         <div className="flex flex-col gap-4 p-2">
-          <span className="text-lg  font-bold">Hvac</span>
+          <span className="text-lg  font-bold">HVAC</span>
           <div className="w-full py-1 pb-2">
             <div className="inline-flex">
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
