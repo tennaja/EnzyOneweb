@@ -898,7 +898,7 @@ export default function SummaryCard() {
       
               title: {
                 display: true,
-                text: listChange,
+                text: listChange === "barg" ? "Pressure (barg)" : listChange === "kw" ? "Power (kw)" : "Efficiency (%)",
                 padding: { top: 30, left: 0, right: 0, bottom: 0 },
               },
             },
