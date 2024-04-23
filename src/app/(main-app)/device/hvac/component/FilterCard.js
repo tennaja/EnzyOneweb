@@ -22,6 +22,7 @@ import SmartIRtable from "./SmartIRtable";
 import ChartAHU from "./chartAHU";
 import ChartSplittype from "./chartSplittype";
 import { ToastContainer, toast } from 'react-toastify';
+import ExternalList from "./ExternalList";
 
 export default function FilterCard() {
   const [chartListAHU1, setChartListAHU1] = useState([]);
@@ -149,47 +150,7 @@ export default function FilterCard() {
   //   }
   // }
 
-  async function GetSplittypeGraph(floorId, dateFrom, dateTo) {
-    setFloorId(floorId);
-    const paramsNav = {
-      floorId: floorId,
-      dateFrom: "2024-02-02",
-      dateTo: "2024-02-02",
-    };
-    const res = await getSplittypeGraph(paramsNav);
-    console.log(paramsNav);
-    if (res.status === 200) {
-      if (res.data.power.length > 0) {
-        setChartListSplittype1(res.data.power);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.power);
-        for (let j = 0; j < res.data.power[0].data.length; j++) {
-          label.push(res.data.power[0].data[j].time);
-        }
-        setListLabelSplittype(label);
-        // console.log(label);
-      }
-      if (res.data.temp.length > 0) {
-        setChartListSplittype2(res.data.temp);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.temp);
-      }
-      if (res.data.roomTemp.length > 0) {
-        setChartListSplittype3(res.data.roomTemp);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.roomTemp);
-      }
-      if (res.data.external.length > 0) {
-        setChartListSplittype4(res.data.external);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.external);
-      }
-    }
-  }
+  
 
   const onSearchData = async () => {
     setFloorId(floorId);
@@ -323,6 +284,7 @@ export default function FilterCard() {
         </div>
         {floorplanList.id}
       </div>
+      {/* <ExternalList FloorId= {floorId}/> */}
       <FloorPlan
       FloorId= {floorId}
         // Data={floorplanList}
@@ -331,6 +293,7 @@ export default function FilterCard() {
         // Splittypelist = {SplittypeList}
         // IOTlist = {IOTList}
       />
+      
       <SplitTypetable SplittypeList={SplittypeList} />
       <AHUtable AHUlist={AHUList} />
       <VAVtable VAVList={VAVList} />

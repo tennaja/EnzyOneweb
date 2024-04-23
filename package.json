@@ -17,6 +17,7 @@
     "@mantine/form": "^7.3.2",
     "@mantine/hooks": "^7.3.2",
     "@material/button": "^14.0.0",
+    "@material/card": "^14.0.0",
     "@material/textfield": "^14.0.0",
     "@mui/material": "^5.15.10",
     "@mui/styled-engine-sc": "^6.0.0-alpha.16",

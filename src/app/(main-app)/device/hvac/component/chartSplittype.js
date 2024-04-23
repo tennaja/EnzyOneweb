@@ -193,8 +193,11 @@ export default function ChartSplittype({FloorId}) {
         <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
             <div className="flex flex-col gap-4 p-2">
                 <div className="flex gap-4">
-                <RangePicker onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
+                <div style={{ position: "relative"  }}>
+                <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
       format={dateFormat}/>
+      <div className="bg-white shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200" style={{position: "absolute", paddingLeft : "1rem", paddingRight : "1rem" , paddingBottom : "0.5rem", paddingTop: "1rem" ,left: "15.2rem",top: "0.1em",}}></div>
+      </div>
                     <button
               className="border border-slate-300 rounded-md h-9 px-2"
               onClick={onResetZoom}

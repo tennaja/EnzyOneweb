@@ -1075,7 +1075,7 @@ export default function FloorPlan({ FloorId }) {
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                            Supply Temp. (°C) : {" "}
+                            Temp. (°C) : {" "}
                             {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
                              {marker.temp.toFixed(2)}
                           </span> : marker.temp.toFixed(2)}

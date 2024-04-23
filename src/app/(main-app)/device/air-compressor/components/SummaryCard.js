@@ -816,10 +816,11 @@ export default function SummaryCard() {
             </select>
           </div>
           <div className="flex gap-5">
-          <RangePicker onChange={onChangeDay} defaultValue={[dayjs(formatDate(startDate), dateFormat), dayjs(formatDate(endDate), dateFormat)]}
+          <div style={{ position: "relative"  }}>
+          <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(startDate), dateFormat), dayjs(formatDate(endDate), dateFormat)]}
       format={dateFormat}/>
-
-            
+<div className="bg-white shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200" style={{position: "absolute", paddingLeft : "1rem", paddingRight : "1rem" , paddingBottom : "0.5rem", paddingTop: "1rem" ,left: "15.2rem",top: "0.1em",}}></div>
+</div>
             <button
               className="border border-slate-300 rounded-md h-9 px-2"
               onClick={onResetZoom}

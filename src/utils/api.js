@@ -508,6 +508,20 @@ export async function getdeviceparameter(deviceTypeId) {
     return error;
   }
 }
+export async function getExternalList(floorId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/external/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
 //indoor-temp-humid
 export async function getindoortemphumid(floorId) {
   try {
