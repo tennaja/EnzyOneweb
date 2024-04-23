@@ -1003,7 +1003,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={marker.id}
                             value={"IoT"}
-                            className="w-44"
+                            className="w-44 cursor-pointer"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
