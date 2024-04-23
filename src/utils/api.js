@@ -760,9 +760,137 @@ export async function getIotModuleGraph(req) {
       const res = await axios.get(url, {
       withCredentials: true,
       headers: { "Content-Type": "application/json",},
+      
     });
     return res;
+    
   } catch (error) {
     return error;
+  }
+}
+
+export async function SmartIRSetTemp (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/smart-ir/temp`;
+    let res = await axios.post(
+      url,
+      {
+        value : value,
+        devId : devId,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+
+export async function ChangeControlSmartIR (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/smart-ir/control`;
+    let res = await axios.post(
+      url,
+      {
+        devId : devId,
+        value : value,
+        
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+export async function ChangeSetFanSmartIR (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/smart-ir/fan`;
+    let res = await axios.post(
+      url,
+      {
+        value : value,
+        devId : devId,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+export async function ChangeSetModeSmartIR (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/smart-ir/mode`;
+    let res = await axios.post(
+      url,
+      {
+        value : value,
+        devId : devId,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+
+export async function ChangeControlLightning (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/lighting/control`;
+    let res = await axios.post(
+      url,
+      {
+        devId : devId,
+        value : value,
+        
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+export async function ChangeControleHeater (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/heater/control`;
+    let res = await axios.post(
+      url,
+      {
+        devId : devId,
+        value : value,
+        
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
   }
 }

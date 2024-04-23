@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Highlighter from "react-highlight-words";
 import Link from "next/link";
 import {
-  ChangeValueSettempAHU,ChangeAutomationAHU
+  ChangeControlLightning
 } from "@/utils/api";
 import Loading from "./Loading";
 
@@ -17,7 +17,7 @@ export default function Ligthing(Ligthinglist) {
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
-  const [showModalAutomation, setShowModalAutomation] = useState(false);
+  const [showModalControle, setShowModalControle] = useState(false);
   
 
   const notifySuccess = () =>
@@ -32,52 +32,54 @@ export default function Ligthing(Ligthinglist) {
     progress: undefined,
     theme: "light",
   });
-  const onChangeValue = (event) => {
-    setValues(event);
-  };
-  const onclickOPenSettemp = (id, DecviceId, values) => {
-    setOpenSettempModal(true)
-    setDeviceId(id)
-    setDeviceName(DecviceId)
-    setValues(values)
-  }
+  
   const closeModal = () => {
     setOpenSettempModal(false)
     setModalError(false)
     setDeviceId(null);
-    setShowModalAutomation(false)
+    setShowModalControle(false)
     // setShowModalStop(false);
     // setShowModalStart(false);
 };
-const handleChangeValueSettemp = async () => {
+
+const openModalControleIsStop = (DecviceId,values) => {
+  setDeviceId(DecviceId)
+  setValues('off')
+  setShowModalControle(true);
+  
+}
+const openModalControleIsStart = (DecviceId,values) => {
+  setDeviceId(DecviceId)
+  setValues('on')
+  setShowModalControle(true);
+  
+}
+async function clickChangecControle() {
   setLoading(true);
-  const res = await ChangeValueSettempAHU(DecviceId, Values);
+  const res = await ChangeControlLightning(DecviceId, Values);
   if (res.status === 200) {
-    console.log(res.data)
     closeModal();
+    console.log(res.data)
+    setAlertTitle(res.data.title);
+    setAlertmessage(res.data.message);
+    
     setLoading(false);
     notifySuccess();
   } else if (res.response.status === 401) {
     closeModal();
+    setAlertTitle(res.response.data.title);
+    setAlertmessage(res.response.data.message);
+    
     setLoading(false);
-    setModalError(true)
-  } else if (res.response.status === 500) {
-    closeModal();
-    setLoading(false);
-    setModalError(true)
+    
   }
-}
-const openModalAutomationIsStop = (DecviceId,values) => {
-  setDeviceId(DecviceId)
-  setValues('off')
-  setShowModalAutomation(true);
-  
-}
-const openModalAutomationIsStart = (DecviceId,values) => {
-  setDeviceId(DecviceId)
-  setValues('on')
-  setShowModalAutomation(true);
-  
+  else if (res.response.status === 500) {
+    closeModal();
+    setAlertTitle(res.response.data.title);
+    setAlertmessage(res.response.data.message);
+    
+    setLoading(false);
+  }
 }
 
   return (
@@ -126,13 +128,7 @@ const openModalAutomationIsStart = (DecviceId,values) => {
                       item.deviceName.includes(searchTable) ||
                       item.deviceName.toLowerCase().includes(searchTable) ||
                       item.status.includes(searchTable) ||
-                      String(item.supplyTemp).includes(searchTable) ||
-                      String(item.supplyTempSetPoint).includes(searchTable) ||
-                      String(item.returnTemp).includes(searchTable) ||
-                      String(item.vsdDrive).includes(searchTable)||
-                      String(item.vsdPower).includes(searchTable)||
-                      String(item.vsdSpeed).includes(searchTable)||
-                      String(item.controlValve).includes(searchTable)
+                      String(item.control).includes(searchTable)
                     );
                   }).map((item) => {
                     
@@ -178,8 +174,8 @@ const openModalAutomationIsStart = (DecviceId,values) => {
                                      }
                                    onClick={() =>
                                      item.control == "on"
-                                       ? openModalControleIsStop(item.id,item.deviceName)
-                                       : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName) : null
+                                       ? openModalControleIsStop(item.devId,item.deviceName)
+                                       : item.control == "off" ? openModalControleIsStart(item.devId,item.deviceName) : null
                                    }
                                  >
                                    <Highlighter
@@ -199,41 +195,7 @@ const openModalAutomationIsStart = (DecviceId,values) => {
         </div>
       </div>
     </div></div>
-    {OpenSettempModal ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <h5 className="mt-5">Set Supply Temp. Setpoint (°C) : {DeviceName}</h5>
-
-              <h5 className="mt-5">Temperature</h5>
-              <input
-                type="number"
-                placeholder="Enter your username"
-                className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-                min={10}
-                max={40}
-                value={Values}
-                onChange={(e) => {
-                  onChangeValue(e.target.value);
-                }}
-              />
-
-              <div className="flex justify-center mt-10 gap-5">
-                <button
-                  className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                  onClick={() => closeModal()}
-                >
-                  cancel
-                </button>
-                <button
-                  className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSettemp()}
-                >
-                  confirm
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : null}
+   
         {loading ? (
           <Loading />
         ) : null}
@@ -260,7 +222,7 @@ const openModalAutomationIsStart = (DecviceId,values) => {
             </div>
           </div>
         ) : null}
-        {showModalAutomation  ? (
+        {showModalControle  ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -268,7 +230,7 @@ const openModalAutomationIsStart = (DecviceId,values) => {
                   Are you sure ?
                 </h3>
                 <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device start {DeviceName} now ? </p>
+                  <p className="text-lg text-gray-500 mt-2">Are you sure this device start {DeviceName} now ? </p>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
                   <button
@@ -279,7 +241,7 @@ const openModalAutomationIsStart = (DecviceId,values) => {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomation()}
+                    onClick={() => clickChangecControle()}
                   >
                     confirm
                   </button>

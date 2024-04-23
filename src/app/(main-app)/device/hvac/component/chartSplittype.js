@@ -10,6 +10,8 @@ import {
     Tooltip,
     Legend,
   } from "chart.js";
+  import dayjs from 'dayjs';
+  
   import { Line } from "react-chartjs-2";
   import zoomPlugin from "chartjs-plugin-zoom";
   import { getSplittypeGraph } from "@/utils/api";
@@ -35,7 +37,7 @@ export default function ChartSplittype({FloorId}) {
   const [ListLabelSplittype, setListLabelSplittype] = useState([0]);
   const [dateFrom, setdateFrom] = useState(new Date());
   const [dateTo, setdateTo] = useState(new Date());
-
+  const dateFormat = 'YYYY/MM/DD';
   useEffect(() => {
     if (FloorId != 0) {
         GetSplittypeGraph(FloorId, formatDate(new Date()), formatDate(new Date()));
@@ -191,7 +193,8 @@ export default function ChartSplittype({FloorId}) {
         <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
             <div className="flex flex-col gap-4 p-2">
                 <div className="flex gap-4">
-                <RangePicker onChange={onChangeDay} />
+                <RangePicker onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
+      format={dateFormat}/>
                     <button
               className="border border-slate-300 rounded-md h-9 px-2"
               onClick={onResetZoom}

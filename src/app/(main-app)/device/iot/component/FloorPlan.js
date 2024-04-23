@@ -29,12 +29,12 @@ import MotionSensor from "./Motiontable";
 import Counter from "./Motiontable copy";
 import Ligthing from "./Ligthingtable";
 export default function FloorPlan({ FloorId }) {
-  console.log(FloorId);
+  // console.log(FloorId);
   const [Values, setValues] = useState();
   const [Decvicetype, setDevicetype] = useState();
   const [valueSettemp, setvalueSettemp] = useState();
   const [DecviceId, setDeviceId] = useState();
-
+  
   const [Listcontrol, setListcontrol] = useState({});
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [OpenSettempModalVAV, setOpenSettempModalVAV] = useState(false);
@@ -42,6 +42,7 @@ export default function FloorPlan({ FloorId }) {
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
   const [DeviceName, setDeviceName] = useState("");
+  
   const [toggle, setToggle] = useState(false);
   const [OpenSetModeModal, setOpenSetModeModal] = useState(false);
   const [OpenSetFanModal, setOpenSetFanModal] = useState(false);
@@ -69,35 +70,21 @@ export default function FloorPlan({ FloorId }) {
   const [WaterMeterList, setWaterMeterList] = useState([]);
   const [HeaterList, setHeaterList] = useState([]);
   const [HeaterWaterList, setHeaterWaterList] = useState([]);
-  const [deviceTypeId,setdeviceTypeId] = useState("") 
+  const [deviceTypeId,setdeviceTypeId] = useState() 
   const [floorId, setFloorId] = useState();
   const [floorplanList, setFloorplanList] = useState([]);
   const [deviceTypeList, setdeviceTypeList] = useState([]);
   const [option, setOption] = useState("Indoor Temp & Humid");
   useEffect(() => {
     if (FloorId != 0 && option) {
+      console.log(deviceTypeList.id)
       console.log(option)
+      console.log(deviceTypeId)
       getfloorplan(FloorId);
       OnchangeListFloorplan(option)
-      // getIndoortemphumidList(FloorId);
-      // getoutdoortemphumidList(FloorId);
-      // getPressuregaugeList(FloorId);
-      // getPressuregaugeList(FloorId);
-      // getPowerMeterList(FloorId);
-      // getInveterList(FloorId);
-      // getFlowMeterList(FloorId);
-      // getMotionSensorList(FloorId);
-      // getLightingList(FloorId);
-      // getCounterList(FloorId);
-      // getSmartIRList(FloorId);
-      // getEfficiencyList(FloorId);
-      // getCCTVList(FloorId);
-      // getCO2SensorList(FloorId);
-      // getWaterMeterList(FloorId);
-      // getHeaterList(FloorId);
-      // getHeaterWaterList(FloorId);
     }
   }, [FloorId,option]);
+  
 
   const getfloorplan = async (floorId) => {
     setFloorId(floorId);
@@ -120,6 +107,7 @@ export default function FloorPlan({ FloorId }) {
     const result = await getindoortemphumid(floorId);
     console.log(result.data);
     setIndoortemphumidList(result.data);
+  
     };
   const getoutdoortemphumidList = async (floorId) => {
     setFloorId(floorId);
@@ -136,6 +124,8 @@ export default function FloorPlan({ FloorId }) {
     const result = await getPressuregauge(floorId);
     console.log(result.data);
     setPressuregaugeList(result.data);
+    console.log(result.data.id)
+    setdeviceTypeId(result.data.id)
   };
   const getPowerMeterList = async (floorId) => {
     setFloorId(floorId);
@@ -568,6 +558,7 @@ export default function FloorPlan({ FloorId }) {
     // setShowModalStart(false);
   };
 
+  
   return (
     <div>
       <div className="grid rounded-xl bg-white p-2 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 mt-5">
@@ -588,10 +579,9 @@ export default function FloorPlan({ FloorId }) {
             >
               
               {deviceTypeList.length > 0 &&
-                deviceTypeList.map((item) => {
-                  
+                deviceTypeList.map((item,index) => {
                   return (
-                  <option className="rounded-lg" key={item.id}>{item.displayName}</option>)
+                  <option className="rounded-lg" key={item.id}> {item.displayName}</option>)
                 })}
             </select>
             </div>
@@ -653,7 +643,7 @@ export default function FloorPlan({ FloorId }) {
                     })}
                      {outdoortemphumidList.length > 0 &&
                     outdoortemphumidList.map((marker, index) => {
-                      console.log(marker);
+                      // //
                       return (
                         <div key={marker.id}>
                           <div
@@ -699,7 +689,7 @@ export default function FloorPlan({ FloorId }) {
                     })}
                     {PressuregaugeList.length > 0 &&
                    PressuregaugeList.map((marker, index) => {
-                      console.log(marker);
+                      //
                       return (
                         <div key={index}>
                           <div
@@ -1370,7 +1360,7 @@ export default function FloorPlan({ FloorId }) {
                 <div>
                   {outdoortemphumidList.length > 0 &&
                     outdoortemphumidList.map((marker, index) => {
-                      console.log(marker);
+                      //
                       return (
                         <div key={marker.id}>
                           <div
@@ -1433,7 +1423,7 @@ export default function FloorPlan({ FloorId }) {
                 <div>
                   {PressuregaugeList.length > 0 &&
                    PressuregaugeList.map((marker, index) => {
-                      console.log(marker);
+                      //
                       return (
                         <div key={index}>
                           <div
@@ -2209,7 +2199,7 @@ export default function FloorPlan({ FloorId }) {
             {Decvicetype == "1"
               ? Listcontrol.length > 0 && 
                 Listcontrol.map((marker, index) => {
-                  console.log(marker);
+                  //
                   return (
                     <div key={marker.id}>
                       <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2245,7 +2235,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "2"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2281,7 +2271,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "3"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2313,7 +2303,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "4"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2365,7 +2355,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "5"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2411,7 +2401,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "6"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2443,7 +2433,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "7"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2475,7 +2465,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "8"
               ? Listcontrol.length > 0 &&
                 Listcontrol.map((marker, index) => {
-                  console.log(marker);
+                  //
                   return (
                     <div key={marker.id}>
                       <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2530,7 +2520,7 @@ export default function FloorPlan({ FloorId }) {
                 : Decvicetype == "9"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2562,7 +2552,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "10"
               ? Listcontrol.length > 0 &&
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2678,7 +2668,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "11"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2710,7 +2700,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "12"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2738,7 +2728,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "13"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2770,7 +2760,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "14"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2802,7 +2792,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "15"
               ? Listcontrol.length > 0 &&
               Listcontrol.map((marker, index) => { 
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">
@@ -2885,7 +2875,7 @@ export default function FloorPlan({ FloorId }) {
               : Decvicetype == "16"
               ? Listcontrol.length > 0 && 
               Listcontrol.map((marker, index) => {
-                console.log(marker);
+                //
                 return (
                   <div key={marker.id}>
                     <div class="w-64 bg-white h-auto rounded shadow-md pb-6">

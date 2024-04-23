@@ -248,7 +248,7 @@ export default function FilterCard() {
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
                 <p className=" text-red-700 mx-2 ">*</p>
                 <label>
-                  branch :
+                  Branch :
                   <select
                     className="w-44 border border-slate-300 mx-2 rounded-md h-9"
                     onChange={(event) => {
@@ -270,7 +270,7 @@ export default function FilterCard() {
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
                 <p className=" text-red-700 mx-2 ">*</p>
                 <label>
-                  building :
+                  Building :
                   <select
                     className="w-44 border border-slate-300 mx-2 rounded-md h-9"
                     onChange={(event) => {
@@ -291,7 +291,7 @@ export default function FilterCard() {
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
                 <p className=" text-red-700 mx-2">*</p>
                 <label>
-                  floor :
+                  Floor :
                   <select
                     className="w-44 border border-slate-300 mx-2 rounded-md h-9"
                     onChange={(event) => {
@@ -331,20 +331,12 @@ export default function FilterCard() {
         // Splittypelist = {SplittypeList}
         // IOTlist = {IOTList}
       />
+      <SplitTypetable SplittypeList={SplittypeList} />
       <AHUtable AHUlist={AHUList} />
       <VAVtable VAVList={VAVList} />
       <SmartIRtable IotList={IOTList} />
-      <SplitTypetable SplittypeList={SplittypeList} />
-      <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
-      <div className="flex flex-col gap-4 p-2">
-      <span className="text-lg  font-bold">Graph AHU</span>
-      <ChartAHU
-      FloorId= {floorId}
-        // chartControle={chartListAHU1}
-        // chartSupplytemp={chartListAHU2}
-        // returntemp={chartListAHU3}
-        // label={ListLabelAHU}
-      /></div></div>
+      
+      
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
             <div className="flex flex-col gap-4 p-2">
             <span className="text-lg  font-bold">Graph Split Type</span>
@@ -355,6 +347,16 @@ export default function FilterCard() {
         // roomtemp={chartListSplittype3}
         // external={chartListSplittype4}
         // label={ListLabelSplittype}
+      /></div></div>
+      <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
+      <div className="flex flex-col gap-4 p-2">
+      <span className="text-lg  font-bold">Graph AHU</span>
+      <ChartAHU
+      FloorId= {floorId}
+        // chartControle={chartListAHU1}
+        // chartSupplytemp={chartListAHU2}
+        // returntemp={chartListAHU3}
+        // label={ListLabelAHU}
       /></div></div>
       <ToastContainer />
     </div>

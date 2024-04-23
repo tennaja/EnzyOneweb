@@ -12,7 +12,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DatePicker, Radio } from "antd";
-
+import { IoMdPower } from "react-icons/io";
 import {
   ChangestatusIsOff,
   ChangestatusIsOn,
@@ -34,7 +34,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
-
+import dayjs from 'dayjs';
 ChartJS.register(
   zoomPlugin,
   CategoryScale,
@@ -50,8 +50,11 @@ export default function SummaryCard() {
   //toast notify
   const notifySuccess = () =>
     toast.success(
-      `Operation Complete
-  `,
+    <div className="px-2">
+      <div className="flex flex-row font-bold">{alerttitle}</div>
+      <div className="flex flex-row text-xs">{alertmassage}</div>
+      </div>,
+    
       {
         position: "top-right",
         autoClose: 3000,
@@ -64,7 +67,7 @@ export default function SummaryCard() {
       }
     );
     const { MonthPicker, RangePicker } = DatePicker;
-
+    const dateFormat = 'YYYY/MM/DD';
   //funtion Zoom graph
   const zoomOptions = {
     pan: {
@@ -82,47 +85,11 @@ export default function SummaryCard() {
   };
 
   // Option Graph
-  const options = {
-    aspectRatio: 4,
-
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    spanGaps: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      zoom: zoomOptions,
-    },
-    scales: {
-      x: {
-        // min: 0,
-        //     ticks: {
-        //     stepSize: 100.0
-        //     },
-        display: true,
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        },
-      },
-      y: {
-        min: 0,
-        ticks: {
-          stepSize: 0.01,
-        },
-        display: true,
-        grid: {
-          drawOnChartArea: true, // only want the grid lines for one axis to show up
-        },
-      },
-    },
-  };
+  
 
   function onChangeDay(date, dateString) {
     console.log(dateString);
-    GetAHUGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
+    GetAHUGraph(floorId, formatDate(dateString[0]), formatDate(dateString[1]));
   }
 
   const chartRef = useRef(null);
@@ -160,6 +127,8 @@ export default function SummaryCard() {
   const [alertmassage, setAlertmessage] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [Color, setColor] = useState();
+  const [dateFrom, setdateFrom] = useState(new Date());
+  const [dateTo, setdateTo] = useState(new Date());
 
   const colors = [
     "#278BE1",
@@ -206,12 +175,6 @@ export default function SummaryCard() {
   const OnListChange = async (event) => {
     setListChange(event);
     GetHitoricalGraph(floorId, event, formatDate(startDate), formatDate(endDate))
-  };
-
-  
-  //type Date Change
-  const OnListtypeDateChange = async (event) => {
-    setTypeDate(event);
   };
 
   //Open popup for Start
@@ -384,6 +347,7 @@ export default function SummaryCard() {
     if (res.status === 200) {
       if (res.data.length > 0) {
         setChartList(res.data);
+        console.log(res.data)
         let label = [];
         let modday = 0;
 
@@ -438,7 +402,7 @@ export default function SummaryCard() {
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
                 <p className=" text-red-700 mx-2 ">*</p>
                 <label>
-                  branch :
+                  Branch :
                   <select
                     className="w-44 border border-slate-300 mx-2 rounded-md h-9"
                     onChange={(event) => {
@@ -459,7 +423,7 @@ export default function SummaryCard() {
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
                 <p className=" text-red-700 mx-2 ">*</p>
                 <label>
-                  building :
+                  Building :
                   <select
                     className="w-44 border border-slate-300 mx-2 rounded-md h-9"
                     onChange={(event) => {
@@ -481,7 +445,7 @@ export default function SummaryCard() {
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
                 <p className=" text-red-700 mx-2">*</p>
                 <label>
-                  floor :
+                  Floor :
                   <select
                     className="w-44 border border-slate-300 mx-2 rounded-md h-9"
                     onChange={(event) => {
@@ -546,10 +510,10 @@ export default function SummaryCard() {
                           Power(kW)
                         </th>
                         <th scope="col" className="px-6 py-4 text-center">
-                          Efficiency
+                          Efficiency (%)
                         </th>
                         <th scope="col" className="px-6 py-4 text-center">
-                          Running Hour
+                          Running Hour (Wks )
                         </th>
                         <th scope="col" className="px-6 py-4 text-center">
                           Control
@@ -638,22 +602,23 @@ export default function SummaryCard() {
                                   
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center">
+                                  <div className="flex flex-col items-center">
                                 {item.status == "offline" ? "-" : <button
                                     type="button"
                                     className={
                                       item.status == "On"
-                                        ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                        : "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        ? "text-white  bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-extrabold rounded-full text-sm p-1.5 text-center inline-flex items-center"
+                                        : "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-extrabold rounded-full text-sm p-1.5 text-center inline-flex items-center"
                                     }
                                     onClick={() =>
                                       item.status == "On"
                                         ? openModalIsStop(item.id)
                                         : openModalIsStart(item.id)
                                     }
-                                  >
-                                    {item.status == "On" ? "On" : "Off"}
-                                  </button>}
+                                  ><IoMdPower size="1.5em"/>
+                                  </button>}<div className="text-xs mt-1 text-gray-500 font-bold">{item.status == "On" ? "On" : "Off"}</div>
                                   
+                                  </div>
                                 </td>
                               </tr>
                             );
@@ -851,7 +816,8 @@ export default function SummaryCard() {
             </select>
           </div>
           <div className="flex gap-5">
-          <RangePicker onChange={onChangeDay} />
+          <RangePicker onChange={onChangeDay} defaultValue={[dayjs(formatDate(startDate), dateFormat), dayjs(formatDate(endDate), dateFormat)]}
+      format={dateFormat}/>
 
             
             <button
@@ -880,22 +846,7 @@ export default function SummaryCard() {
             />
           </div>
         ) : (
-          <div class="flex">
-            <div className="flex items-center justify-center">
-              {listChange == "barg" ? (
-                <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">
-                  Pressure (barg)
-                </span>
-              ) : listChange == "kw" ? (
-                <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">
-                  Power (kw)
-                </span>
-              ) : (
-                <span className="[writing-mode:vertical-lr] transform rotate-180 ml-2">
-                  Efficiency (%)
-                </span>
-              )}
-            </div>
+          <div>
 
             {typeof window !== "undefined" && (
               <Line
@@ -918,7 +869,42 @@ export default function SummaryCard() {
                   }),
                 }}
                 ref={chartRef}
-                options={options}
+                options = {{
+                  aspectRatio: 4,
+          responsive: true,
+          interaction: {
+            mode: "index",
+            intersect: false,
+          },
+          spanGaps: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            zoom: zoomOptions,
+          },
+          scales: {
+            x: {
+              display: true,
+              grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+              },
+            },
+            y: {
+              beginAtZero: true,
+              type: "linear",
+              display: true,
+              position: "left",
+      
+              title: {
+                display: true,
+                text: listChange,
+                padding: { top: 30, left: 0, right: 0, bottom: 0 },
+              },
+            },
+           
+          },
+                }}
               />
             )}
           </div>

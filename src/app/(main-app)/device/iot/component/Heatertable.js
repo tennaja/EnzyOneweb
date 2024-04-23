@@ -14,10 +14,9 @@ export default function Heatertable(Heaterlist) {
   const [DecviceId, setDeviceId] = useState(null);
   const [DeviceName, setDeviceName] = useState('');
   const [Values, setValues] = useState();
-  const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
-  const [showModalAutomation, setShowModalAutomation] = useState(false);
+  const [showModalControle, setShowModalControle] = useState(false);
   
 
   const notifySuccess = () =>
@@ -32,15 +31,7 @@ export default function Heatertable(Heaterlist) {
     progress: undefined,
     theme: "light",
   });
-  const onChangeValue = (event) => {
-    setValues(event);
-  };
-  const onclickOPenSettemp = (id, DecviceId, values) => {
-    setOpenSettempModal(true)
-    setDeviceId(id)
-    setDeviceName(DecviceId)
-    setValues(values)
-  }
+ 
   const closeModal = () => {
     setOpenSettempModal(false)
     setModalError(false)
@@ -49,34 +40,17 @@ export default function Heatertable(Heaterlist) {
     // setShowModalStop(false);
     // setShowModalStart(false);
 };
-const handleChangeValueSettemp = async () => {
-  setLoading(true);
-  const res = await ChangeValueSettempAHU(DecviceId, Values);
-  if (res.status === 200) {
-    console.log(res.data)
-    closeModal();
-    setLoading(false);
-    notifySuccess();
-  } else if (res.response.status === 401) {
-    closeModal();
-    setLoading(false);
-    setModalError(true)
-  } else if (res.response.status === 500) {
-    closeModal();
-    setLoading(false);
-    setModalError(true)
-  }
-}
-const openModalAutomationIsStop = (DecviceId,values) => {
+
+const openModalControleIsStop = (DecviceId,values) => {
   setDeviceId(DecviceId)
   setValues('off')
-  setShowModalAutomation(true);
+  setShowModalControle(true);
   
 }
-const openModalAutomationIsStart = (DecviceId,values) => {
+const openModalControleIsStart = (DecviceId,values) => {
   setDeviceId(DecviceId)
   setValues('on')
-  setShowModalAutomation(true);
+  setShowModalControle(true);
   
 }
 async function clickChangestatusAutomation() {
@@ -286,41 +260,7 @@ async function clickChangestatusAutomation() {
         </div>
       </div>
     </div></div>
-    {OpenSettempModal ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <h5 className="mt-5">Set Supply Temp. Setpoint (°C) : {DeviceName}</h5>
-
-              <h5 className="mt-5">Temperature</h5>
-              <input
-                type="number"
-                placeholder="Enter your username"
-                className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-                min={10}
-                max={40}
-                value={Values}
-                onChange={(e) => {
-                  onChangeValue(e.target.value);
-                }}
-              />
-
-              <div className="flex justify-center mt-10 gap-5">
-                <button
-                  className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                  onClick={() => closeModal()}
-                >
-                  cancel
-                </button>
-                <button
-                  className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSettemp()}
-                >
-                  confirm
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : null}
+   
         {loading ? (
           <Loading />
         ) : null}
@@ -347,7 +287,7 @@ async function clickChangestatusAutomation() {
             </div>
           </div>
         ) : null}
-        {showModalAutomation  ? (
+        {showModalControle  ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">

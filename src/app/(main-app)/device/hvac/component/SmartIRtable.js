@@ -9,7 +9,7 @@ export default function SmartIRtable(IotList) {
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
         <div className="flex flex-col gap-4 p-2">
           <div className="flex justify-between">
-            <span className="text-lg  font-bold">IOT</span>
+            <span className="text-lg  font-bold">IoT</span>
             <input
               type="text"
               placeholder="Search Device"
@@ -99,7 +99,7 @@ export default function SmartIRtable(IotList) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.temp)} // Replace this with your text
+                                    textToHighlight={String(item.temp.toFixed(2))} // Replace this with your text
                                   />}
                        
       
@@ -109,7 +109,7 @@ export default function SmartIRtable(IotList) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.humidity)} // Replace this with your text
+                                    textToHighlight={String(item.humidity.toFixed(2))} // Replace this with your text
                                   />}
                         
                           
@@ -119,7 +119,7 @@ export default function SmartIRtable(IotList) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.co2)} // Replace this with your text
+                                    textToHighlight={String(item.co2.toFixed(2))} // Replace this with your text
                                   />}
                         
                           

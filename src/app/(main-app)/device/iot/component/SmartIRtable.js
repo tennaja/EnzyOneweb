@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Switch } from '@headlessui/react'
 import Highlighter from "react-highlight-words";
 import {
-  ChangeValueSettempSplttpye, ChangeValueSetMode, ChangeValueSetFan ,ChangeControlSplittype ,ChangeAutomationSplittype
+  SmartIRSetTemp, ChangeSetModeSmartIR, ChangeSetFanSmartIR ,ChangeControlSmartIR 
 } from "@/utils/api";
 import Loading from "./Loading";
 import ModalPopError from "./ModalError";
@@ -46,18 +46,7 @@ export default function SmartIRtable(SmartIRlist) {
     setShowModalControle(true);
     
   }
-  const openModalAutomationIsStop = (DecviceId,values) => {
-    setDeviceId(DecviceId)
-    setValues('off')
-    setShowModalAutomation(true);
-    
-  }
-  const openModalAutomationIsStart = (DecviceId,values) => {
-    setDeviceId(DecviceId)
-    setValues('on')
-    setShowModalAutomation(true);
-    
-  }
+  
 
   const notifySuccess = () =>
     toast.success(`Operation Complete
@@ -74,7 +63,7 @@ export default function SmartIRtable(SmartIRlist) {
 
   const handleChangeValueSettemp = async () => {
     setLoading(true);
-    const res = await ChangeValueSettempSplttpye(DecviceId, Values);
+    const res = await SmartIRSetTemp(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data)
       closeModal();
@@ -93,7 +82,7 @@ export default function SmartIRtable(SmartIRlist) {
 
   async function clickChangestatusControle() {
     setLoading(true);
-    const res = await ChangeControlSplittype(DecviceId, Values);
+    const res = await ChangeControlSmartIR(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data)
       setAlertTitle(res.data.title);
@@ -101,41 +90,16 @@ export default function SmartIRtable(SmartIRlist) {
       closeModal();
       setLoading(false);
       notifySuccess();
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-      
-    }
-    else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    }
-  }
-
-  async function clickChangestatusAutomation() {
-    setLoading(true);
-    const res = await ChangeAutomationSplittype(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data)
+    } else if (res.status === 401) {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
       closeModal();
       setLoading(false);
-      notifySuccess();
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
       
     }
-    else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
+    else if (res.status === 500) {
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
       closeModal();
       setLoading(false);
     }
@@ -143,7 +107,7 @@ export default function SmartIRtable(SmartIRlist) {
 
   const handleChangeValueSetMode = async () => {
     setLoading(true);
-    const res = await ChangeValueSetMode(DecviceId, Values);
+    const res = await ChangeSetModeSmartIR(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data)
       closeModal();
@@ -158,7 +122,7 @@ export default function SmartIRtable(SmartIRlist) {
 
   const handleChangeValueSetFan = async () => {
     setLoading(true);
-    const res = await ChangeValueSetFan(DecviceId, Values);
+    const res = await ChangeSetFanSmartIR(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data)
       closeModal();
@@ -266,8 +230,6 @@ export default function SmartIRtable(SmartIRlist) {
                             item.deviceName.toLowerCase().includes(searchTable) ||
                             item.deviceName.toUpperCase().includes(searchTable) ||
                             //   item.status.includes(searchTable) ||
-                            String(item.roomTemp).includes(searchTable) ||
-                            String(item.humidity).includes(searchTable) ||
                             String(item.setTemp).includes(searchTable) ||
                             (item.control).toLowerCase().includes(searchTable) ||
                             (item.control).toUpperCase().includes(searchTable) ||
@@ -278,7 +240,7 @@ export default function SmartIRtable(SmartIRlist) {
                             (item.mode).toLowerCase().includes(searchTable) ||
                             (item.mode).toUpperCase().includes(searchTable) ||
                             (item.mode).includes(searchTable) ||
-                            (item.automation).includes(searchTable)
+                            (item.status).includes(searchTable)
                           );
                         }).map((item) => {
                           
@@ -358,8 +320,8 @@ export default function SmartIRtable(SmartIRlist) {
                                       }
                                     onClick={() =>
                                       item.control == "on"
-                                        ? openModalControleIsStop(item.id)
-                                        : item.control == "off" ? openModalControleIsStart(item.id) : null
+                                        ? openModalControleIsStop(item.devId)
+                                        : item.control == "off" ? openModalControleIsStart(item.devId) : null
                                     }
                                   >
                                     <Highlighter
@@ -554,34 +516,7 @@ export default function SmartIRtable(SmartIRlist) {
             </div>
           </div>
         ) : null}
-        {showModalAutomation  ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mt-5">
-                  Are you sure ?
-                </h3>
-                <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device start {DeviceName} now ? </p>
-                </div>
-                <div className="flex justify-center mt-10 gap-5">
-                  <button
-                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                    onClick={() => closeModal()}
-                  >
-                    cancel
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomation()}
-                  >
-                    confirm
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
+        
       </div>
       <ToastContainer />
     </div>

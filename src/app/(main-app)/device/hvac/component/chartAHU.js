@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
-
+import dayjs from 'dayjs';
 import { getAHUGraph } from "@/utils/api";
 import { DatePicker, Radio } from "antd";
 import moment from "moment";
@@ -36,6 +36,7 @@ export default function ChartAHU({ FloorId }) {
   const [ListLabelAHU, setListLabelAHU] = useState([0]);
   const [dateFrom, setdateFrom] = useState(new Date());
   const [dateTo, setdateTo] = useState(new Date());
+  const dateFormat = 'YYYY/MM/DD';
   const formatDate = (date) => {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -150,6 +151,7 @@ export default function ChartAHU({ FloorId }) {
           label.push(res.data.controlValve[0].data[j].time);
         }
         setListLabelAHU(label);
+        console.log(label)
         // console.log(label);
       }
       if (res.data.supplyTemp.length > 0) {
@@ -175,7 +177,8 @@ export default function ChartAHU({ FloorId }) {
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
       <div className="flex flex-col gap-4 p-2">
         <div className="flex gap-4">
-          <RangePicker onChange={onChangeDay} />
+          <RangePicker onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
+      format={dateFormat}/>
           <button
             className="border border-slate-300 rounded-md h-9 px-2"
             onClick={onResetZoom}

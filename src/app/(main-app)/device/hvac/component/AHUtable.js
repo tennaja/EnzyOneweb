@@ -10,7 +10,9 @@ import {
 } from "@/utils/api";
 import Loading from "./Loading";
 import TextField from '@mui/material/TextField';
+import { message } from "antd";
 export default function AHUtable(AHUlist) {
+  console.log(AHUlist)
   const [searchTable, setSerachTable] = useState("");
   const [DecviceId, setDeviceId] = useState(null);
   const [DeviceName, setDeviceName] = useState('');
@@ -25,10 +27,12 @@ export default function AHUtable(AHUlist) {
   const min = 10;
   const max = 40;
   
-  const notifySuccess = () =>
+  const notifySuccess = (title,message) =>
   toast.success(
-    `Operation Complete
-  `,
+    <div className="px-2">
+    <div className="flex flex-row font-bold">{title}</div>
+    <div className="flex flex-row text-xs">{message}</div>
+    </div>,
     {
       position: "top-right",
       autoClose: 3000,
@@ -41,6 +45,9 @@ export default function AHUtable(AHUlist) {
     }
   );
   
+  
+
+
   const onChangeValue = (event) => {
     setValues(event);
   };
@@ -64,16 +71,21 @@ const handleChangeValueSettemp = async () => {
   setLoading(true);
   const res = await ChangeValueSettempAHU(DecviceId, Values);
   if (res.status === 200) {
+    setAlertTitle(res.data.title);
+    setAlertmessage(res.data.message);
     console.log(res.data)
     setLoading(false);
     closeModal();
-    notifySuccess();
+    notifySuccess(res.data.title,res.data.message);
   } else if (res.response.status === 401) {
+    setAlertTitle(res.data.title);
+    setAlertmessage(res.data.message);
     setLoading(false);
     closeModal();
     setModalError(true)
   } else if (res.response.status === 500) {
-    
+    setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
     setLoading(false);
     closeModal();
     setModalError(true)
@@ -102,7 +114,7 @@ async function clickChangestatusAutomation() {
     setAlertmessage(res.data.message);
     closeModal();
     setLoading(false);
-    notifySuccess();
+    notifySuccess(res.data.title,res.data.message);
   } else if (res.response.status === 401) {
     setAlertTitle(res.response.data.title);
     setAlertmessage(res.response.data.message);
@@ -234,7 +246,14 @@ async function clickChangestatusAutomation() {
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center ">
-                        {item.status == "offline" ? "-" : <Highlighter
+                        {item.status == "offline" ? "-" : item.status == "off" ? <Highlighter
+                                    className="font-bold cursor-pointer"
+                                    onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,event.preventDefault()) : null}
+                                    highlightClassName="highlight" // Define your custom highlight class
+                                    searchWords={[searchTable]}
+                                    autoEscape={true}
+                                    textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
+                                  />: <Highlighter
                                     className="text-[#5eead4] underline font-bold cursor-pointer"
                                     onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
@@ -326,8 +345,6 @@ async function clickChangestatusAutomation() {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Supply Temp. Setpoint (°C) : {DeviceName}</h5>
-
-              <h5 className="mt-5">Temperature</h5>
               <NumericFormat 
               type="number" 
               className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
@@ -403,7 +420,7 @@ async function clickChangestatusAutomation() {
                   Are you sure ?
                 </h3>
                 <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device start {DeviceName} now ? </p>
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure you want to start {DeviceName} now ? </p>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
                   <button
@@ -431,7 +448,7 @@ async function clickChangestatusAutomation() {
                   Are you sure ?
                 </h3>
                 <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device stop {DeviceName} now ? </p>
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure you want to stop {DeviceName} now ? </p>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
                   <button

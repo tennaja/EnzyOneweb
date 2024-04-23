@@ -17,11 +17,17 @@ export default function VAVtable(VAVList) {
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
+  const [alerttitle, setAlertTitle] = useState("");
+  const [alertmassage, setAlertmessage] = useState("");
   const min = 0;
   const max = 100;
-  const notifySuccess = () =>
-    toast.success(`Operation Complete
-    `, {
+  const notifySuccess = (title,message) =>
+  toast.success(
+    <div className="px-2">
+    <div className="flex flex-row font-bold">{title}</div>
+    <div className="flex flex-row text-xs">{message}</div>
+    </div>,
+    {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -30,7 +36,8 @@ export default function VAVtable(VAVList) {
       draggable: true,
       progress: undefined,
       theme: "light",
-    });
+    }
+  );
 
   const onChangeValue = (event) => {
     let { value, min, max } = event.target;
@@ -55,15 +62,21 @@ const handleChangeValueSettemp = async () => {
   setLoading(true);
   const res = await ChangeValueDamperVAV(DecviceId, Values);
   if (res.status === 200) {
+    setAlertTitle(res.data.title);
+    setAlertmessage(res.data.message);
     console.log(res.data)
     closeModal();
     setLoading(false);
-    notifySuccess();
+    notifySuccess(res.data.title,res.data.message);
   } else if (res.response.status === 401) {
+    setAlertTitle(res.data.title);
+    setAlertmessage(res.data.message);
     closeModal();
     setLoading(false);
     setModalError(true)
   } else if (res.response.status === 500) {
+    setAlertTitle(res.data.title);
+    setAlertmessage(res.data.message);
     closeModal();
     setLoading(false);
     setModalError(true)
@@ -181,7 +194,14 @@ const handleChangeValueSettemp = async () => {
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center" >
-                        {item.status == "offline" ? "-" : <Highlighter
+                        {item.status == "offline" ? "-" : item.status == "off" ? <Highlighter
+                        className="font-bold cursor-pointer"
+                                    highlightClassName="highlight" // Define your custom highlight class
+                                    searchWords={[searchTable]}
+                                    autoEscape={true}
+                                    textToHighlight={String(item.damper)} // Replace this with your text
+                                  /> :
+                             <Highlighter
                         className="text-[#5eead4] underline font-bold cursor-pointer"
                         onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.damper ,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
@@ -207,8 +227,6 @@ const handleChangeValueSettemp = async () => {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
-
-              <h5 className="mt-5">Temperature</h5>
               <NumericFormat 
               type="number" 
               className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
