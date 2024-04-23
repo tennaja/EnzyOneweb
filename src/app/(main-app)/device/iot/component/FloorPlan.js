@@ -77,9 +77,6 @@ export default function FloorPlan({ FloorId }) {
   const [option, setOption] = useState("Indoor Temp & Humid");
   useEffect(() => {
     if (FloorId != 0 && option) {
-      console.log(deviceTypeList.id)
-      console.log(option)
-      console.log(deviceTypeId)
       getfloorplan(FloorId);
       OnchangeListFloorplan(option)
     }
@@ -499,6 +496,10 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
     }
   }
+  const onchangeDevicetypeId = (event) =>{
+    setdeviceTypeId(event)
+    console.log(event)
+  }
   const OnchangeListFloorplan = (event) => {
     setOption(event)
     console.log(option)
@@ -574,14 +575,14 @@ export default function FloorPlan({ FloorId }) {
                       <span className="text-lg  font-bold">{item.name}</span>
             <select
               className="w-auto border border-slate-300 mx-2 rounded-md h-9 px-3"
-              onChange={(e) => OnchangeListFloorplan(e.target.value)}
+              onChange={(e) => {OnchangeListFloorplan(e.target.value) , onchangeDevicetypeId(e.target.id)}}
               value={option}
             >
               
               {deviceTypeList.length > 0 &&
                 deviceTypeList.map((item,index) => {
                   return (
-                  <option className="rounded-lg" key={item.id}> {item.displayName}</option>)
+                  <option className="rounded-lg" id={item.id}> {item.displayName}</option>)
                 })}
             </select>
             </div>

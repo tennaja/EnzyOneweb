@@ -18,7 +18,8 @@ export default function Ligthing(Ligthinglist) {
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
   const [showModalControle, setShowModalControle] = useState(false);
-  
+  const [alerttitle, setAlertTitle] = useState("");
+  const [alertmassage, setAlertmessage] = useState("");
 
   const notifySuccess = () =>
   toast.success(`Operation Complete

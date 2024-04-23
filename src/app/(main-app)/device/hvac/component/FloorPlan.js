@@ -502,7 +502,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={marker.id}
                             value={"AHU"}
-                            className="w-60 cursor-pointer"
+                            className="w-48 cursor-pointer"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -529,39 +529,12 @@ export default function FloorPlan({ FloorId }) {
                                   {String(marker.supplyTemp.toFixed(2))}
                                 </span>
                               </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs ">
-                                  Supply Temp. Setpoint (°C) :{" "}
-                                  {String(marker.supplyTempSetPoint.toFixed(2))}
-                                </span>
-                              </div>
+                              
                               <div class="px-3">
                                 <span class="text-gray-700 text-xs">
                                   Return Temp. (°C) :{" "}
                                   {String(marker.returnTemp.toFixed(2))}
                                 </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD %Drive (Hz) : {String(marker.vsdDrive.toFixed(2))}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD Power (kW) : {String(marker.vsdPower.toFixed(2))}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD Speed (rpm) : {String(marker.vsdSpeed.toFixed(2))}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Control Valve (%) :{" "}
-                                  {String(marker.controlValve.toFixed(2))}
-                                </span>
-                                
                               </div>
                             </div>
                           </div>
@@ -683,11 +656,7 @@ export default function FloorPlan({ FloorId }) {
                                   Humidity (%) : {String(marker.humidity.toFixed(2))}
                                 </span>
                               </div>
-                              <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                  Set Temp. (°C) : {String(marker.setTemp.toFixed(2))}
-                                </span>
-                              </div>
+                              
                             </div>
                           </div>
                         </div>
@@ -813,11 +782,7 @@ export default function FloorPlan({ FloorId }) {
                                   Humidity (%) : {String(marker.humidity.toFixed(2))}
                                 </span>
                               </div>
-                              <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                  Set Temp. (°C) : {String(marker.setTemp.toFixed(2))}
-                                </span>
-                              </div>
+                             
                             </div>
                           </div>
                         </div>
@@ -848,7 +813,7 @@ export default function FloorPlan({ FloorId }) {
                           <div
                             key={marker.id}
                             value={"AHU"}
-                            className="w-60 cursor-pointer"
+                            className="w-48 cursor-pointer"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
@@ -876,38 +841,13 @@ export default function FloorPlan({ FloorId }) {
                                 </span>
                               </div>
                               <div class="px-3">
-                                <span class="text-gray-700 text-xs ">
-                                  Supply Temp. Setpoint (°C) :{" "}
-                                  {String(marker.supplyTempSetPoint.toFixed(2))}
-                                </span>
-                              </div>
-                              <div class="px-3">
                                 <span class="text-gray-700 text-xs">
                                   Return Temp. (°C) :{" "}
                                   {String(marker.returnTemp.toFixed(2))}
                                 </span>
                               </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD %Drive (Hz) : {String(marker.vsdDrive.toFixed(2))}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD Power (kW) : {String(marker.vsdPower.toFixed(2))}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  VSD Speed (rpm) : {String(marker.vsdSpeed.toFixed(2))}
-                                </span>
-                              </div>
-                              <div class="px-3">
-                                <span class="text-gray-700 text-xs">
-                                  Control Valve (%) :{" "}
-                                  {String(marker.controlValve.toFixed(2))}
-                                </span>
-                              </div>
+                              
+                             
                             </div>
                           </div>
                         </div>
@@ -1069,7 +1009,12 @@ export default function FloorPlan({ FloorId }) {
                               : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                               : " text-center text-gray-500 font-extrabold"
                           }>
-                          {marker.status}
+                          {
+                            marker.status == "on"
+                              ? "On"
+                              : marker.status == "offline" ? " Offline"
+                              : " Off"
+                          }
                           </span> 
                           </span>
                         </div>
@@ -1131,7 +1076,12 @@ export default function FloorPlan({ FloorId }) {
                               : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                               : " text-center text-gray-500 font-extrabold"
                           }>
-                          {marker.status}
+                          {
+                            marker.status == "on"
+                              ? "On"
+                              : marker.status == "offline" ? " Offline"
+                              : " Off"
+                          }
                           </span> 
                           </span>
                         </div>
@@ -1254,7 +1204,12 @@ export default function FloorPlan({ FloorId }) {
                               : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                               : " text-center text-gray-500 font-extrabold"
                           }>
-                          {marker.status}
+                          {
+                            marker.status == "on"
+                              ? "On"
+                              : marker.status == "offline" ? " Offline"
+                              : " Off"
+                          }
                           </span> 
                           </span>
                         </div>
@@ -1296,11 +1251,13 @@ export default function FloorPlan({ FloorId }) {
                           </span> : "-"}
                           </span>
                         </div>
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
+                        <div class="px-3 flex">
+                          <span class="text-gray-700 text-sm flex flex-row items-center">
                             Control :{" "}
                             
-                            {marker.status == "offline" ? "-" : <button
+                            {marker.status == "offline" ? "-" : 
+                            <div className='flex flex-col items-center pl-2'>
+                            <button
                               type="button"
                               className={
                                 marker.control == "on"
@@ -1321,10 +1278,11 @@ export default function FloorPlan({ FloorId }) {
                                     ) : null
                               }
                             >
-                              
+                               
                               <IoMdPower size="1.2em"/>
-                            </button>}
-                            {marker.control}
+                            </button><div className="text-xs  text-gray-500 font-bold">{marker.status == "offline" ? null : marker.control}</div></div>}
+                            
+                            
                           </span>
                         </div>
                         <div class="px-3 flex gap-2">
@@ -1420,7 +1378,12 @@ export default function FloorPlan({ FloorId }) {
                               : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                               : " text-center text-gray-500 font-extrabold"
                           }>
-                          {marker.status}
+                         {
+                            marker.status == "on"
+                              ? "On"
+                              : marker.status == "offline" ? " Offline"
+                              : " Off"
+                          }
                           </span> 
                           </span>
                         </div>

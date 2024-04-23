@@ -113,10 +113,18 @@ export default function SmartIRtable(SmartIRlist) {
       closeModal();
       setLoading(false);
       notifySuccess();
-    } else {
+    } else if (res.status === 401) {
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
       closeModal();
       setLoading(false);
-      setModalError(true)
+      
+    }
+    else if (res.status === 500) {
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
+      closeModal();
+      setLoading(false);
     }
   }
 
@@ -128,10 +136,18 @@ export default function SmartIRtable(SmartIRlist) {
       closeModal();
       setLoading(false);
       notifySuccess();
-    } else {
+    } else if (res.status === 401) {
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
       closeModal();
       setLoading(false);
-      setModalError(true)
+      
+    }
+    else if (res.status === 500) {
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
+      closeModal();
+      setLoading(false);
     }
   }
   const onChangeValue = (event) => {
@@ -168,6 +184,7 @@ export default function SmartIRtable(SmartIRlist) {
     setShowModalAutomation(false)
     setModalError(false)
     setDeviceId(null);
+    setValues("")
    
 
   };
