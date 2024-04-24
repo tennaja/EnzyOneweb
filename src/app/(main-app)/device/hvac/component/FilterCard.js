@@ -284,7 +284,7 @@ export default function FilterCard() {
         </div>
         {floorplanList.id}
       </div>
-      {/* <ExternalList FloorId= {floorId}/> */}
+      <ExternalList FloorId= {floorId}/>
       <FloorPlan
       FloorId= {floorId}
         // Data={floorplanList}

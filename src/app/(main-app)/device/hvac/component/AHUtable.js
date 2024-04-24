@@ -245,7 +245,7 @@ async function clickChangestatusAutomation() {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.supplyTemp)} // Replace this with your text
+                                    textToHighlight={String(item.supplyTemp.toFixed(2))} // Replace this with your text
                                   />}
                         
                         
@@ -257,14 +257,14 @@ async function clickChangestatusAutomation() {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
+                                    textToHighlight={String(item.supplyTempSetPoint.toFixed(2))} // Replace this with your text
                                   />: <Highlighter
                                     className="text-[#5eead4] underline font-bold cursor-pointer"
                                     onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
+                                    textToHighlight={String(item.supplyTempSetPoint.toFixed(2))} // Replace this with your text
                                   />}
                         
                           
@@ -274,7 +274,7 @@ async function clickChangestatusAutomation() {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.returnTemp)} // Replace this with your text
+                                    textToHighlight={String(item.returnTemp.toFixed(2))} // Replace this with your text
                                   />}
                        
                           
@@ -284,7 +284,7 @@ async function clickChangestatusAutomation() {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.vsdDrive)} // Replace this with your text
+                                    textToHighlight={String(item.vsdDrive.toFixed(2))} // Replace this with your text
                                   />}
                         
                         
@@ -294,7 +294,7 @@ async function clickChangestatusAutomation() {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.vsdPower)} // Replace this with your text
+                                    textToHighlight={String(item.vsdPower.toFixed(2))} // Replace this with your text
                                   />}
                         
                           
@@ -304,7 +304,7 @@ async function clickChangestatusAutomation() {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.vsdSpeed)} // Replace this with your text
+                                    textToHighlight={String(item.vsdSpeed.toFixed(2))} // Replace this with your text
                                   />}
                        
                 
@@ -314,14 +314,25 @@ async function clickChangestatusAutomation() {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.controlValve)} // Replace this with your text
+                                    textToHighlight={String(item.controlValve.toFixed(2))} // Replace this with your text
                                   />
                           }
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 flex justify-center items-center font-extrabold">
                                 
-                        {item.status == "offline" ? "-" : <div className='toggle-container' onClick={() =>
+                        {item.status == "offline" ? "-" : item.status == "off" ? <div className='toggle-container-disable' onClick={() =>
+                                item.status == "on" ?
+                                item.automation == "on"
+                                    ? openModalAutomationIsStop(item.id,item.deviceName)
+                                    : openModalAutomationIsStart(item.id,item.deviceName)
+                                 :  null }>
+                                    <div className={`toggle-btn-disable ${item.automation=="off" ? "disableNone" : ""}`}>
+                                        {item.automation=="on" ? "ON" : "OFF"}
+                                    </div>
+                                </div> 
+                                
+                                : <div className='toggle-container' onClick={() =>
                                 item.status == "on" ?
                                 item.automation == "on"
                                     ? openModalAutomationIsStop(item.id,item.deviceName)

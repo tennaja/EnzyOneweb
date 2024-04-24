@@ -296,7 +296,7 @@ export default function SplitTypetable(SplittypeList) {
                           Set Temp. (°C)
                         </th>
                         <th scope="col" className="px-6 py-4 text-center">
-                          Fan
+                          Fan Speed
                         </th>
                         <th scope="col" className="px-6 py-4 text-center">
                         Mode
@@ -379,7 +379,7 @@ export default function SplitTypetable(SplittypeList) {
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={String(item.roomTemp)} // Replace this with your text
+                                  textToHighlight={String(item.roomTemp.toFixed(2))} // Replace this with your text
 
                                 />}
                                 
@@ -391,7 +391,7 @@ export default function SplitTypetable(SplittypeList) {
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={String(item.humidity)} // Replace this with your text
+                                  textToHighlight={String(item.humidity.toFixed(2))} // Replace this with your text
                                 />}
                                
 
@@ -409,7 +409,7 @@ export default function SplitTypetable(SplittypeList) {
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={String(item.setTemp)} // Replace this with your text
+                                  textToHighlight={String(item.setTemp.toFixed(2))} // Replace this with your text
                                   
                                 />}
                                 
@@ -421,14 +421,14 @@ export default function SplitTypetable(SplittypeList) {
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.fan} // Replace this with your text
+                                  textToHighlight={item.fan == "auto" ? "Auto" : item.fan == "low" ? "Low" : item.fan == "medium" ? "Medium" : "High"}// Replace this with your text
                                  
-                                />:  <Highlighter
+                                /> :  <Highlighter
                                 className="text-[#5eead4] underline font-bold cursor-pointer"onClick={(event) => item.status == "on" ? onclickOPenSetMode(item.id,item.fan, item.deviceName,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.fan} // Replace this with your text
+                                  textToHighlight={item.fan == "auto" ? "Auto" : item.fan == "low" ? "Low" : item.fan == "medium" ? "Medium" : "High"} // Replace this with your text
                                  
                                 />}
                                
@@ -440,13 +440,13 @@ export default function SplitTypetable(SplittypeList) {
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.mode} // Replace this with your text
+                                  textToHighlight={item.mode == "cool" ? "Cool" : item.mode == "dry" ? "Dry" : "Fan"} // Replace this with your text
                                 />: <Highlighter
                                 className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id,item.mode, item.deviceName,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.mode} // Replace this with your text
+                                  textToHighlight={item.mode == "cool" ? "Cool" : item.mode == "dry" ? "Dry" : "Fan"} // Replace this with your text
                                 />}
                                 
                                 
@@ -477,7 +477,7 @@ export default function SplitTypetable(SplittypeList) {
                                   
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.control} // Replace this with your text
+                                  textToHighlight={item.control == "on" ? "On" : item.control == "off" ? "Off" : "Offline"} // Replace this with your text
                                 />}
                                   
                                 </div>
@@ -485,17 +485,27 @@ export default function SplitTypetable(SplittypeList) {
                               
                               <td className="whitespace-nowrap px-6 py-4 flex justify-center items-center font-extrabold">
                                 
-                              {item.status == "offline" ? "-" :  <div className='toggle-container' onClick={() =>
-       item.status == "on" ?
-       item.automation == "on"
-           ? openModalAutomationIsStop(item.id,item.deviceName)
-           : openModalAutomationIsStart(item.id,item.deviceName)
-        :  null }>
-           <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
-               {item.automation=="on" ? "ON" : "OFF"}
-           </div>
-       </div>}
-
+                              {item.status == "offline" ? "-" : item.status == "off" ? <div className='toggle-container-disable ' onClick={() =>
+                                item.status == "on" ?
+                                item.automation == "on"
+                                    ? openModalAutomationIsStop(item.id,item.deviceName)
+                                    : openModalAutomationIsStart(item.id,item.deviceName)
+                                 :  null }>
+                                    <div className={`toggle-btn-disable ${item.automation=="off" ? "disableNone" : ""}`}>
+                                        {item.automation=="on" ? "ON" : "OFF"}
+                                    </div>
+                                </div> 
+                                
+                                : <div className='toggle-container' onClick={() =>
+                                item.status == "on" ?
+                                item.automation == "on"
+                                    ? openModalAutomationIsStop(item.id,item.deviceName)
+                                    : openModalAutomationIsStart(item.id,item.deviceName)
+                                 :  null }>
+                                    <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
+                                        {item.automation=="on" ? "ON" : "OFF"}
+                                    </div>
+                                </div>}
        
       
 
@@ -557,7 +567,7 @@ export default function SplitTypetable(SplittypeList) {
         {OpenSetModeModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
+              
                 <h5 className="mt-5">Set Fan Speed : {DeviceName}</h5>
                 
                 <div className='mt-5'>
@@ -611,14 +621,14 @@ export default function SplitTypetable(SplittypeList) {
                     confirm
                   </button>
                 </div>
-              </div>
+              
             </div>
           </div>
         ) : null}
         {OpenSetFanModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
+             
                 <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
                
                 <div className='mt-5'>
@@ -663,7 +673,7 @@ export default function SplitTypetable(SplittypeList) {
                     confirm
                   </button>
                 </div>
-              </div>
+              
             </div>
           </div>
         ) : null}

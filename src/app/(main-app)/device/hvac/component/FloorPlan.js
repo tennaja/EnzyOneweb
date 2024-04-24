@@ -147,10 +147,11 @@ export default function FloorPlan({ FloorId }) {
     setLoading(true);
     const res = await ChangeValueSetFan(DecviceId, Values);
     if (res.status === 200) {
+      setOpenSetModeModal(false)
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
       console.log(res.data);
-      closeModal();
+      
       setLoading(false);
       notifySuccess(res.data.title,res.data.message);
     } else if (res.response.status === 401) {
@@ -195,7 +196,7 @@ export default function FloorPlan({ FloorId }) {
     const res = await ChangeValueSetMode(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data);
-      closeModal();
+      setOpenSetFanModal(false)
       setLoading(false);
       notifySuccess(res.data.title,res.data.message);
     } else if (res.response.status === 401) {
@@ -1157,7 +1158,29 @@ export default function FloorPlan({ FloorId }) {
                             Automation :{" "}
                           </span>
                           {" "}
-                            {marker.status == "offline" ? "-" : <div
+                            {marker.status == "offline" ? "-" : marker.status == "off" ? <div
+                            className="toggle-container-disable"
+                            onClick={() =>
+                              marker.status == "on" ?
+                              marker.automation == "on"
+                                ? openModalAutomationAHUIsStop(
+                                    marker.id,
+                                    marker.deviceName
+                                  )
+                                : openModalAutomationAHUIsStart(
+                                    marker.id,
+                                    marker.deviceName
+                                  ) : null
+                            }
+                          >
+                            <div
+                              className={`toggle-btn-disable ${
+                                marker.automation == "off" ? "disableNone" : ""
+                              }`}
+                            >
+                              {marker.automation == "on" ? "ON" : "OFF"}
+                            </div>
+                          </div>:<div
                             className="toggle-container"
                             onClick={() =>
                               marker.status == "on" ?
@@ -1280,7 +1303,7 @@ export default function FloorPlan({ FloorId }) {
                             >
                                
                               <IoMdPower size="1.2em"/>
-                            </button><div className="text-xs  text-gray-500 font-bold">{marker.status == "offline" ? null : marker.control}</div></div>}
+                            </button><div className="text-xs  text-gray-500 font-bold">{marker.status == "offline" ? null : marker.control == "on" ? "On" : marker.control == "off" ? "Off" : "Offline"}</div></div>}
                             
                             
                           </span>
@@ -1300,9 +1323,9 @@ export default function FloorPlan({ FloorId }) {
                                 ) : null
                               }
                             >
-                              {marker.fan}
+                              {marker.fan == "auto" ? "Auto" : marker.fan == "low" ? "Low" : marker.fan == "medium" ? "Medium" : "High"}
                             </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                             {marker.fan}
+                            {marker.fan == "auto" ? "Auto" : marker.fan == "low" ? "Low" : marker.fan == "medium" ? "Medium" : "High"}
                           </span> : "-"}
                           </span>
                         </div>
@@ -1321,9 +1344,9 @@ export default function FloorPlan({ FloorId }) {
                                 ) : null
                               }
                             >
-                              {marker.mode}
+                              {marker.mode == "cool" ? "Cool" : marker.mode == "dry" ? "Dry" : "Fan"}
                             </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                             {marker.mode}
+                            {marker.mode == "cool" ? "Cool" : marker.mode == "dry" ? "Dry" : "Fan"}
                           </span> : "-"}
                           </span>
                         </div>
@@ -1331,7 +1354,29 @@ export default function FloorPlan({ FloorId }) {
                           <span class="text-gray-700 text-sm">
                             Automation :{" "}
                           </span>
-                          {marker.status == "offline" ? "-" : <div
+                          {marker.status == "offline" ? "-" : marker.status == "off" ? <div
+                            className="toggle-container-disable"
+                            onClick={() => 
+                              marker.status == "on" ?
+                              marker.automation == "on"
+                                ? openModalAutomationIsStop(
+                                    marker.id,
+                                    marker.deviceName
+                                  )
+                                : openModalAutomationIsStart(
+                                    marker.id,
+                                    marker.deviceName
+                                  )
+                            : null}
+                          >
+                            <div
+                              className={`toggle-btn-disable ${
+                                marker.automation == "off" ? "disableNone" : ""
+                              }`}
+                            >
+                              {marker.automation == "on" ? "ON" : "OFF"}
+                            </div>
+                          </div> : <div
                             className="toggle-container"
                             onClick={() => 
                               marker.status == "on" ?
@@ -1431,158 +1476,7 @@ export default function FloorPlan({ FloorId }) {
 
           
         </div>
-        {/* 
-        {VSVlist.length > 0 &&
-          VSVlist.map((item) => {
-            return (
-              <div
-                key={item.id}
-                value={"VAV"}
-                class="max-w-48 rounded overflow-hidden shadow-lg border border-black"
-                style={{ left: item.position.x, top: item.position.y }}
-                // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
-              >
-                <div class="font-bold text-xs bg-red-600 text-center text-white py-2">
-                  {item.deviceName}
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Temp. (°C) : {String(item.temp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Air Flow (CFM) : {String(item.airFlow)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Damper (%) : {String(item.damper)}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        {AHUlist.length > 0 &&
-          AHUlist.map((item) => {
-            return (
-              <div
-                key={item.id}
-                value={"AHU"}
-                class="max-w-48 rounded overflow-hidden shadow-lg border border-black"
-                style={{ left: item.position.x, top: item.position.y }}
-                // onClick={() => onChangeValue('AHU',item.deviceName)}
-              >
-                <div class="font-bold text-xs bg-gray-400 text-center text-white py-2">
-                  {item.deviceName}
-                </div>
-                <div class="px-3 py-2">
-                  <span class="text-gray-700 text-xs">
-                    Supply Temp. (°C) : {String(item.supplyTemp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs ">
-                    Supply Temp. Setpoint (°C) :{" "}
-                    {String(item.supplyTempSetPoint)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Return Temp. (°C) : {String(item.returnTemp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    VSD %Drive (Hz) : {String(item.vsdDrive)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    VSD Power (kW) : {String(item.vsdPower)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    VSD Speed (rpm) : {String(item.vsdSpeed)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Control Valve (%) : {String(item.controlValve)}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-
-        {Splittypelist.length > 0 &&
-          Splittypelist.map((item) => {
-            return (
-              <div
-                key={item.id}
-                value={"SPLIT"}
-                class="max-w-48 rounded overflow-hidden shadow-lg border border-black"
-                style={{ left: item.position.x, top: item.position.y }}
-                onClick={() =>
-                  onChangeValue("SPLIT", item.deviceName, item.id, item.setTemp)
-                }
-              >
-                <div class="font-bold text-xs bg-red-600 text-center text-white py-2">
-                  {item.deviceName}
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Room Temp. (°C) : {String(item.roomTemp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Humidity (%) : {String(item.humidity)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Set Temp. (°C) : {String(item.setTemp)}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-
-        {IOTlist.length > 0 &&
-          IOTlist.map((item) => {
-            return (
-              <div
-                key={item.id}
-                value={"IOT"}
-                class="max-w-48 rounded overflow-hidden shadow-lg border border-black"
-                style={{ left: item.position.x, top: item.position.y }}
-                onClick={(e) => {
-                  onChangeValue(e.target.value);
-                }}
-              >
-                <div class="font-bold text-xs bg-red-600 text-center text-white py-2">
-                  {item.deviceName}
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Temp. (°C) : {String(item.temp)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    Humidity (%) : {String(item.humidity)}
-                  </span>
-                </div>
-                <div class="px-3">
-                  <span class="text-gray-700 text-xs">
-                    CO2 (ppm) : {String(item.co2)}
-                  </span>
-                </div>
-              </div>
-            );
-          })} */}
+        
 
         <div></div>
         {loading ? (
@@ -1662,7 +1556,7 @@ export default function FloorPlan({ FloorId }) {
         {OpenSetModeModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
+              
                 <h5 className="mt-5">Set Fan Speed : {DeviceName}</h5>
                 <div className='mt-5'>
           <ButtonGroup >
@@ -1715,14 +1609,14 @@ export default function FloorPlan({ FloorId }) {
                     confirm
                   </button>
                 </div>
-              </div>
+              
             </div>
           </div>
         ) : null}
         {OpenSetFanModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
+             
                 <h5 className="mt-5">Set Mode : {DeviceName}</h5>
                 <div className='mt-5'>
           <ButtonGroup >
@@ -1767,7 +1661,7 @@ export default function FloorPlan({ FloorId }) {
                     confirm
                   </button>
                 </div>
-              </div>
+              
             </div>
           </div>
         ) : null}

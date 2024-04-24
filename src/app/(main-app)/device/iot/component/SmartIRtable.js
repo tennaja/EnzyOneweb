@@ -1,10 +1,14 @@
 "use client";
 import Link from "next/link";
 import { ToastContainer, toast } from 'react-toastify';
+import { NumericFormat } from 'react-number-format';
 import 'react-toastify/dist/ReactToastify.css';
 import React, { useEffect, useState } from "react";
 import { Switch } from '@headlessui/react'
 import Highlighter from "react-highlight-words";
+import { IoMdPower } from "react-icons/io";
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import {
   SmartIRSetTemp, ChangeSetModeSmartIR, ChangeSetFanSmartIR ,ChangeControlSmartIR 
 } from "@/utils/api";
@@ -21,14 +25,14 @@ export default function SmartIRtable(SmartIRlist) {
   const [OpenSetModeModal, setOpenSetModeModal] = useState(false)
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
-  const [showModalStart, setShowModalStart] = useState(false);
-  const [showModalControle, setShowModalControle] = useState(false);
+  const [showModalControlestart, setShowModalControlestart] = useState(false);
+  const [showModalControlestop, setShowModalControlestop] = useState(false);
   const [showModalAutomation, setShowModalAutomation] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
-  
-
   const [toggle, setToggle] = useState(false);
+  const min = 10;
+  const max = 40;
   const handleToggleChange = () => {
     
     setToggle(!toggle);
@@ -37,20 +41,24 @@ export default function SmartIRtable(SmartIRlist) {
   const openModalControleIsStop = (DecviceId,values) => {
     setDeviceId(DecviceId)
     setValues('off')
-    setShowModalControle(true);
+    setShowModalControlestop(true);
     
   }
   const openModalControleIsStart = (DecviceId,values) => {
     setDeviceId(DecviceId)
     setValues('on')
-    setShowModalControle(true);
+    setShowModalControlestart(true);
     
   }
   
 
-  const notifySuccess = () =>
-    toast.success(`Operation Complete
-    `, {
+  const notifySuccess = (title,message) =>
+  toast.success(
+    <div className="px-2">
+    <div className="flex flex-row font-bold">{title}</div>
+    <div className="flex flex-row text-xs">{message}</div>
+    </div>,
+    {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -59,7 +67,8 @@ export default function SmartIRtable(SmartIRlist) {
       draggable: true,
       progress: undefined,
       theme: "light",
-    });
+    }
+  );
 
   const handleChangeValueSettemp = async () => {
     setLoading(true);
@@ -68,7 +77,7 @@ export default function SmartIRtable(SmartIRlist) {
       console.log(res.data)
       closeModal();
       setLoading(false);
-      notifySuccess();
+      notifySuccess(res.data.title,res.data.message);
     } else if (res.response.status === 401) {
       closeModal();
       setLoading(false);
@@ -89,7 +98,7 @@ export default function SmartIRtable(SmartIRlist) {
       setAlertmessage(res.data.message);
       closeModal();
       setLoading(false);
-      notifySuccess();
+      notifySuccess(res.data.title,res.data.message);
     } else if (res.status === 401) {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
@@ -112,7 +121,7 @@ export default function SmartIRtable(SmartIRlist) {
       console.log(res.data)
       closeModal();
       setLoading(false);
-      notifySuccess();
+      notifySuccess(res.data.title,res.data.message);
     } else if (res.status === 401) {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
@@ -135,7 +144,7 @@ export default function SmartIRtable(SmartIRlist) {
       console.log(res.data)
       closeModal();
       setLoading(false);
-      notifySuccess();
+      notifySuccess(res.data.title,res.data.message);
     } else if (res.status === 401) {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
@@ -162,16 +171,20 @@ export default function SmartIRtable(SmartIRlist) {
     setValues(values)
   }
 
-  const onclickOPenSetFan = (id, DecviceId) => {
-    setOpenSetFanModal(true)
+  const onclickOPenSetFan = (id, mode,DecviceId) => {
+    
     setDeviceId(id)
+    setValues(mode)
     setDeviceName(DecviceId)
+    setOpenSetFanModal(true)
   }
 
-  const onclickOPenSetMode = (id, DecviceId) => {
-    setOpenSetModeModal(true)
+  const onclickOPenSetMode = (id,fan, DecviceId) => {
+    
     setDeviceId(id)
+    setValues(fan)
     setDeviceName(DecviceId)
+    setOpenSetModeModal(true)
   }
 
 
@@ -180,8 +193,8 @@ export default function SmartIRtable(SmartIRlist) {
     setOpenSettempModal(false)
     setOpenSetFanModal(false)
     setOpenSetModeModal(false)
-    setShowModalControle(false)
-    setShowModalAutomation(false)
+    setShowModalControlestart(false)
+    setShowModalControlestop(false)
     setModalError(false)
     setDeviceId(null);
     setValues("")
@@ -292,42 +305,70 @@ export default function SmartIRtable(SmartIRlist) {
 
                               </td>
                               
-                              <td className="whitespace-nowrap px-6 py-4 text-center cursor-pointer text-[#5eead4] underline font-bold" onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.setTemp ,event.preventDefault()) : null}>
+                              <td className="whitespace-nowrap px-6 py-4 text-center " >
                                 
-                                <Highlighter
-                                  highlightClassName="highlight" // Define your custom highlight class
-                                  searchWords={[searchTable]}
-                                  autoEscape={true}
-                                  textToHighlight={String(item.setTemp)} // Replace this with your text
-                                  
-                                />
-
+                              { item.status == "on"  ? 
+                              <Highlighter
+                              className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.setTemp ,event.preventDefault()) : null}
+                                highlightClassName="highlight" // Define your custom highlight class
+                                searchWords={[searchTable]}
+                                autoEscape={true}
+                                textToHighlight={String(item.setTemp)} // Replace this with your text
+                                
+                              />: <Highlighter
+                              className="font-bold cursor-pointer"
+                                highlightClassName="highlight" // Define your custom highlight class
+                                searchWords={[searchTable]}
+                                autoEscape={true}
+                                textToHighlight={String(item.setTemp)} // Replace this with your text
+                                
+                              />}
+                                
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline cursor-pointer font-bold"onClick={(event) => item.status == "on" ? onclickOPenSetMode(item.id, item.deviceName,event.preventDefault()) : null}>
+                              <td className="whitespace-nowrap px-6 py-4 text-center ">
                               
-                                <Highlighter
-                                  highlightClassName="highlight" // Define your custom highlight class
-                                  searchWords={[searchTable]}
-                                  autoEscape={true}
-                                  textToHighlight={item.fan} // Replace this with your text
-                                 
-                                />
+                              {item.status == "on" ? 
+                              <Highlighter
+                              className="text-[#5eead4] underline font-bold cursor-pointer"onClick={(event) => item.status == "on" ? onclickOPenSetMode(item.id,item.fan, item.deviceName,event.preventDefault()) : null}
+                                highlightClassName="highlight" // Define your custom highlight class
+                                searchWords={[searchTable]}
+                                autoEscape={true}
+                                textToHighlight={item.fan} // Replace this with your text
+                               
+                              />
+                              :  <Highlighter
+                              className="font-bold cursor-pointer"
+                                highlightClassName="highlight" // Define your custom highlight class
+                                searchWords={[searchTable]}
+                                autoEscape={true}
+                                textToHighlight={item.fan} // Replace this with your text
+                               
+                              />}
                                 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center text-[#5eead4] underline cursor-pointer font-bold" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id, item.deviceName,event.preventDefault()) : null}>
-                        
-                                
-                                <Highlighter
+                              <td className="whitespace-nowrap px-6 py-4 text-center " >
+                              { item.status == "on"  ? <Highlighter
+                                className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id,item.mode, item.deviceName,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={item.mode} // Replace this with your text
-                                />
+                                />: 
+                                <Highlighter
+                                className="font-bold cursor-pointer"
+                                  highlightClassName="highlight" // Define your custom highlight class
+                                  searchWords={[searchTable]}
+                                  autoEscape={true}
+                                  textToHighlight={item.mode} // Replace this with your text
+                                />}
+                                
+                                
                                 
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center">
-                               
-                                <button
+                              <div className="flex flex-col items-center">
+                              {item.status == "offline" ? "-" : 
+                              <button
                                     type="button"
                                     className={
                                       item.control == "on"
@@ -337,17 +378,22 @@ export default function SmartIRtable(SmartIRlist) {
                                       }
                                     onClick={() =>
                                       item.control == "on"
-                                        ? openModalControleIsStop(item.devId)
-                                        : item.control == "off" ? openModalControleIsStart(item.devId) : null
+                                        ? openModalControleIsStop(item.id,item.deviceName)
+                                        : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName) : null
                                     }
-                                  >
-                                    <Highlighter
-                                  highlightClassName="highlight" // Define your custom highlight class
+                                  ><IoMdPower size="1.5em"/>
+                                    
+                                  </button>}
+                                  {item.status == "offline" ? null : <Highlighter
+                                  className='text-xs mt-1 text-gray-500 font-bold'
+                                  highlightClassName="highlight " // Define your custom highlight class
+                                  
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={item.control} // Replace this with your text
-                                />
-                                  </button>
+                                />}
+                                  
+                                </div>
                               </td>
                               
 
@@ -360,24 +406,33 @@ export default function SmartIRtable(SmartIRlist) {
               </div>
             </div>
           </div></div>
-        {OpenSettempModal ? (
+          {OpenSettempModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
-
-              <h5 className="mt-5">Temperature</h5>
-              <input
-                type="number"
-                placeholder="Enter your username"
-                className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-                min={10}
-                max={40}
-                value={Values}
-                onChange={(e) => {
-                  onChangeValue(e.target.value);
-                }}
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={10}
+              max={40}
+              value={Values} 
+              decimalScale={0}
+              onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+        setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
+    }}
               />
-
+              {/* <input
+    type="number"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    min={min}
+    max={max}
+    value={Values}
+    onChange={e => setValues(e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,3))}
+    onBlur={e => {
+        setValues(Math.min(max, Math.max(min, Values)));
+    }}
+/> */}
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -400,26 +455,43 @@ export default function SmartIRtable(SmartIRlist) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
                 <h5 className="mt-5">Set Fan Speed : {DeviceName}</h5>
-                <div class="inline-flex rounded-md shadow-sm mt-5 w" role="group">
-                  <button value={'auto'} type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues('auto')}
-                  >
-                    Auto
-                  </button>
-                  <button value={'low'} type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-r border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues('low')}
-                  >
-                    Low
-                  </button>
-                  <button value={'medium'} type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900  hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues('medium')}>
-                    Medium
-                  </button>
-                  <button value={'high'} type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues('high')}>
-                    High
-                  </button>
-                </div>
+                
+                <div className='mt-5'>
+          <ButtonGroup >
+          <Button
+          variant="outlined"
+          style={ Values === "auto" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('auto')}
+          >
+            Auto
+          </Button>
+          <Button
+          variant="outlined"
+        style={Values === "low" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4" ,border : "1px solid", width : "100px"}}
+            onClick={() => setValues('low')}
+          >
+           Low
+          </Button>
+          <Button
+          variant="outlined"
+            style={ Values === "medium" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('medium')}
+          >
+            Medium
+          </Button>
+          <Button
+          variant="outlined"
+            style={ Values === "high" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('high')}
+          >
+            High
+          </Button>
+        </ButtonGroup>
+        </div>
 
                 <div className="flex justify-center mt-10 gap-5">
                   <button
@@ -444,24 +516,36 @@ export default function SmartIRtable(SmartIRlist) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
                 <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
-                <div class="inline-flex rounded-md shadow-sm mt-5 w" role="group">
-                  <button value={'cold'} type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues('cold')}
-                  >
-                    Cold
-                  </button>
-                  <button value={'dry'} type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues('dry')}
-                  >
-                    Dry
-                  </button>
-                  <button value={'fan'} type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues('fan')}>
-                    Fan
-                  </button>
-                </div>
-
-                <div className="flex justify-center mt-10 gap-5">
+               
+                <div className='mt-5'>
+          <ButtonGroup >
+          <Button
+          variant="outlined"
+          style={ Values === "cool" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('cold')}
+          >
+            Cool
+          </Button>
+          <Button
+          variant="outlined"
+        style={Values === "dry" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4" ,border : "1px solid", width : "100px"}}
+            onClick={() => setValues('dry')}
+          >
+           Dry
+          </Button>
+          <Button
+          variant="outlined"
+            style={ Values === "fan" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('fan')}
+          >
+            Fan
+          </Button>
+        </ButtonGroup>
+        </div>
+                <div className="flex justify-center mt-8 gap-5">
                   <button
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
@@ -505,7 +589,7 @@ export default function SmartIRtable(SmartIRlist) {
             </div>
           </div>
         ) : null}
-        {showModalControle  ? (
+        {showModalControlestart  ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -513,7 +597,35 @@ export default function SmartIRtable(SmartIRlist) {
                   Are you sure ?
                 </h3>
                 <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device start {DeviceName} now ? </p>
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure you want to start {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusControle()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalControlestop  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure you want to stop {DeviceName} now ? </p>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
                   <button
@@ -535,7 +647,7 @@ export default function SmartIRtable(SmartIRlist) {
         ) : null}
         
       </div>
-      <ToastContainer />
+      
     </div>
 
   )

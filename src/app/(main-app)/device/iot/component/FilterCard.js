@@ -1,7 +1,9 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   getBranch,
   getBulding,
@@ -340,6 +342,7 @@ export default function FilterCard() {
         // external={chartListSplittype4}
         // label={ListLabelSplittype}
       /></div></div> */}
+      <ToastContainer />
     </div>
   );
 }

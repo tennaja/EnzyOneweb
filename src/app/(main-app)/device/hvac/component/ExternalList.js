@@ -23,32 +23,22 @@ export default function ExternalList({FloorId}) {
     const GetExternalList = async (floorId) => {
         console.log(floorId)
         const result = await getExternalList(floorId);
+        console.log(result.data)
         setExteranlList(result.data);
       };
   return (
-    externalList.map((item) => {
-        return <Card key={item.id} sx={{ display: 'flex', }}>
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <CardContent sx={{ flex: '1 0 auto' }}>
-        <Typography component="div" variant="h5">
-        <WiCloud size="2.5em"/>
-
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" component="div">
-          {item.value}
-        </Typography>
-      </CardContent>
-    </Box>
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <CardContent sx={{ flex: '1 0 auto' }}>
-        <Typography variant="subtitle1" color="text.secondary" component="div">
-          Mac Miller
-        </Typography>
-      </CardContent>
-    </Box>
-  </Card>
-       
-    })
-    
+    <div className="flex flex-row gap-5 mt-5 ">
+    {externalList.map((item) => { 
+    return (
+    <div className="rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
+      <div className="px-10 py-10 flex items-center gap-3"> 
+      <span className="font-bold text-3xl">{item.value}</span>
+      <span className="font-normal text-3xl">{item.unit}</span>
+      <span className="text-lg">{item.name}</span>
+    </div>
+    </div>
+     )
+    })}
+    </div>
   )
 }

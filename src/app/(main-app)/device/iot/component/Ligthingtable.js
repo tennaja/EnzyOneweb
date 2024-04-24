@@ -8,7 +8,7 @@ import {
   ChangeControlLightning
 } from "@/utils/api";
 import Loading from "./Loading";
-
+import { IoMdPower } from "react-icons/io";
 export default function Ligthing(Ligthinglist) {
   const [searchTable, setSerachTable] = useState("");
   const [DecviceId, setDeviceId] = useState(null);
@@ -17,42 +17,48 @@ export default function Ligthing(Ligthinglist) {
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
-  const [showModalControle, setShowModalControle] = useState(false);
+  const [showModalControlestart, setShowModalControlestart] = useState(false);
+  const [showModalControlestop, setShowModalControlestop] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
 
-  const notifySuccess = () =>
-  toast.success(`Operation Complete
-  `, {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
+  const notifySuccess = (title,message) =>
+  toast.success(
+    <div className="px-2">
+    <div className="flex flex-row font-bold">{title}</div>
+    <div className="flex flex-row text-xs">{message}</div>
+    </div>,
+    {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    }
+  );
   
   const closeModal = () => {
     setOpenSettempModal(false)
     setModalError(false)
     setDeviceId(null);
-    setShowModalControle(false)
-    // setShowModalStop(false);
-    // setShowModalStart(false);
+    setShowModalControlestart(false)
+    setShowModalControlestop(false)
+    
 };
 
 const openModalControleIsStop = (DecviceId,values) => {
   setDeviceId(DecviceId)
   setValues('off')
-  setShowModalControle(true);
+  setShowModalControlestop(true);
   
 }
 const openModalControleIsStart = (DecviceId,values) => {
   setDeviceId(DecviceId)
   setValues('on')
-  setShowModalControle(true);
+  setShowModalControlestart(true);
   
 }
 async function clickChangecControle() {
@@ -65,7 +71,7 @@ async function clickChangecControle() {
     setAlertmessage(res.data.message);
     
     setLoading(false);
-    notifySuccess();
+    notifySuccess(res.data.title,res.data.message);
   } else if (res.response.status === 401) {
     closeModal();
     setAlertTitle(res.response.data.title);
@@ -165,27 +171,34 @@ async function clickChangecControle() {
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center">
                                
-                               <button
-                                   type="button"
-                                   className={
-                                     item.control == "on"
-                                       ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                       : item.control == "off"  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                       : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
-                                     }
-                                   onClick={() =>
-                                     item.control == "on"
-                                       ? openModalControleIsStop(item.devId,item.deviceName)
-                                       : item.control == "off" ? openModalControleIsStart(item.devId,item.deviceName) : null
-                                   }
-                                 >
-                                   <Highlighter
-                                 highlightClassName="highlight" // Define your custom highlight class
-                                 searchWords={[searchTable]}
-                                 autoEscape={true}
-                                 textToHighlight={item.control} // Replace this with your text
-                               />
-                                 </button>
+                        <div className="flex flex-col items-center">
+                              {item.status == "offline" ? "-" : 
+                              <button
+                                    type="button"
+                                    className={
+                                      item.control == "on"
+                                        ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        : item.control == "off"  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
+                                      }
+                                    onClick={() =>
+                                      item.control == "on"
+                                        ? openModalControleIsStop(item.id,item.deviceName)
+                                        : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName) : null
+                                    }
+                                  ><IoMdPower size="1.5em"/>
+                                    
+                                  </button>}
+                                  {item.status == "offline" ? null : <Highlighter
+                                  className='text-xs mt-1 text-gray-500 font-bold'
+                                  highlightClassName="highlight " // Define your custom highlight class
+                                  
+                                  searchWords={[searchTable]}
+                                  autoEscape={true}
+                                  textToHighlight={item.control} // Replace this with your text
+                                />}
+                                  
+                                </div>
                              </td>
                       </tr>
                     );
@@ -223,7 +236,7 @@ async function clickChangecControle() {
             </div>
           </div>
         ) : null}
-        {showModalControle  ? (
+        {showModalControlestart  ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -231,7 +244,7 @@ async function clickChangecControle() {
                   Are you sure ?
                 </h3>
                 <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2">Are you sure this device start {DeviceName} now ? </p>
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure you want to start {DeviceName} now ? </p>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
                   <button
@@ -251,6 +264,34 @@ async function clickChangecControle() {
             </div>
           </div>
         ) : null}
-        <ToastContainer /></div>
+        {showModalControlestop  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure you want to stop {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangecControle()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        </div>
   );
 }

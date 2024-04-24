@@ -28,6 +28,10 @@ import FlowMeter from "./FlowMetertable";
 import MotionSensor from "./Motiontable";
 import Counter from "./Motiontable copy";
 import Ligthing from "./Ligthingtable";
+import { NumericFormat } from 'react-number-format';
+import { IoMdPower } from "react-icons/io";
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 export default function FloorPlan({ FloorId }) {
   // console.log(FloorId);
   const [Values, setValues] = useState();
@@ -215,7 +219,20 @@ export default function FloorPlan({ FloorId }) {
     console.log(result.data);
     setHeaterWaterList(result.data);
   };
+  const onclickOPenSetMode = (id, fan,DecviceId) => {
+    
+    setDeviceId(id);
+    setValues(fan)
+    setDeviceName(DecviceId);
+    setOpenSetModeModal(true);
+  };
 
+  const onclickOPenSetFan = (id, mode,DecviceId) => {
+    setDeviceId(id);
+    setValues(mode)
+    setDeviceName(DecviceId);
+    setOpenSetFanModal(true);
+  };
 
 
 
@@ -260,18 +277,7 @@ export default function FloorPlan({ FloorId }) {
     setDeviceName(DecviceId);
     setValues(values);
   };
-  const onclickOPenSetMode = (id, DecviceId) => {
-    setOpenSetModeModal(true);
-    setDeviceId(id);
-    setDeviceName(DecviceId);
-  };
-
-  const onclickOPenSetFan = (id, DecviceId) => {
-    setOpenSetFanModal(true);
-    setDeviceId(id);
-    setDeviceName(DecviceId);
-  };
-
+ 
   const handleChangeValueSetMode = async () => {
     setLoading(true);
     const res = await ChangeValueSetMode(DecviceId, Values);
@@ -318,31 +324,7 @@ export default function FloorPlan({ FloorId }) {
     setShowModalControleOn(true);
   };
 
-  const openModalAutomationIsStop = (DecviceId, deviceName) => {
-    setDeviceId(DecviceId);
-    setValues("off");
-    setDeviceName(deviceName);
-    setShowModalAutomationOff(true);
-  };
-  const openModalAutomationIsStart = (DecviceId, deviceName) => {
-    setDeviceId(DecviceId);
-    setValues("on");
-    setDeviceName(deviceName);
-    setShowModalAutomationOn(true);
-  };
   
-  const openModalAutomationAHUIsStop = (DecviceId, deviceName) => {
-    setDeviceId(DecviceId);
-    setValues("off");
-    setDeviceName(deviceName);
-    setShowModalAutomationAHUOff(true);
-  };
-  const openModalAutomationAHUIsStart = (DecviceId, deviceName) => {
-    setDeviceId(DecviceId);
-    setValues("on");
-    setDeviceName(deviceName);
-    setShowModalAutomationAHUOn(true);
-  };
 
   const handleChangeValueSettemp = async () => {
     setLoading(true);
@@ -2486,17 +2468,20 @@ export default function FloorPlan({ FloorId }) {
                         </span>
                       </div>
                         
-                        <div class="px-3">
-                          <span class="text-gray-700 text-sm">
+                      <div class="px-3 flex">
+                          <span class="text-gray-700 text-sm flex flex-row items-center">
                             Control :{" "}
+                            
+                            {marker.status == "offline" ? "-" : 
+                            <div className='flex flex-col items-center pl-2'>
                             <button
                               type="button"
                               className={
                                 marker.control == "on"
-                                  ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                  ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center"
                                   : marker.control == "off"
-                                  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                  : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
+                                  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center"
+                                  : "text-white bg-red-500  font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
                               }
                               onClick={() =>
                                 marker.control == "on"
@@ -2510,8 +2495,11 @@ export default function FloorPlan({ FloorId }) {
                                     ) : null
                               }
                             >
-                              {marker.control}
-                            </button>
+                               
+                              <IoMdPower size="1.2em"/>
+                            </button><div className="text-xs  text-gray-500 font-bold">{marker.status == "offline" ? null : marker.control}</div></div>}
+                            
+                            
                           </span>
                         </div>
                       </div>
@@ -2592,10 +2580,13 @@ export default function FloorPlan({ FloorId }) {
                         </span> : "-"}
                         </span>
                       </div>
-                      <div class="px-3">
-                        <span class="text-gray-700 text-sm">
+                      <div class="px-3 flex">
+                        <span class="text-gray-700 text-sm flex flex-row items-center">
                           Control :{" "}
-                          {marker.status == "offline" ? "-" : <button
+                         
+                          {marker.status == "offline" ? "-" : 
+                           <div className='flex flex-col items-center pl-2'>
+                          <button
                             type="button"
                             className={
                               marker.control == "on"
@@ -2616,8 +2607,8 @@ export default function FloorPlan({ FloorId }) {
                                   ) : null
                             }
                           >
-                            {marker.control}
-                          </button>}
+                          <IoMdPower size="1.2em"/>
+                          </button><div className="text-xs  text-gray-500 font-bold">{marker.status == "offline" ? null : marker.control}</div></div>}
                           
                         </span>
                       </div>
@@ -2630,6 +2621,7 @@ export default function FloorPlan({ FloorId }) {
                               marker.status == "on" ?
                               onclickOPenSetMode(
                                 marker.id,
+                                marker.fan,
                                 marker.deviceName,
                                 event.preventDefault()
                               ) : null
@@ -2650,6 +2642,7 @@ export default function FloorPlan({ FloorId }) {
                               marker.status == "on" ?
                               onclickOPenSetFan(
                                 marker.id,
+                                marker.mode,
                                 marker.deviceName,
                                 event.preventDefault()
                               ) : null
@@ -2920,25 +2913,38 @@ export default function FloorPlan({ FloorId }) {
         <div></div>
       
       
+        {loading ? (
+          <Loading />
+        ) : null}
         {OpenSettempModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
-
-              <h5 className="mt-5">Temperature</h5>
-              <input
-                type="number"
-                placeholder="Enter your username"
-                className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-                min={10}
-                max={40}
-                value={Values}
-                onChange={(e) => {
-                  onChangeValueSettemp(e.target.value);
-                  e.preventDefault();
-                }}
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-3 w-80" 
+              min={10}
+              max={40}
+              value={Values} 
+              decimalScale={0}
+              onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+        setValues(Math.min(maxS, Math.max(minS, Values)).toFixed(2));
+    }}
               />
-
+    {/* <input
+    type="number"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    maxLength={Math.max(minS.toString().length, maxS.toString().length)}
+    value={Values}
+    min={minS}
+    max={maxS}
+    onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+      if (Values && !isNaN(Values))
+        setValues(Math.min(maxS, Math.max(minS, Values)));
+    }}
+/> */}
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -2986,45 +2992,44 @@ export default function FloorPlan({ FloorId }) {
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
                 <h5 className="mt-5">Set Fan Speed : {DeviceName}</h5>
-                <div
-                  class="inline-flex rounded-md shadow-sm mt-5 w"
-                  role="group"
-                >
-                  <button
-                    value={"auto"}
-                    type="button"
-                    class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues("auto")}
-                  >
-                    Auto
-                  </button>
-                  <button
-                    value={"low"}
-                    type="button"
-                    class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-r border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues("low")}
-                  >
-                    Low
-                  </button>
-                  <button
-                    value={"medium"}
-                    type="button"
-                    class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900  hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues("medium")}
-                  >
-                    Medium
-                  </button>
-                  <button
-                    value={"high"}
-                    type="button"
-                    class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues("high")}
-                  >
-                    High
-                  </button>
-                </div>
+                <div className='mt-5'>
+          <ButtonGroup >
+          <Button
+          variant="outlined"
+          style={ Values === "auto" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('auto')}
+          >
+            Auto
+          </Button>
+          <Button
+          variant="outlined"
+        style={Values === "low" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4" ,border : "1px solid", width : "100px"}}
+            onClick={() => setValues('low')}
+          >
+           Low
+          </Button>
+          <Button
+          variant="outlined"
+            style={ Values === "medium" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('medium')}
+          >
+            Medium
+          </Button>
+          <Button
+          variant="outlined"
+            style={ Values === "high" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('high')}
+          >
+            High
+          </Button>
+        </ButtonGroup>
+        </div>
 
-                <div className="flex justify-center mt-10 gap-5">
+                <div className="flex justify-center mt-8 gap-5">
                   <button
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
@@ -3046,38 +3051,37 @@ export default function FloorPlan({ FloorId }) {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
-                <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
-                <div
-                  class="inline-flex rounded-md shadow-sm mt-5 w"
-                  role="group"
-                >
-                  <button
-                    value={"cold"}
-                    type="button"
-                    class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues("cold")}
-                  >
-                    Cold
-                  </button>
-                  <button
-                    value={"dry"}
-                    type="button"
-                    class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues("dry")}
-                  >
-                    Dry
-                  </button>
-                  <button
-                    value={"fan"}
-                    type="button"
-                    class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                    onClick={() => setValues("fan")}
-                  >
-                    Fan
-                  </button>
-                </div>
+                <h5 className="mt-5">Set Mode : {DeviceName}</h5>
+                <div className='mt-5'>
+          <ButtonGroup >
+          <Button
+          variant="outlined"
+          style={ Values === "cool" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('cold')}
+          >
+            Cool
+          </Button>
+          <Button
+          variant="outlined"
+        style={Values === "dry" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4" ,border : "1px solid", width : "100px"}}
+            onClick={() => setValues('dry')}
+          >
+           Dry
+          </Button>
+          <Button
+          variant="outlined"
+            style={ Values === "fan" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('fan')}
+          >
+            Fan
+          </Button>
+        </ButtonGroup>
+        </div>
 
-                <div className="flex justify-center mt-10 gap-5">
+                <div className="flex justify-center mt-8 gap-5">
                   <button
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
@@ -3099,20 +3103,32 @@ export default function FloorPlan({ FloorId }) {
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
-
-              <h5 className="mt-5">Temperature</h5>
-              <input
-                type="number"
-                placeholder="Enter your username"
-                className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-                min={0}
-                max={100}
-                value={Values}
-                onChange={(e) => {
-                  onChangeValueSettempVav(e.target.value);
-                }}
+              
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={0}
+              max={100}
+              value={Values} 
+              decimalScale={2}
+              onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+        setValues(Math.min(maxV, Math.max(minV, Values)).toFixed(2));
+    }}
               />
-
+      {/* <input
+    type="number"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    maxLength={Math.max(minV.toString().length, maxV.toString().length + 3)}
+    min={minV}
+    max={maxV}
+    value={Values}
+    onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+      if (Values && !isNaN(Values))
+        setValues(Math.min(maxV, Math.max(minV, Values)).toFixed(2));
+    }}
+/> */}
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -3137,19 +3153,32 @@ export default function FloorPlan({ FloorId }) {
                 Set Supply Temp. Setpoint (°C) : {DeviceName}
               </h5>
 
-              <h5 className="mt-5">Temperature</h5>
-              <input
-                type="number"
-                placeholder="Enter your username"
-                className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-                min={10}
-                max={40}
-                value={Values}
-                onChange={(e) => {
-                  onChangeValueSettempAHU(e.target.value);
-                }}
+              
+              <NumericFormat 
+              type="number" 
+              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+              min={10}
+              max={40}
+              value={Values} 
+              decimalScale={2}
+              onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+        setValues(Math.min(maxA, Math.max(minA, Values)).toFixed(2));
+    }}
               />
-
+              {/* <input
+    type="number"
+    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
+    maxLength={Math.max(minA.toString().length, maxA.toString().length + 3)}
+    min={minA}
+    max={maxA}
+    value={Values}
+    onChange={e => setValues(e.target.value)}
+    onBlur={e => {
+      if (Values && !isNaN(Values))
+        setValues(Math.min(maxA, Math.max(minA, Values)).toFixed(2));
+    }}
+/> */}
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -3177,7 +3206,7 @@ export default function FloorPlan({ FloorId }) {
                 <div className="mt-2 px-7 py-3">
                   <p className="text-lg text-gray-500 mt-2">
                     {" "}
-                    Are you sure this device start {DeviceName} now ?{" "}
+                    Are you sure you want to start {DeviceName} now ?{" "}
                   </p>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
@@ -3208,7 +3237,7 @@ export default function FloorPlan({ FloorId }) {
                 <div className="mt-2 px-7 py-3">
                   <p className="text-lg text-gray-500 mt-2">
                     {" "}
-                    Are you sure this device stop {DeviceName} now ?{" "}
+                    Are you sure you want to stop {DeviceName} now ?{" "}
                   </p>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
@@ -3221,130 +3250,6 @@ export default function FloorPlan({ FloorId }) {
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusControle()}
-                  >
-                    confirm
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
-        {showModalAutomationOn ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mt-5">
-                  Are you sure ?
-                </h3>
-                <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2">
-                    {" "}
-                    Are you sure this device start {DeviceName} now ?{" "}
-                  </p>
-                </div>
-                <div className="flex justify-center mt-10 gap-5">
-                  <button
-                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                    onClick={() => closeModal()}
-                  >
-                    cancel
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomation()}
-                  >
-                    confirm
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
-        {showModalAutomationOff ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mt-5">
-                  Are you sure ?
-                </h3>
-                <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2">
-                    {" "}
-                    Are you sure this device stop {DeviceName} now ?{" "}
-                  </p>
-                </div>
-                <div className="flex justify-center mt-10 gap-5">
-                  <button
-                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                    onClick={() => closeModal()}
-                  >
-                    cancel
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomation()}
-                  >
-                    confirm
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
-         {showModalAutomationAHUOn ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mt-5">
-                  Are you sure ?
-                </h3>
-                <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2">
-                    {" "}
-                    Are you sure this device start {DeviceName} now ?{" "}
-                  </p>
-                </div>
-                <div className="flex justify-center mt-10 gap-5">
-                  <button
-                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                    onClick={() => closeModal()}
-                  >
-                    cancel
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomationAHU()}
-                  >
-                    confirm
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
-        {showModalAutomationAHUOff ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mt-5">
-                  Are you sure ?
-                </h3>
-                <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2">
-                    {" "}
-                    Are you sure this device stop {DeviceName} now ?{" "}
-                  </p>
-                </div>
-                <div className="flex justify-center mt-10 gap-5">
-                  <button
-                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                    onClick={() => closeModal()}
-                  >
-                    cancel
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomationAHU()}
                   >
                     confirm
                   </button>
