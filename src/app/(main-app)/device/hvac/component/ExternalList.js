@@ -31,10 +31,11 @@ export default function ExternalList({FloorId}) {
     {externalList.map((item) => { 
     return (
     <div key={item.id} className="rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
-      <div className="px-10 py-10 flex items-center gap-3"> 
+      <div className="px-8 py-8 flex items-center gap-3"> 
+      <span className="text-lg">{item.name} :</span>
       <span className="font-bold text-3xl">{item.value}</span>
       <span className="font-normal text-3xl">{item.unit}</span>
-      <span className="text-lg">{item.name}</span>
+      
     </div>
     </div>
      )
