@@ -6,7 +6,7 @@ import React, { useEffect, useState, useRef } from "react";
 import ImageMarker, { Marker } from "react-image-marker";
 import {
   getFloorplanIoT,getdeviceparameter,getindoortemphumid,getoutdoortemphumid,getPressuregauge,getPowerMeter,getInveter,getFlowMeter,getMotionSensor,getLighting,getCounter,getSmartIR,getEfficiency,getCCTV,getCO2Sensor,
-  getWaterMeter,getHeater,getHeaterWater
+  getWaterMeter,getHeater,getHeaterWater,ChangeControlLightning,ChangeControlSmartIR,SmartIRSetTemp, ChangeSetModeSmartIR, ChangeSetFanSmartIR 
 } from "@/utils/api";
 import Heatertable from "./Heatertable";
 import VAVtable from "./Outdoorhumidtable";
@@ -38,24 +38,18 @@ export default function FloorPlan({ FloorId }) {
   const [Decvicetype, setDevicetype] = useState();
   const [valueSettemp, setvalueSettemp] = useState();
   const [DecviceId, setDeviceId] = useState();
-  
   const [Listcontrol, setListcontrol] = useState({});
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
-  const [OpenSettempModalVAV, setOpenSettempModalVAV] = useState(false);
-  const [OpenSettempModalAHU, setOpenSettempModalAHU] = useState(false);
+  const [OpenSetModeModal, setOpenSetModeModal] = useState(false);
+  const [OpenSetFanModal, setOpenSetFanModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
   const [DeviceName, setDeviceName] = useState("");
-  
   const [toggle, setToggle] = useState(false);
-  const [OpenSetModeModal, setOpenSetModeModal] = useState(false);
-  const [OpenSetFanModal, setOpenSetFanModal] = useState(false);
-  const [showModalControleOn, setShowModalControleOn] = useState(false);
-  const [showModalControleOff, setShowModalControleOff] = useState(false);
-  const [showModalAutomationOn, setShowModalAutomationOn] = useState(false);
-  const [showModalAutomationOff, setShowModalAutomationOff] = useState(false);
-  const [showModalAutomationAHUOn, setShowModalAutomationAHUOn] = useState(false);
-  const [showModalAutomationAHUOff, setShowModalAutomationAHUOff] = useState(false);
+  const [showModalControleOnLighting, setShowModalControleOnLighting] = useState(false);
+  const [showModalControleOffLighting, setShowModalControleOffLighting] = useState(false);
+  const [showModalControleOnSmartIr, setShowModalControleOnSmartIr] = useState(false);
+  const [showModalControleOffSmartIr, setShowModalControleOffSmartIr] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
   const [indoortemphumidList, setIndoortemphumidList] = useState([]);
@@ -80,10 +74,10 @@ export default function FloorPlan({ FloorId }) {
   const [deviceTypeList, setdeviceTypeList] = useState([]);
   const [option, setOption] = useState("Indoor Temp & Humid");
   const [isFirst,setIsfirst] = useState(true)
+  const min = 10;
+  const max = 40;
   useEffect(() => {
     if (FloorId != 0 && option) {
-      // const selected = result.data.deviceType.find(item => item.displayName === "Indoor Temp & Humid");
-    // setdeviceTypeId(selected.id)
       getfloorplan(FloorId);
       OnchangeListFloorplan(option)
     }
@@ -104,8 +98,8 @@ export default function FloorPlan({ FloorId }) {
       setIsfirst(false)
     }
   
-    console.log(selected)
-    console.log(result.data.deviceType[1].id)
+    
+  
   };
   const getIndoortemphumidList = async (floorId) => {
     setFloorId(floorId);
@@ -231,50 +225,42 @@ export default function FloorPlan({ FloorId }) {
     setDeviceName(DecviceId);
     setOpenSetModeModal(true);
   };
-
+  const openModalControleIsStopLighting = (DecviceId, deviceName) => {
+    setDeviceId(DecviceId);
+    setValues("off");
+    setDeviceName(deviceName);
+    setShowModalControleOffLighting(true);
+  };
+  const openModalControleIsStartLighting = (DecviceId, deviceName) => {
+    setDeviceId(DecviceId);
+    setValues("on");
+    setDeviceName(deviceName);
+    setShowModalControleOnLighting(true);
+  };
+  const openModalControleIsStopSmartIr = (DecviceId, deviceName) => {
+    setDeviceId(DecviceId);
+    setValues("off");
+    setDeviceName(deviceName);
+    setShowModalControleOffSmartIr(true);
+  };
+  const openModalControleIsStartSmartIr = (DecviceId, deviceName) => {
+    setDeviceId(DecviceId);
+    setValues("on");
+    setDeviceName(deviceName);
+    setShowModalControleOnSmartIr(true);
+  };
   const onclickOPenSetFan = (id, mode,DecviceId) => {
     setDeviceId(id);
     setValues(mode)
     setDeviceName(DecviceId);
     setOpenSetFanModal(true);
   };
-
-
-
-  const handleToggleChange = () => {
-    setToggle(!toggle);
-  };
-
-  const notifySuccess = () =>
-    toast.success(
-      `Operation Complete
-    `,
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
-
-  const handleChangeValueSetFan = async () => {
-    setLoading(true);
-    const res = await ChangeValueSetFan(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
-      closeModal();
-      setLoading(false);
-      notifySuccess();
-    } else {
-      closeModal();
-      setLoading(false);
-      setModalError(true);
-    }
-  };
+  function onChangeValue(value, dataId) {
+    setListcontrol(dataId);
+    setDevicetype(value);
+    console.log(Values);
+    console.log(Listcontrol);
+  }
   const onclickOPenSettemp = (id, DecviceId, values) => {
     console.log(id);
     setOpenSettempModal(true);
@@ -282,10 +268,33 @@ export default function FloorPlan({ FloorId }) {
     setDeviceName(DecviceId);
     setValues(values);
   };
- 
-  const handleChangeValueSetMode = async () => {
+
+
+  const handleToggleChange = () => {
+    setToggle(!toggle);
+  };
+
+  const notifySuccess = (title,message) =>
+  toast.success(
+    <div className="px-2">
+    <div className="flex flex-row font-bold">{title}</div>
+    <div className="flex flex-row text-xs">{message}</div>
+    </div>,
+    {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    }
+  );
+
+  const handleChangeValueSetFan = async () => {
     setLoading(true);
-    const res = await ChangeValueSetMode(DecviceId, Values);
+    const res = await ChangeSetFanSmartIR(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data);
       closeModal();
@@ -297,105 +306,53 @@ export default function FloorPlan({ FloorId }) {
       setModalError(true);
     }
   };
-  const handleChangeValueSettempVav = async () => {
+  
+ 
+  const handleChangeValueSetMode = async () => {
     setLoading(true);
-    const res = await ChangeValueDamperVAV(DecviceId, Values);
+    const res = await ChangeSetModeSmartIR(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data);
       closeModal();
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
       setLoading(false);
-      notifySuccess();
+      notifySuccess(res.data.title,res.data.message);
     } else if (res.response.status === 401) {
       closeModal();
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
       setLoading(false);
-      setModalError(true);
-    } else if (res.response.status === 500) {
+    }
+    else if (res.response.status === 500) {
       closeModal();
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      
       setLoading(false);
-      setModalError(true);
     }
   };
-
-  const openModalControleIsStop = (DecviceId, deviceName) => {
-    setDeviceId(DecviceId);
-    setValues("off");
-    setDeviceName(deviceName);
-    setShowModalControleOff(true);
-  };
-  const openModalControleIsStart = (DecviceId, deviceName) => {
-    setDeviceId(DecviceId);
-    setValues("on");
-    setDeviceName(deviceName);
-    setShowModalControleOn(true);
-  };
-
   
-
   const handleChangeValueSettemp = async () => {
     setLoading(true);
-    const res = await ChangeValueSettempSplttpye(DecviceId, Values);
+    const res = await SmartIRSetTemp(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data);
       closeModal();
       setLoading(false);
-      toast.success(
-        `Operation Complete
-    `,
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      notifySuccess(res.data.title,res.data.message);
     } else if (res.response.status === 401) {
       closeModal();
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
       setLoading(false);
-      setModalError(true);
-    } else if (res.response.status === 500) {
-      closeModal();
-      setLoading(false);
-      setModalError(true);
     }
-  };
-  const onChangeValueSettempVav = (event) => {
-    setValues(event);
-  };
-  const onChangeValueSettempAHU = (event) => {
-    setValues(event);
-  };
-  const onclickOPenSettempVav = (id, DecviceId, values) => {
-    setOpenSettempModalVAV(true);
-    setDeviceId(id);
-    setDeviceName(DecviceId);
-    setValues(values);
-  };
-  const onclickOPenSettempAHU = (id, DecviceId, values) => {
-    setOpenSettempModalAHU(true);
-    setDeviceId(id);
-    setDeviceName(DecviceId);
-    setValues(values);
-  };
-  const handleChangeValueSettempAHU = async () => {
-    setLoading(true);
-    const res = await ChangeValueSettempAHU(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
+    else if (res.response.status === 500) {
       closeModal();
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      
       setLoading(false);
-      notifySuccess();
-    } else if (res.response.status === 401) {
-      closeModal();
-      setLoading(false);
-      setModalError(true);
-    } else if (res.response.status === 500) {
-      closeModal();
-      setLoading(false);
-      setModalError(true);
     }
   };
 
@@ -405,27 +362,44 @@ export default function FloorPlan({ FloorId }) {
     }
   }, [Listcontrol, Decvicetype]);
 
-  const onChangeValueSettemp = (event) => {
-    setValues(event);
-  };
+  // const onChangeValueSettemp = (event) => {
+  //   setValues(event);
+  // };
 
-  function onChangeValue(value, dataId) {
-    setListcontrol(dataId);
-    setDevicetype(value);
-    console.log(Values);
-    console.log(Listcontrol);
-  }
+  
 
-  async function clickChangestatusControle() {
+  async function clickChangestatusControleLighting() {
     setLoading(true);
-    const res = await ChangeControlSplittype(DecviceId, Values);
+    const res = await ChangeControlLightning(DecviceId, Values);
     if (res.status === 200) {
       console.log(res.data);
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
       closeModal();
       setLoading(false);
-      notifySuccess();
+      notifySuccess(res.data.title,res.data.message);
+    } else if (res.response.status === 401) {
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+    } else if (res.response.status === 500) {
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      closeModal();
+      setLoading(false);
+    }
+  }
+  async function clickChangestatusControleSmartIr() {
+    setLoading(true);
+    const res = await ChangeControlSmartIR(DecviceId, Values);
+    if (res.status === 200) {
+      console.log(res.data);
+      setAlertTitle(res.data.title);
+      setAlertmessage(res.data.message);
+      closeModal();
+      setLoading(false);
+      notifySuccess(res.data.title,res.data.message);
     } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
@@ -439,55 +413,7 @@ export default function FloorPlan({ FloorId }) {
     }
   }
 
-  async function clickChangestatusAutomation() {
-    setLoading(true);
-    const res = await ChangeAutomationSplittype(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
-      closeModal();
-      setLoading(false);
-      notifySuccess();
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    } else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    }
-  }
-  async function clickChangestatusAutomationAHU() {
-    setLoading(true);
-    const res = await ChangeAutomationAHU(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
-      closeModal();
-      setLoading(false);
-      notifySuccess();
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    } else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    }
-  }
-  // const onchangeDevicetypeId = (event) =>{
-    
-  //   setdeviceTypeId(event)
-  //   console.log(event)
-  // }
+  
   const OnchangeListFloorplan = (event) => {
     const selectedValue = event
     const selected = deviceTypeList.find(item => item.id === parseInt(selectedValue));
@@ -541,14 +467,10 @@ export default function FloorPlan({ FloorId }) {
     setOpenSettempModal(false);
     setOpenSetFanModal(false);
     setOpenSetModeModal(false);
-    setOpenSettempModalVAV(false);
-    setOpenSettempModalAHU(false);
-    setShowModalControleOn(false);
-    setShowModalControleOff(false);
-    setShowModalAutomationOn(false);
-    setShowModalAutomationOff(false);
-    setShowModalAutomationAHUOn(false);
-    setShowModalAutomationAHUOff(false);
+    setShowModalControleOnLighting(false);
+    setShowModalControleOffLighting(false);
+    setShowModalControleOnSmartIr(false);
+    setShowModalControleOffSmartIr(false);
     setModalError(false);
     setDeviceId(null);
     // setShowModalStop(false);
@@ -2501,11 +2423,11 @@ export default function FloorPlan({ FloorId }) {
                               }
                               onClick={() =>
                                 marker.control == "on"
-                                  ? openModalControleIsStop(
+                                  ? openModalControleIsStopLighting(
                                       marker.id,
                                       marker.deviceName
                                     )
-                                  : marker.control == "off" ? openModalControleIsStart(
+                                  : marker.control == "off" ? openModalControleIsStartLighting(
                                       marker.id,
                                       marker.deviceName
                                     ) : null
@@ -2613,11 +2535,11 @@ export default function FloorPlan({ FloorId }) {
                             }
                             onClick={() =>
                               marker.control == "on"
-                                ? openModalControleIsStop(
+                                ? openModalControleIsStopSmartIr(
                                     marker.id,
                                     marker.deviceName
                                   )
-                                : marker.control == "off" ? openModalControleIsStart(
+                                : marker.control == "off" ? openModalControleIsStartSmartIr(
                                     marker.id,
                                     marker.deviceName
                                   ) : null
@@ -2945,22 +2867,9 @@ export default function FloorPlan({ FloorId }) {
               decimalScale={0}
               onChange={e => setValues(e.target.value)}
     onBlur={e => {
-        setValues(Math.min(maxS, Math.max(minS, Values)).toFixed(2));
+        setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
     }}
               />
-    {/* <input
-    type="number"
-    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-    maxLength={Math.max(minS.toString().length, maxS.toString().length)}
-    value={Values}
-    min={minS}
-    max={maxS}
-    onChange={e => setValues(e.target.value)}
-    onBlur={e => {
-      if (Values && !isNaN(Values))
-        setValues(Math.min(maxS, Math.max(minS, Values)));
-    }}
-/> */}
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
@@ -3115,104 +3024,7 @@ export default function FloorPlan({ FloorId }) {
             </div>
           </div>
         ) : null}
-        {OpenSettempModalVAV ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <h5 className="mt-5">Set Damper (%) : {DeviceName}</h5>
-              
-              <NumericFormat 
-              type="number" 
-              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-              min={0}
-              max={100}
-              value={Values} 
-              decimalScale={2}
-              onChange={e => setValues(e.target.value)}
-    onBlur={e => {
-        setValues(Math.min(maxV, Math.max(minV, Values)).toFixed(2));
-    }}
-              />
-      {/* <input
-    type="number"
-    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-    maxLength={Math.max(minV.toString().length, maxV.toString().length + 3)}
-    min={minV}
-    max={maxV}
-    value={Values}
-    onChange={e => setValues(e.target.value)}
-    onBlur={e => {
-      if (Values && !isNaN(Values))
-        setValues(Math.min(maxV, Math.max(minV, Values)).toFixed(2));
-    }}
-/> */}
-              <div className="flex justify-center mt-10 gap-5">
-                <button
-                  className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                  onClick={() => closeModal()}
-                >
-                  cancel
-                </button>
-                <button
-                  className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSettempVav()}
-                >
-                  confirm
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : null}
-        {OpenSettempModalAHU ? (
-          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <h5 className="mt-5">
-                Set Supply Temp. Setpoint (°C) : {DeviceName}
-              </h5>
-
-              
-              <NumericFormat 
-              type="number" 
-              className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-              min={10}
-              max={40}
-              value={Values} 
-              decimalScale={2}
-              onChange={e => setValues(e.target.value)}
-    onBlur={e => {
-        setValues(Math.min(maxA, Math.max(minA, Values)).toFixed(2));
-    }}
-              />
-              {/* <input
-    type="number"
-    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80" 
-    maxLength={Math.max(minA.toString().length, maxA.toString().length + 3)}
-    min={minA}
-    max={maxA}
-    value={Values}
-    onChange={e => setValues(e.target.value)}
-    onBlur={e => {
-      if (Values && !isNaN(Values))
-        setValues(Math.min(maxA, Math.max(minA, Values)).toFixed(2));
-    }}
-/> */}
-              <div className="flex justify-center mt-10 gap-5">
-                <button
-                  className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
-                  onClick={() => closeModal()}
-                >
-                  cancel
-                </button>
-                <button
-                  className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSettempAHU()}
-                >
-                  confirm
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : null}
-        {showModalControleOn ? (
+        {showModalControleOnSmartIr ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -3234,7 +3046,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControle()}
+                    onClick={() => clickChangestatusControleSmartIr()}
                   >
                     confirm
                   </button>
@@ -3243,7 +3055,7 @@ export default function FloorPlan({ FloorId }) {
             </div>
           </div>
         ) : null}
-        {showModalControleOff ? (
+        {showModalControleOffSmartIr ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -3265,7 +3077,69 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControle()}
+                    onClick={() => clickChangestatusControleSmartIr()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalControleOnLighting ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2">
+                    {" "}
+                    Are you sure you want to start {DeviceName} now ?{" "}
+                  </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusControleLighting()}
+                  >
+                    confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalControleOffLighting ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2">
+                    {" "}
+                    Are you sure you want to stop {DeviceName} now ?{" "}
+                  </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => clickChangestatusControleLighting()}
                   >
                     confirm
                   </button>

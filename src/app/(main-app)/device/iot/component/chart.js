@@ -51,8 +51,6 @@ export default function Chart({deviceTypeId}) {
   useEffect(() => {
     if (deviceTypeId) {
       getDeviceparameterList(deviceTypeId);
-    }else {
-      
     }
   }, [deviceTypeId]);
   
@@ -78,42 +76,7 @@ export default function Chart({deviceTypeId}) {
       mode: "x",
     },
   };
-  // const options = {
-  //   aspectRatio: 4,
-  //   responsive: true,
-  //   interaction: {
-  //     mode: "index",
-  //     intersect: false,
-  //   },
-  //   spanGaps: true,
-  //   plugins: {
-  //     legend: {
-  //       position: "top",
-  //     },
-  //     zoom: zoomOptions,
-  //   },
-  //   scales: {
-  //     x: {
-  //       display: true,
-  //       grid: {
-  //         drawOnChartArea: false, // only want the grid lines for one axis to show up
-  //       },
-  //     },
-  //     y: {
-  //       beginAtZero: true,
-  //       type: "linear",
-  //       display: true,
-  //       position: "left",
-
-  //       title: {
-  //         display: true,
-  //         text: "Controle Value %",
-  //         padding: { top: 30, left: 0, right: 0, bottom: 0 },
-  //       },
-  //     },
-     
-  //   },
-  // };
+  
   const chartRef = useRef(null);
 
   const onResetZoom = () => {
