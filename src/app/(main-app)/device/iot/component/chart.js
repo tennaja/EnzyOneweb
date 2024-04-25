@@ -28,6 +28,7 @@ ChartJS.register(
 );
 
 export default function Chart({deviceTypeId}) {
+  console.log(deviceTypeId)
   const [DeviceParameterId, setDeviceParameterId] = useState(1);
   const [chartList, setChartList] = useState([]);
   const [deviceparameterList,setDeviceparameterList] = useState([])
@@ -48,13 +49,15 @@ export default function Chart({deviceTypeId}) {
   };
 
   useEffect(() => {
-    if (deviceTypeId != 0) {
+    if (deviceTypeId) {
       getDeviceparameterList(deviceTypeId);
+    }else {
+      
     }
   }, [deviceTypeId]);
   
   useEffect(() => {
-    if(DeviceParameterId != 0){GetGraph(DeviceParameterId, dateFrom, dateTo);}
+    if(DeviceParameterId){GetGraph(DeviceParameterId, dateFrom, dateTo);}
   },[DeviceParameterId]);
 
   const zoomOptions = {
@@ -123,6 +126,7 @@ export default function Chart({deviceTypeId}) {
   };
   
   const OnchangeList = (event) => {
+    
     setDeviceParameterId(event)
     GetGraph(event,dateFrom,dateTo)
   }
@@ -131,6 +135,7 @@ export default function Chart({deviceTypeId}) {
     const result = await getdeviceparameter(deviceTypeId);
     console.log(result.data);
     setDeviceparameterList(result.data);
+    setDeviceParameterId(result.data[0].id)
     };
 
   async function GetGraph(deviceParameterid, dateFrom, dateTo) {
@@ -145,7 +150,7 @@ export default function Chart({deviceTypeId}) {
     if (res.status === 200) {
         let data = [];
         data.push(res.data)
-        console.log(data)
+       
         setChartList(data);
         let label = [];
         for (let j = 0; j < res.data.data.length; j++)
@@ -153,7 +158,7 @@ export default function Chart({deviceTypeId}) {
         label.push(res.data.data[j].time)
         }
         setListLabel(label)
-        console.log(label)    
+           
       }
       
     

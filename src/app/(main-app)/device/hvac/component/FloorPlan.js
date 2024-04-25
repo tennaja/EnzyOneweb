@@ -1268,9 +1268,9 @@ export default function FloorPlan({ FloorId }) {
                                 ) : null
                               }
                             >
-                              {marker.setTemp.toFixed(2)}
+                              {marker.setTemp}
                             </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                             {marker.setTemp.toFixed(2)}
+                             {marker.setTemp}
                           </span> : "-"}
                           </span>
                         </div>

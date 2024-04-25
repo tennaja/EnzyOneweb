@@ -74,13 +74,16 @@ export default function FloorPlan({ FloorId }) {
   const [WaterMeterList, setWaterMeterList] = useState([]);
   const [HeaterList, setHeaterList] = useState([]);
   const [HeaterWaterList, setHeaterWaterList] = useState([]);
-  const [deviceTypeId,setdeviceTypeId] = useState() 
+  const [deviceTypeId,setdeviceTypeId] = useState();
   const [floorId, setFloorId] = useState();
   const [floorplanList, setFloorplanList] = useState([]);
   const [deviceTypeList, setdeviceTypeList] = useState([]);
   const [option, setOption] = useState("Indoor Temp & Humid");
+  const [isFirst,setIsfirst] = useState(true)
   useEffect(() => {
     if (FloorId != 0 && option) {
+      // const selected = result.data.deviceType.find(item => item.displayName === "Indoor Temp & Humid");
+    // setdeviceTypeId(selected.id)
       getfloorplan(FloorId);
       OnchangeListFloorplan(option)
     }
@@ -94,13 +97,15 @@ export default function FloorPlan({ FloorId }) {
     data.push(result.data);
     // console.log(result.data);
     setFloorplanList(data);
-
-    // console.log(result.data.deviceType);
     setdeviceTypeList(result.data.deviceType);
-    // if (result.data.deviceType.length > 0) {
-    //   console.log(result.data.deviceType)
-    //   setdeviceTypeList(result.data.deviceType)
-    // }
+    if(isFirst) {
+      const selected = result.data.deviceType.find(item => item.displayName.toLowerCase() === ("Indoor Temp & Humid").toLowerCase() );
+      setdeviceTypeId(selected.id)
+      setIsfirst(false)
+    }
+  
+    console.log(selected)
+    console.log(result.data.deviceType[1].id)
   };
   const getIndoortemphumidList = async (floorId) => {
     setFloorId(floorId);
@@ -112,9 +117,9 @@ export default function FloorPlan({ FloorId }) {
     };
   const getoutdoortemphumidList = async (floorId) => {
     setFloorId(floorId);
-    console.log(floorId);
+    
     const result = await getoutdoortemphumid(floorId);
-    console.log(result.data);
+    
     setOutdoortemphumidList(result.data);
     console.log(result.data.id)
     setdeviceTypeId(result.data.id)
@@ -478,13 +483,22 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
     }
   }
-  const onchangeDevicetypeId = (event) =>{
-    setdeviceTypeId(event)
-    console.log(event)
-  }
+  // const onchangeDevicetypeId = (event) =>{
+    
+  //   setdeviceTypeId(event)
+  //   console.log(event)
+  // }
   const OnchangeListFloorplan = (event) => {
-    setOption(event)
-    console.log(option)
+    const selectedValue = event
+    const selected = deviceTypeList.find(item => item.id === parseInt(selectedValue));
+    if (selected){
+      console.log(selected.id)
+      setdeviceTypeId(selected.id);
+      setOption(selected.displayName)
+    }
+   
+ 
+  
     if (option == "All Type"){
       getIndoortemphumidList(FloorId);
       getoutdoortemphumidList(FloorId);
@@ -557,16 +571,18 @@ export default function FloorPlan({ FloorId }) {
                       <span className="text-lg  font-bold">{item.name}</span>
             <select
               className="w-auto border border-slate-300 mx-2 rounded-md h-9 px-3"
-              onChange={(e) => {OnchangeListFloorplan(e.target.value) , onchangeDevicetypeId(e.target.id)}}
-              value={option}
+              onChange={(event) => OnchangeListFloorplan(event.target.value)}
+              value={deviceTypeId}
             >
               
               {deviceTypeList.length > 0 &&
-                deviceTypeList.map((item,index) => {
+                deviceTypeList.map((item) => {
                   return (
-                  <option className="rounded-lg" key={item.id}> {item.displayName}</option>)
+                  <option className="rounded-lg" key={item.id} value={item.id}> {item.displayName}</option>)
                 })}
             </select>
+            {/* <p>Selected ID: {deviceTypeId.id}</p>
+        <p>Selected Label: {deviceTypeId.label}</p> */}
             </div>
           <div className="flex flex-row gap-4 p-2 mt-5">
           <div className="flex justify-center items-center w-full">
@@ -3315,7 +3331,7 @@ export default function FloorPlan({ FloorId }) {
               null}
                
               {option != "All Type" ? (
-                <Chart deviceParameterid={1} deviceTypeId={1} />
+                <Chart deviceTypeId={deviceTypeId} />
                ): null}
       <ToastContainer />
     </div>

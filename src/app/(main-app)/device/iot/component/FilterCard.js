@@ -23,6 +23,7 @@ import SplitTypetable from "./SmartIRtable";
 import SmartIRtable from "./WaterMetertable";
 import ChartAHU from "./chart";
 import ChartSplittype from "./chartSplittype";
+import SelectComponent from "./test";
 
 export default function FilterCard() {
   const [chartListAHU1, setChartListAHU1] = useState([]);
@@ -309,6 +310,7 @@ export default function FilterCard() {
         </div>
         {floorplanList.id}
       </div>
+      
       <FloorPlan
       FloorId= {floorId}
         // Data={floorplanList}

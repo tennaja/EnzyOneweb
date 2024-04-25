@@ -26,7 +26,9 @@ export default function AHUtable(AHUlist) {
   const [alertmassage, setAlertmessage] = useState("");
   const min = 10;
   const max = 40;
-  
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
   const notifySuccess = (title,message) =>
   toast.success(
     <div className="px-2">
@@ -194,14 +196,15 @@ async function clickChangestatusAutomation() {
                     return (
                       item.deviceName.includes(searchTable) ||
                       item.deviceName.toLowerCase().includes(searchTable) ||
-                      item.status.includes(searchTable) ||
-                      String(item.supplyTemp).includes(searchTable) ||
-                      String(item.supplyTempSetPoint).includes(searchTable) ||
-                      String(item.returnTemp).includes(searchTable) ||
-                      String(item.vsdDrive).includes(searchTable)||
-                      String(item.vsdPower).includes(searchTable)||
-                      String(item.vsdSpeed).includes(searchTable)||
-                      String(item.controlValve).includes(searchTable)
+                      item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      String(item.supplyTemp.toFixed(2)).includes(searchTable) ||
+                      String(item.supplyTempSetPoint.toFixed(2)).includes(searchTable) ||
+                      String(item.returnTemp.toFixed(2)).includes(searchTable) ||
+                      String(item.vsdDrive.toFixed(2)).includes(searchTable)||
+                      String(item.vsdPower.toFixed(2)).includes(searchTable)||
+                      String(item.vsdSpeed.toFixed(2)).includes(searchTable)||
+                      String(item.controlValve.toFixed(2)).includes(searchTable)
                     );
                   }).map((item) => {
                     
@@ -232,10 +235,7 @@ async function clickChangestatusAutomation() {
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={
-                                      item.status == "on"
-                                        ? "On"
-                                        : item.status == "offline" ? " Offline"
-                                        : " Off"
+                                      titleCase(item.status)
                                     }// Replace this with your text
                                   />
                           
@@ -373,30 +373,19 @@ async function clickChangestatusAutomation() {
         setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
     }}
               />
-              {/* <input
-    type="number"
-    className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-    min={min}
-    max={max}
-    value={Values}
-    
-    onChange={e => setValues(e.target.value)}
-    onBlur={e => {
-        setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
-    }}
-/> */}
+             
               <div className="flex justify-center mt-10 gap-5">
                 <button
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                   onClick={() => closeModal()}
                 >
-                  cancel
+                  Cancel
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                   onClick={() => handleChangeValueSettemp()}
                 >
-                  confirm
+                  Confirm
                 </button>
               </div>
             </div>
@@ -443,13 +432,13 @@ async function clickChangestatusAutomation() {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusAutomation()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -471,13 +460,13 @@ async function clickChangestatusAutomation() {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusAutomation()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>

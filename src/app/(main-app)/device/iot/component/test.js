@@ -1,20 +1,39 @@
-import React from 'react'
+"use client";
+import React, { useEffect, useState} from "react";
 
-export default function ColorLoop() {
-    const data = [1, 2, 3, 4, 5]; // Example data
-    const colors = ["red", "blue", "green", "yellow"];
+const SelectComponent = () => {
+  const [selectedOption, setSelectedOption] = useState(({ id: '', label: '' }));
+
+  const options = [
+    { id: 1, label: 'Option 1' , name: "green"},
+    { id: 2, label: 'Option 2' , name: "red"},
+    { id: 3, label: 'Option 3' , name: "blue"},
+  ];
+
+  const handleChange = (event) => {
+    const selectedValue = event.target.value;
+    const selected = options.find(option => option.id === parseInt(selectedValue));
+    setSelectedOption(selected);
+    console.log(selected.id)
+    console.log(options)
+  };
+
   return (
-    
     <div>
-    {data.map((item, index) => {
-      const colorIndex = index % colors.length;
-      const color = colors[colorIndex];
-      return (
-        <div key={index} style={{ color: color }}>
-          Item: {item}, Color: {color}
-        </div>
-      );
-    })}
-  </div>
-  )
-}
+      <select onChange={handleChange}>
+        <option value="">Select an option</option>
+        {options.map(option => (
+          <option key={option.id} value={option.id}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <div>
+        {/* <p>Selected ID: {selectedOption.id}</p>
+        <p>Selected Label: {selectedOption.label}</p> */}
+      </div>
+    </div>
+  );
+};
+
+export default SelectComponent;

@@ -21,6 +21,9 @@ export default function VAVtable(VAVList) {
   const [alertmassage, setAlertmessage] = useState("");
   const min = 0;
   const max = 100;
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
   const notifySuccess = (title,message) =>
   toast.success(
     <div className="px-2">
@@ -135,10 +138,11 @@ const handleChangeValueSettemp = async () => {
                     return (
                       item.deviceName.includes(searchTable) ||
                       item.deviceName.toLowerCase().includes(searchTable) ||
-                      item.status.includes(searchTable) ||
-                      String(item.temp).includes(searchTable) ||
-                      String(item.airFlow).includes(searchTable) ||
-                      String(item.damper).includes(searchTable) 
+                      item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      String(item.temp.toFixed(2)).includes(searchTable) ||
+                      String(item.airFlow.toFixed(2)).includes(searchTable) ||
+                      String(item.damper.toFixed(2)).includes(searchTable) 
                       
                     );
                   }).map((item) => {
@@ -170,10 +174,7 @@ const handleChangeValueSettemp = async () => {
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={
-                                      item.status == "on"
-                                        ? "On"
-                                        : item.status == "offline" ? " Offline"
-                                        : " Off"
+                                      titleCase(item.status)
                                     }// Replace this with your text
                                   />
                           
@@ -262,13 +263,13 @@ const handleChangeValueSettemp = async () => {
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                   onClick={() => closeModal()}
                 >
-                  cancel
+                  Cancel
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                   onClick={() => handleChangeValueSettemp()}
                 >
-                  confirm
+                  Confirm
                 </button>
               </div>
             </div>
