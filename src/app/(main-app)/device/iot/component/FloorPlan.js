@@ -299,11 +299,19 @@ export default function FloorPlan({ FloorId }) {
       console.log(res.data);
       closeModal();
       setLoading(false);
-      notifySuccess();
-    } else {
+      notifySuccess(res.data.title,res.data.message);
+    } else if (res.response.status === 401) {
       closeModal();
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
       setLoading(false);
-      setModalError(true);
+    }
+    else if (res.response.status === 500) {
+      closeModal();
+      setAlertTitle(res.response.data.title);
+      setAlertmessage(res.response.data.message);
+      
+      setLoading(false);
     }
   };
   
@@ -3209,7 +3217,7 @@ export default function FloorPlan({ FloorId }) {
               {option != "All Type" ? (
                 <Chart deviceTypeId={deviceTypeId} />
                ): null}
-      <ToastContainer />
+      
     </div>
   );
 }

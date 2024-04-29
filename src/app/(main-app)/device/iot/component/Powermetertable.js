@@ -275,7 +275,7 @@ const handleChangeValueSettemp = async () => {
             </div>
           </div>
         ) : null}
-        <ToastContainer />
+        
     </div>
   )
 }

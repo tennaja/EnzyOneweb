@@ -38,17 +38,11 @@ export default function FilterCard() {
   const [branchList, setBranchList] = useState([]);
   const [buildingList, setBuildingList] = useState([]);
   const [floorList, setFloorList] = useState([]);
-  const [AHUList, setAHUList] = useState([]);
-  const [VAVList, setVAVList] = useState([]);
-  const [SplittypeList, setSplittypeList] = useState([]);
-  const [IOTList, setIOTList] = useState([]);
   const [floorplanList, setFloorplanList] = useState([]);
   const [branchId, setBranchId] = useState(0);
   const [buildingId, setBuildingId] = useState(0);
   const [floorId, setFloorId] = useState(0);
-  const [ListLabelAHU, setListLabelAHU] = useState([0]);
-  const [ListLabelSplittype, setListLabelSplittype] = useState([0]);
-  const [loadingGraph, setLoadingGraph] = useState(false);
+ 
 
   useEffect(() => {
     getBranchList();
@@ -100,83 +94,6 @@ export default function FilterCard() {
     // getTableAirCompressorList(result.data[0].Id)
   };
 
-  // async function GetAHUGraph(floorId, dateFrom, dateTo) {
-  //   setFloorId(floorId);
-  //   const paramsNav = {
-  //     floorId: floorId,
-  //     dateFrom: "2024-02-02",
-  //     dateTo: "2024-02-02",
-  //   };
-  //   const res = await getAHUGraph(paramsNav);
-  //   console.log(paramsNav);
-  //   if (res.status === 200) {
-  //     if (res.data.controlValve.length > 0) {
-  //       setChartListAHU1(res.data.controlValve);
-  //       let label = [];
-  //       let modday = 0;
-  //       console.log(res.data.controlValve);
-  //       for (let j = 0; j < res.data.controlValve[0].data.length; j++) {
-  //         label.push(res.data.controlValve[0].data[j].time);
-  //       }
-  //       setListLabelAHU(label);
-  //       // console.log(label);
-  //     }
-  //     if (res.data.supplyTemp.length > 0) {
-  //       setChartListAHU2(res.data.supplyTemp);
-  //       let label = [];
-  //       let modday = 0;
-  //       console.log(res.data.supplyTemp);
-  //     }
-  //     if (res.data.returnTemp.length > 0) {
-  //       setChartListAHU3(res.data.returnTemp);
-  //       let label = [];
-  //       let modday = 0;
-  //       console.log(res.data.returnTemp);
-  //     }
-  //   }
-  // }
-
-  async function GetSplittypeGraph(floorId, dateFrom, dateTo) {
-    setFloorId(floorId);
-    const paramsNav = {
-      floorId: floorId,
-      dateFrom: "2024-02-02",
-      dateTo: "2024-02-02",
-    };
-    const res = await getSplittypeGraph(paramsNav);
-    console.log(paramsNav);
-    if (res.status === 200) {
-      if (res.data.power.length > 0) {
-        setChartListSplittype1(res.data.power);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.power);
-        for (let j = 0; j < res.data.power[0].data.length; j++) {
-          label.push(res.data.power[0].data[j].time);
-        }
-        setListLabelSplittype(label);
-        // console.log(label);
-      }
-      if (res.data.temp.length > 0) {
-        setChartListSplittype2(res.data.temp);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.temp);
-      }
-      if (res.data.roomTemp.length > 0) {
-        setChartListSplittype3(res.data.roomTemp);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.roomTemp);
-      }
-      if (res.data.external.length > 0) {
-        setChartListSplittype4(res.data.external);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.external);
-      }
-    }
-  }
 
   const onSearchData = async () => {
     setFloorId(floorId);
@@ -224,6 +141,21 @@ export default function FilterCard() {
   //   // console.log(result.data)
   //   setIOTList(result.data);
   // };
+  const notifySuccess = () =>
+  toast.success(
+    `Operation Complete
+  `,
+    {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    }
+  );
 
   return (
     <div>
