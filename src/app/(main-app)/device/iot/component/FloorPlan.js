@@ -26,7 +26,7 @@ import PowerMeter from "./Powermetertable";
 import Inverter from "./Invertertable";
 import FlowMeter from "./FlowMetertable";
 import MotionSensor from "./Motiontable";
-import Counter from "./Motiontable copy";
+import Counter from "./CounterTable";
 import Ligthing from "./Ligthingtable";
 import { NumericFormat } from 'react-number-format';
 import { IoMdPower } from "react-icons/io";
@@ -72,7 +72,7 @@ export default function FloorPlan({ FloorId }) {
   const [floorId, setFloorId] = useState();
   const [floorplanList, setFloorplanList] = useState([]);
   const [deviceTypeList, setdeviceTypeList] = useState([]);
-  const [option, setOption] = useState("Indoor Temp & Humid");
+  const [option, setOption] = useState("All Type");
   const [isFirst,setIsfirst] = useState(true)
   const min = 10;
   const max = 40;
@@ -93,7 +93,7 @@ export default function FloorPlan({ FloorId }) {
     setFloorplanList(data);
     setdeviceTypeList(result.data.deviceType);
     if(isFirst) {
-      const selected = result.data.deviceType.find(item => item.displayName.toLowerCase() === ("Indoor Temp & Humid").toLowerCase() );
+      const selected = result.data.deviceType.find(item => item.displayName.toLowerCase() === ("All Type").toLowerCase() );
       setdeviceTypeId(selected.id)
       setIsfirst(false)
     }
@@ -477,7 +477,9 @@ export default function FloorPlan({ FloorId }) {
     // setShowModalStart(false);
   };
 
-  
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
   return (
     <div>
       <div className="grid rounded-xl bg-white p-2 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 mt-5">
@@ -1629,7 +1631,7 @@ export default function FloorPlan({ FloorId }) {
                             <div className="bg-white ml-4 border border-black">
                               <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                Detected : {marker.detect}
+                                Detected : {String(marker.detect)}
                                 </span></div>
                                 </div>
                           </div>
@@ -2135,7 +2137,7 @@ export default function FloorPlan({ FloorId }) {
                               : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                               : " text-center text-gray-500 font-extrabold"
                           }>
-                          {marker.status}
+                          {titleCase(marker.status)}
                           </span> 
                           </span>
                         </div>
@@ -2171,7 +2173,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2207,7 +2209,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2239,7 +2241,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2291,7 +2293,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2337,7 +2339,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2369,13 +2371,13 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
                       <div class="px-3">
                         <span class="text-gray-700 text-sm">
-                        Detected : {marker.detect}
+                        Detected : {String(marker.detect)}
                         </span>
                       </div>
                       
@@ -2401,7 +2403,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2435,7 +2437,7 @@ export default function FloorPlan({ FloorId }) {
                             >
                                
                               <IoMdPower size="1.2em"/>
-                            </button><div className="text-xs  text-gray-500 font-bold">{marker.status == "offline" ? null : marker.control}</div></div>}
+                            </button><div className="text-xs  text-gray-500 font-bold">{ titleCase(marker.control)}</div></div>}
                             
                             
                           </span>
@@ -2462,7 +2464,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2494,7 +2496,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2546,7 +2548,7 @@ export default function FloorPlan({ FloorId }) {
                             }
                           >
                           <IoMdPower size="1.2em"/>
-                          </button><div className="text-xs  text-gray-500 font-bold">{marker.status == "offline" ? null : marker.control}</div></div>}
+                          </button><div className="text-xs  text-gray-500 font-bold">{titleCase(marker.control)}</div></div>}
                           
                         </span>
                       </div>
@@ -2565,9 +2567,9 @@ export default function FloorPlan({ FloorId }) {
                               ) : null
                             }
                           >
-                            {marker.fan}
+                            {titleCase(marker.fan)}
                           </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                           {marker.fan}
+                           {titleCase(marker.fan)}
                         </span> : "-"}
                         </span>
                       </div>
@@ -2586,9 +2588,9 @@ export default function FloorPlan({ FloorId }) {
                               ) : null
                             }
                           >
-                            {marker.mode}
+                            {titleCase(marker.mode)}
                           </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                           {marker.mode}
+                           {titleCase(marker.mode)}
                         </span> : "-"}
                         </span>
                       </div>
@@ -2615,7 +2617,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2647,7 +2649,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2675,7 +2677,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2707,7 +2709,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2739,7 +2741,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2822,7 +2824,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
@@ -2875,13 +2877,13 @@ export default function FloorPlan({ FloorId }) {
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                   onClick={() => closeModal()}
                 >
-                  cancel
+                  Cancel
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                   onClick={() => handleChangeValueSettemp()}
                 >
-                  confirm
+                  Confirm
                 </button>
               </div>
             </div>
@@ -2959,13 +2961,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => handleChangeValueSetFan()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -3011,13 +3013,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => handleChangeValueSetMode()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -3042,13 +3044,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusControleSmartIr()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -3073,13 +3075,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusControleSmartIr()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -3104,13 +3106,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusControleLighting()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -3135,13 +3137,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusControleLighting()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>

@@ -28,13 +28,14 @@ ChartJS.register(
 );
 
 export default function Chart({deviceTypeId}) {
-  console.log(deviceTypeId)
+  // console.log(deviceTypeId)
   const [DeviceParameterId, setDeviceParameterId] = useState(1);
   const [chartList, setChartList] = useState([]);
   const [deviceparameterList,setDeviceparameterList] = useState([])
   const [ListLabel, setListLabel] = useState([0]);
   const [dateFrom, setdateFrom] = useState(new Date());
   const [dateTo, setdateTo] = useState(new Date());
+  const [option, setOption] = useState();
   const dateFormat = 'YYYY/MM/DD';
   const formatDate = (date) => {
     var d = new Date(date),
@@ -55,7 +56,8 @@ export default function Chart({deviceTypeId}) {
   }, [deviceTypeId]);
   
   useEffect(() => {
-    if(DeviceParameterId){GetGraph(DeviceParameterId, dateFrom, dateTo);}
+    if(DeviceParameterId)
+    {GetGraph(DeviceParameterId, dateFrom, dateTo);}
   },[DeviceParameterId]);
 
   const zoomOptions = {
@@ -89,9 +91,15 @@ export default function Chart({deviceTypeId}) {
   };
   
   const OnchangeList = (event) => {
+    const selectedValue = event
+    const selected = deviceparameterList.find(item => item.id === parseInt(selectedValue));
+    if (selected){
+      console.log(selected.id)
+      setDeviceParameterId(selected.id);
+      setOption(selected.name)
+      GetGraph(event,dateFrom,dateTo)
+    }
     
-    setDeviceParameterId(event)
-    GetGraph(event,dateFrom,dateTo)
   }
  
   const getDeviceparameterList = async (deviceTypeId) => {
@@ -99,6 +107,8 @@ export default function Chart({deviceTypeId}) {
     console.log(result.data);
     setDeviceparameterList(result.data);
     setDeviceParameterId(result.data[0].id)
+    setOption(result.data[0].name)
+    
     };
 
   async function GetGraph(deviceParameterid, dateFrom, dateTo) {
@@ -212,7 +222,7 @@ export default function Chart({deviceTypeId}) {
 
         title: {
           display: true,
-          text: "Controle Value %",
+          text: option,
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
       },

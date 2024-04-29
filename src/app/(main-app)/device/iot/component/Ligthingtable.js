@@ -39,7 +39,9 @@ export default function Ligthing(Ligthinglist) {
       theme: "light",
     }
   );
-  
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
   const closeModal = () => {
     setOpenSettempModal(false)
     setModalError(false)
@@ -49,14 +51,16 @@ export default function Ligthing(Ligthinglist) {
     
 };
 
-const openModalControleIsStop = (DecviceId,values) => {
+const openModalControleIsStop = (DecviceId,DeviceName) => {
   setDeviceId(DecviceId)
+  setDeviceName(DeviceName);
   setValues('off')
   setShowModalControlestop(true);
   
 }
-const openModalControleIsStart = (DecviceId,values) => {
+const openModalControleIsStart = (DecviceId,DeviceName) => {
   setDeviceId(DecviceId)
+  setDeviceName(DeviceName);
   setValues('on')
   setShowModalControlestart(true);
   
@@ -132,10 +136,12 @@ async function clickChangecControle() {
                     // }
                     // console.log(data)
                     return (
-                      item.deviceName.includes(searchTable) ||
-                      item.deviceName.toLowerCase().includes(searchTable) ||
-                      item.status.includes(searchTable) ||
-                      String(item.control).includes(searchTable)
+                      item.deviceName.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.control.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.control.toUpperCase().includes(searchTable.toUpperCase())
                     );
                   }).map((item) => {
                     
@@ -165,7 +171,7 @@ async function clickChangecControle() {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={item.status}// Replace this with your text
+                                    textToHighlight={titleCase(item.status)}// Replace this with your text
                                   />
                           
                         </td>
@@ -195,7 +201,7 @@ async function clickChangecControle() {
                                   
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.control} // Replace this with your text
+                                  textToHighlight={titleCase(item.control)} // Replace this with your text
                                 />}
                                   
                                 </div>
@@ -251,13 +257,13 @@ async function clickChangecControle() {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangecControle()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -279,13 +285,13 @@ async function clickChangecControle() {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangecControle()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>

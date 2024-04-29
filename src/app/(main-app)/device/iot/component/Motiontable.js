@@ -5,6 +5,10 @@ import Highlighter from "react-highlight-words";
 export default function MotionSensor(Motionsensorlist) {
  
   const [searchTable, setSerachTable] = useState("");
+  
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
   return (
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
         <div className="flex flex-col gap-4 p-2">
@@ -48,12 +52,13 @@ export default function MotionSensor(Motionsensorlist) {
                     // }
                     // console.log(data)
                     return (
-                      item.deviceName.includes(searchTable) ||
+                      item.deviceName.toUpperCase().includes(searchTable.toUpperCase()) ||
                       item.deviceName.toLowerCase().includes(searchTable) ||
-                      // item.status.includes(searchTable) ||
-                      String(item.temp).includes(searchTable) ||
-                      String(item.humidity).includes(searchTable) ||
-                      String(item.co2).includes(searchTable) 
+                      item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      String(item.detect).toUpperCase().includes(searchTable.toUpperCase()) ||
+                      String(item.detect).toLowerCase().includes(searchTable.toLowerCase())
+                      
                       
                     );
                   }).map((item) => {
@@ -84,7 +89,7 @@ export default function MotionSensor(Motionsensorlist) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={item.status}// Replace this with your text
+                                    textToHighlight={titleCase(item.status)}// Replace this with your text
                                   />
                           
                         </td>
@@ -93,7 +98,7 @@ export default function MotionSensor(Motionsensorlist) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.detect)} // Replace this with your text
+                                    textToHighlight={titleCase(String(item.detect))} // Replace this with your text
                                   />
       
                         </td>

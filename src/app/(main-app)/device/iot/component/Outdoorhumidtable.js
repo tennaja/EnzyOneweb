@@ -18,6 +18,9 @@ export default function OutdoorHumid(Outdoorlist) {
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
 
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
   const notifySuccess = () =>
   toast.success(`Operation Complete
   `, {
@@ -107,12 +110,12 @@ const handleChangeValueSettemp = async () => {
                   Outdoorlist.Outdoorlist.filter((item) => {
                   
                     return (
-                      item.deviceName.includes(searchTable) ||
-                      item.deviceName.toLowerCase().includes(searchTable) ||
-                      item.status.includes(searchTable) ||
-                      String(item.temp).includes(searchTable) ||
-                      String(item.airFlow).includes(searchTable) ||
-                      String(item.damper).includes(searchTable) 
+                      item.deviceName.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      String(item.roomTemp).includes(searchTable) ||
+                      String(item.humidity).includes(searchTable) 
                       
                     );
                   }).map((item) => {
@@ -143,7 +146,7 @@ const handleChangeValueSettemp = async () => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={item.status}// Replace this with your text
+                                    textToHighlight={titleCase(item.status)}// Replace this with your text
                                   />
                           
                         </td>

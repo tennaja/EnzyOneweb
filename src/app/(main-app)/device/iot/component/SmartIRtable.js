@@ -27,7 +27,6 @@ export default function SmartIRtable(SmartIRlist) {
   const [ModalError, setModalError] = useState(false);
   const [showModalControlestart, setShowModalControlestart] = useState(false);
   const [showModalControlestop, setShowModalControlestop] = useState(false);
-  const [showModalAutomation, setShowModalAutomation] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
   const [toggle, setToggle] = useState(false);
@@ -37,15 +36,21 @@ export default function SmartIRtable(SmartIRlist) {
     
     setToggle(!toggle);
   };
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
 
-  const openModalControleIsStop = (DecviceId,values) => {
+  const openModalControleIsStop = (DecviceId,Devicename) => {
     setDeviceId(DecviceId)
+    setDeviceName(Devicename)
     setValues('off')
     setShowModalControlestop(true);
     
   }
-  const openModalControleIsStart = (DecviceId,values) => {
+  const openModalControleIsStart = (DecviceId,Devicename) => {
     setDeviceId(DecviceId)
+    setDeviceName(Devicename)
+
     setValues('on')
     setShowModalControlestart(true);
     
@@ -256,21 +261,18 @@ export default function SmartIRtable(SmartIRlist) {
                           // }
                           // console.log(data)
                           return (
-                            item.deviceName.includes(searchTable) ||
-                            item.deviceName.toLowerCase().includes(searchTable) ||
-                            item.deviceName.toUpperCase().includes(searchTable) ||
+                            item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
+                            item.deviceName.toUpperCase().includes(searchTable.toUpperCase()) ||
                             //   item.status.includes(searchTable) ||
                             String(item.setTemp).includes(searchTable) ||
-                            (item.control).toLowerCase().includes(searchTable) ||
-                            (item.control).toUpperCase().includes(searchTable) ||
-                            (item.control).includes(searchTable) ||
-                            (item.fan).toLowerCase().includes(searchTable) ||
-                            (item.fan).toUpperCase().includes(searchTable) ||
-                            (item.fan).includes(searchTable) ||
-                            (item.mode).toLowerCase().includes(searchTable) ||
-                            (item.mode).toUpperCase().includes(searchTable) ||
-                            (item.mode).includes(searchTable) ||
-                            (item.status).includes(searchTable)
+                            (item.control).toLowerCase().includes(searchTable.toLowerCase()) ||
+                            (item.control).toUpperCase().includes(searchTable.toUpperCase()) ||
+                            (item.fan).toLowerCase().includes(searchTable.toLowerCase()) ||
+                            (item.fan).toUpperCase().includes(searchTable.toUpperCase()) ||
+                            (item.mode).toLowerCase().includes(searchTable.toLowerCase()) ||
+                            (item.mode).toUpperCase().includes(searchTable.toUpperCase()) ||
+                            item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                            item.status.toUpperCase().includes(searchTable.toUpperCase()) 
                           );
                         }).map((item) => {
                           
@@ -300,7 +302,7 @@ export default function SmartIRtable(SmartIRlist) {
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.status}// Replace this with your text
+                                  textToHighlight={titleCase(item.status)}// Replace this with your text
                                 />
 
                               </td>
@@ -333,7 +335,7 @@ export default function SmartIRtable(SmartIRlist) {
                                 highlightClassName="highlight" // Define your custom highlight class
                                 searchWords={[searchTable]}
                                 autoEscape={true}
-                                textToHighlight={item.fan} // Replace this with your text
+                                textToHighlight={titleCase(item.fan)} // Replace this with your text
                                
                               />
                               :  <Highlighter
@@ -341,7 +343,7 @@ export default function SmartIRtable(SmartIRlist) {
                                 highlightClassName="highlight" // Define your custom highlight class
                                 searchWords={[searchTable]}
                                 autoEscape={true}
-                                textToHighlight={item.fan} // Replace this with your text
+                                textToHighlight={titleCase(item.fan)} // Replace this with your text
                                
                               />}
                                 
@@ -352,14 +354,14 @@ export default function SmartIRtable(SmartIRlist) {
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.mode} // Replace this with your text
+                                  textToHighlight={titleCase(item.mode)} // Replace this with your text
                                 />: 
                                 <Highlighter
                                 className="font-bold cursor-pointer"
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.mode} // Replace this with your text
+                                  textToHighlight={titleCase(item.mode)} // Replace this with your text
                                 />}
                                 
                                 
@@ -390,7 +392,7 @@ export default function SmartIRtable(SmartIRlist) {
                                   
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.control} // Replace this with your text
+                                  textToHighlight={titleCase(item.control)} // Replace this with your text
                                 />}
                                   
                                 </div>
@@ -438,13 +440,13 @@ export default function SmartIRtable(SmartIRlist) {
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                   onClick={() => closeModal()}
                 >
-                  cancel
+                  Cancel
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                   onClick={() => handleChangeValueSettemp()}
                 >
-                  confirm
+                  Confirm
                 </button>
               </div>
             </div>
@@ -498,13 +500,13 @@ export default function SmartIRtable(SmartIRlist) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => handleChangeValueSetFan()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -550,13 +552,13 @@ export default function SmartIRtable(SmartIRlist) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => handleChangeValueSetMode()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -604,13 +606,13 @@ export default function SmartIRtable(SmartIRlist) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusControle()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -632,13 +634,13 @@ export default function SmartIRtable(SmartIRlist) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusControle()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>

@@ -17,7 +17,9 @@ export default function Heatertable(Heaterlist) {
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
   const [showModalControle, setShowModalControle] = useState(false);
-  
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
 
   const notifySuccess = () =>
   toast.success(`Operation Complete
@@ -134,16 +136,15 @@ async function clickChangestatusAutomation() {
                     // }
                     // console.log(data)
                     return (
-                      item.deviceName.includes(searchTable) ||
-                      item.deviceName.toLowerCase().includes(searchTable) ||
-                      item.status.includes(searchTable) ||
-                      String(item.supplyTemp).includes(searchTable) ||
-                      String(item.supplyTempSetPoint).includes(searchTable) ||
-                      String(item.returnTemp).includes(searchTable) ||
-                      String(item.vsdDrive).includes(searchTable)||
-                      String(item.vsdPower).includes(searchTable)||
-                      String(item.vsdSpeed).includes(searchTable)||
-                      String(item.controlValve).includes(searchTable)
+                      item.deviceName.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      String(item.temp).includes(searchTable) ||
+                      String(item.power).includes(searchTable) ||
+                      String(item.model).includes(searchTable) ||
+                      String(item.waste).includes(searchTable)||
+                      String(item.counter).includes(searchTable)
                     );
                   }).map((item) => {
                     
@@ -173,7 +174,7 @@ async function clickChangestatusAutomation() {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={item.status}// Replace this with your text
+                                    textToHighlight={titleCase(item.status)}// Replace this with your text
                                   />
                           
                         </td>

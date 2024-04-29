@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 
 export default function Counter(Counterlist) {
- 
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
   const [searchTable, setSerachTable] = useState("");
   return (
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
@@ -48,13 +50,11 @@ export default function Counter(Counterlist) {
                     // }
                     // console.log(data)
                     return (
-                      item.deviceName.includes(searchTable) ||
+                      item.deviceName.toUpperCase().includes(searchTable.toLowerCase()) ||
                       item.deviceName.toLowerCase().includes(searchTable) ||
-                      // item.status.includes(searchTable) ||
-                      String(item.temp).includes(searchTable) ||
-                      String(item.humidity).includes(searchTable) ||
-                      String(item.co2).includes(searchTable) 
-                      
+                      item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      String(item.pieces).includes(searchTable) 
                     );
                   }).map((item) => {
                    
@@ -84,7 +84,7 @@ export default function Counter(Counterlist) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={item.status}// Replace this with your text
+                                    textToHighlight={titleCase(item.status)}// Replace this with your text
                                   />
                           
                         </td>

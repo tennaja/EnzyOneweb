@@ -1516,13 +1516,13 @@ export default function FloorPlan({ FloorId }) {
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                   onClick={() => closeModal()}
                 >
-                  cancel
+                  Cancel
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                   onClick={() => handleChangeValueSettemp()}
                 >
-                  confirm
+                  Confirm
                 </button>
               </div>
             </div>
@@ -1600,13 +1600,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => handleChangeValueSetFan()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               
@@ -1652,13 +1652,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => handleChangeValueSetMode()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               
@@ -1700,13 +1700,13 @@ export default function FloorPlan({ FloorId }) {
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                   onClick={() => closeModal()}
                 >
-                  cancel
+                  Cancel
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                   onClick={() => handleChangeValueSettempVav()}
                 >
-                  confirm
+                  Confirm
                 </button>
               </div>
             </div>
@@ -1750,13 +1750,13 @@ export default function FloorPlan({ FloorId }) {
                   className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                   onClick={() => closeModal()}
                 >
-                  cancel
+                  Cancel
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                   onClick={() => handleChangeValueSettempAHU()}
                 >
-                  confirm
+                  Confirm
                 </button>
               </div>
             </div>
@@ -1780,13 +1780,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusControle()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -1811,13 +1811,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusControle()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -1843,13 +1843,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusAutomation()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -1874,13 +1874,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusAutomation()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -1908,13 +1908,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusAutomationAHU()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -1939,13 +1939,13 @@ export default function FloorPlan({ FloorId }) {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusAutomationAHU()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
