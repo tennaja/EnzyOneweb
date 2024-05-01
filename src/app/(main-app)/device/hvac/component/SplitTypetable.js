@@ -17,12 +17,16 @@ import {
   ChangeAutomationSplittype,
 } from "@/utils/api";
 import Loading from "./Loading";
-import ModalPopError from "./ModalError";
-import { set } from "date-fns";
-export default function SplitTypetable(SplittypeList) {
+
+export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSettemp,onSubmitSetMode,onSubmitSetFan,onSubmitAutomation}) {
+  console.log(SplittypeList)
+  console.log(onSubmitControl)
+
+  const [List, setList] = useState([]);
   const [searchTable, setSerachTable] = useState("");
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
   const [DecviceId, setDeviceId] = useState(null);
+  const [DevId,setDevId] = useState()
   const [DeviceName, setDeviceName] = useState("");
   const [Values, setValues] = useState();
   const [isPrivate, setPrivate] = useState(true);
@@ -33,8 +37,7 @@ export default function SplitTypetable(SplittypeList) {
   const [showModalStart, setShowModalStart] = useState(false);
   const [showModalControlestart, setShowModalControlestart] = useState(false);
   const [showModalControlestop, setShowModalControlestop] = useState(false);
-  const [showModalAutomationstart, setShowModalAutomationstart] =
-    useState(false);
+  const [showModalAutomationstart, setShowModalAutomationstart] = useState(false);
   const [showModalAutomationstop, setShowModalAutomationstop] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
@@ -42,191 +45,66 @@ export default function SplitTypetable(SplittypeList) {
   const min = 10;
   const max = 40;
 
+  useEffect (() => {
+    setList(SplittypeList)
+  },[SplittypeList,]) 
+
   function titleCase(str) {
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
   }
   const handleToggleChange = () => {
     setToggle(!toggle);
   };
-  const notifySuccess = (title, message) =>
-    toast.success(
-      <div className="px-2">
-        <div className="flex flex-row font-bold">{title}</div>
-        <div className="flex flex-row text-xs">{message}</div>
-      </div>,
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
-
-  const openModalControleIsStop = (DecviceId, deviceName) => {
+  const openModalControleIsStop = (DecviceId, deviceName,DevId) => {
     setDeviceId(DecviceId);
     setDeviceName(deviceName);
+    setDevId(DevId)
     setValues("off");
     setShowModalControlestop(true);
   };
-  const openModalControleIsStart = (DecviceId, deviceName) => {
+  const openModalControleIsStart = (DecviceId, deviceName,DevId) => {
     setDeviceId(DecviceId);
     setDeviceName(deviceName);
+    setDevId(DevId)
     setValues("on");
     setShowModalControlestart(true);
   };
-  const openModalAutomationIsStop = (DecviceId, deviceName) => {
+  const openModalAutomationIsStop = (DecviceId, deviceName,DevId) => {
     setDeviceId(DecviceId);
     setDeviceName(deviceName);
+    setDevId(DevId)
     setValues("off");
     setShowModalAutomationstop(true);
   };
-  const openModalAutomationIsStart = (DecviceId, deviceName) => {
+  const openModalAutomationIsStart = (DecviceId, deviceName,DevId) => {
     setDeviceId(DecviceId);
     setDeviceName(deviceName);
+    setDevId(DevId)
     setValues("on");
     setShowModalAutomationstart(true);
   };
-
-  const handleChangeValueSettemp = async () => {
-    setLoading(true);
-    const res = await ChangeValueSettempSplttpye(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
-      closeModal();
-      setLoading(false);
-      notifySuccess(res.data.title, res.data.message);
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    } else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    }
-  };
-
-  async function clickChangestatusControle() {
-    setLoading(true);
-    const res = await ChangeControlSplittype(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
-      closeModal();
-      setLoading(false);
-      notifySuccess(res.data.title, res.data.message);
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    } else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    }
-  }
-
-  async function clickChangestatusAutomation() {
-    setLoading(true);
-    const res = await ChangeAutomationSplittype(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
-      closeModal();
-      setLoading(false);
-      notifySuccess(res.data.title, res.data.message);
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    } else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    }
-  }
-
-  const handleChangeValueSetMode = async () => {
-    setLoading(true);
-    const res = await ChangeValueSetMode(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
-      closeModal();
-      setLoading(false);
-      notifySuccess(res.data.title, res.data.message);
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    } else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    }
-  };
-
-  const handleChangeValueSetFan = async () => {
-    setLoading(true);
-    const res = await ChangeValueSetFan(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
-      closeModal();
-      setLoading(false);
-      notifySuccess(res.data.title, res.data.message);
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    } else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    }
-  };
-  // const onChangeValue = (event) => {
-  //   let { value, min, max } = event.target;
-  //   value = Math.max(Number(min), Math.min(Number(max), Number(value)));
-  //   setValues(value);
-  // };
-
-  const onclickOPenSettemp = (id, DecviceId, values) => {
+  const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
     console.log(id);
     setOpenSettempModal(true);
     setDeviceId(id);
     setDeviceName(DecviceId);
+    setDevId(DevId)
     setValues(values);
   };
-
-  const onclickOPenSetFan = (id, mode, DecviceId) => {
+  const onclickOPenSetFan = (id, mode, DecviceId,DevId) => {
     setDeviceId(id);
     setValues(mode);
     setDeviceName(DecviceId);
+    setDevId(DevId)
     setOpenSetFanModal(true);
   };
-
-  const onclickOPenSetMode = (id, fan, DecviceId) => {
+  const onclickOPenSetMode = (id, fan, DecviceId,DevId) => {
     setDeviceId(id);
     setValues(fan);
     setDeviceName(DecviceId);
+    setDevId(DevId)
     setOpenSetModeModal(true);
   };
-
   const closeModal = () => {
     setOpenSettempModal(false);
     setOpenSetFanModal(false);
@@ -294,8 +172,8 @@ export default function SplitTypetable(SplittypeList) {
                       </tr>
                     </thead>
                     <tbody>
-                      {SplittypeList.SplittypeList.length > 0 &&
-                        SplittypeList.SplittypeList.filter((item) => {
+                      {List.length > 0 &&
+                        List.filter((item) => {
                           // let data = []
                           //  if (item.power.toString().includes(searchTable)){
                           //   data = item
@@ -413,6 +291,7 @@ export default function SplitTypetable(SplittypeList) {
                                             item.id,
                                             item.deviceName,
                                             item.setTemp,
+                                            item.devId,
                                             event.preventDefault()
                                           )
                                         : null
@@ -452,6 +331,7 @@ export default function SplitTypetable(SplittypeList) {
                                             item.id,
                                             item.fan,
                                             item.deviceName,
+                                            item.devId,
                                             event.preventDefault()
                                           )
                                         : null
@@ -497,6 +377,7 @@ export default function SplitTypetable(SplittypeList) {
                                             item.id,
                                             item.mode,
                                             item.deviceName,
+                                            item.devId,
                                             event.preventDefault()
                                           )
                                         : null
@@ -532,12 +413,12 @@ export default function SplitTypetable(SplittypeList) {
                                         item.control == "on"
                                           ? openModalControleIsStop(
                                               item.id,
-                                              item.deviceName
+                                              item.deviceName,item.devId
                                             )
                                           : item.control == "off"
                                           ? openModalControleIsStart(
                                               item.id,
-                                              item.deviceName
+                                              item.deviceName,item.devId
                                             )
                                           : null
                                       }
@@ -574,11 +455,11 @@ export default function SplitTypetable(SplittypeList) {
                                         ? item.automation == "on"
                                           ? openModalAutomationIsStop(
                                               item.id,
-                                              item.deviceName
+                                              item.deviceName,item.devId,
                                             )
                                           : openModalAutomationIsStart(
                                               item.id,
-                                              item.deviceName
+                                              item.deviceName,item.devId,
                                             )
                                         : null
                                     }
@@ -601,11 +482,11 @@ export default function SplitTypetable(SplittypeList) {
                                         ? item.automation == "on"
                                           ? openModalAutomationIsStop(
                                               item.id,
-                                              item.deviceName
+                                              item.deviceName,item.devId
                                             )
                                           : openModalAutomationIsStart(
                                               item.id,
-                                              item.deviceName
+                                              item.deviceName,item.devId
                                             )
                                         : null
                                     }
@@ -658,7 +539,7 @@ export default function SplitTypetable(SplittypeList) {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSettemp()}
+                  onClick={() => {onSubmitSettemp(DecviceId,Values,DevId); setOpenSettempModal(false);}}
                 >
                   Confirm
                 </button>
@@ -777,7 +658,7 @@ export default function SplitTypetable(SplittypeList) {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSetFan()}
+                  onClick={() => {onSubmitSetFan(DecviceId,Values,DevId); setOpenSetModeModal(false) }}
                 >
                   Confirm
                 </button>
@@ -811,7 +692,7 @@ export default function SplitTypetable(SplittypeList) {
                             width: "100px",
                           }
                     }
-                    onClick={() => setValues("cold")}
+                    onClick={() => setValues("cool")}
                   >
                     Cool
                   </Button>
@@ -872,7 +753,7 @@ export default function SplitTypetable(SplittypeList) {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSetMode()}
+                  onClick={() => {onSubmitSetMode(DecviceId,Values,DevId); setOpenSetFanModal(false)}}
                 >
                   Confirm
                 </button>
@@ -928,7 +809,7 @@ export default function SplitTypetable(SplittypeList) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControle()}
+                    onClick={() => {onSubmitControl(DecviceId,Values,DevId); setShowModalControlestart(false);}}
                   >
                     Confirm
                   </button>
@@ -959,7 +840,7 @@ export default function SplitTypetable(SplittypeList) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControle()}
+                    onClick={() => {onSubmitControl(DecviceId,Values,DevId); setShowModalControlestop(false)}}
                   >
                     Confirm
                   </button>
@@ -990,7 +871,7 @@ export default function SplitTypetable(SplittypeList) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomation()}
+                    onClick={() => {onSubmitAutomation(DecviceId,Values,DevId); setShowModalAutomationstart(false);}}
                   >
                     Confirm
                   </button>
@@ -1021,7 +902,7 @@ export default function SplitTypetable(SplittypeList) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomation()}
+                    onClick={() => {onSubmitAutomation(DecviceId,Values,DevId); setShowModalAutomationstop(false);}}
                   >
                     Confirm
                   </button>

@@ -51,8 +51,8 @@ export default function Counter(Counterlist) {
                     // console.log(data)
                     return (
                       item.deviceName.toUpperCase().includes(searchTable.toLowerCase()) ||
-                      item.deviceName.toLowerCase().includes(searchTable) ||
-                      item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
+                      item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
                       item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
                       String(item.pieces).includes(searchTable) 
                     );

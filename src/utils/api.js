@@ -478,6 +478,62 @@ export async function ChangeValueDamperVAV (devId,value) {
   }
 }
 
+export async function getVAVDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/vav/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getSplitTypeDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/split-type/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getAHUDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/ahu/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getIoTDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/hvac/iot/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
 //-------------------------Iot-----------------------------------------------*
 export async function getFloorplanIoT(floorId) {
   try {

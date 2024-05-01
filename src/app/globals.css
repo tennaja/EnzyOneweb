@@ -129,7 +129,7 @@ body {
   border-radius: 20px;
   position: absolute;
   transition: all 0.2s ease;
-  left: 34px;
+  left: 30px;
 }
 .disable {
   background-color: #FF6666;

@@ -11,10 +11,11 @@ import {
 import Loading from "./Loading";
 import TextField from '@mui/material/TextField';
 import { message } from "antd";
-export default function AHUtable(AHUlist) {
+export default function AHUtable({AHUlist,onSubmitAutomation,onSubmitSettemp}) {
   console.log(AHUlist)
   const [searchTable, setSerachTable] = useState("");
   const [DecviceId, setDeviceId] = useState(null);
+  const [DevId,setDevId] = useState()
   const [DeviceName, setDeviceName] = useState('');
   const [Values, setValues] = useState();
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
@@ -22,42 +23,22 @@ export default function AHUtable(AHUlist) {
   const [ModalError, setModalError] = useState(false);
   const [showModalAutomationstart, setShowModalAutomationstart] = useState(false);
   const [showModalAutomationstop, setShowModalAutomationstop] = useState(false);
-  const [alerttitle, setAlertTitle] = useState("");
-  const [alertmassage, setAlertmessage] = useState("");
+  const [List, setList] = useState([]);
   const min = 10;
   const max = 40;
+  useEffect (() => {
+    setList(AHUlist)
+  },[AHUlist,]) 
+
   function titleCase(str) {
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
   }
-  const notifySuccess = (title,message) =>
-  toast.success(
-    <div className="px-2">
-    <div className="flex flex-row font-bold">{title}</div>
-    <div className="flex flex-row text-xs">{message}</div>
-    </div>,
-    {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    }
-  );
-  
-  
-
-
-  const onChangeValue = (event) => {
-    setValues(event);
-  };
-  const onclickOPenSettemp = (id, Decvicename, values) => {
+  const onclickOPenSettemp = (id, Decvicename, values,DevId) => {
     setOpenSettempModal(true)
     setDeviceId(id)
     setDeviceName(Decvicename)
     setValues(values)
+    setDevId(DevId)
   }
   const closeModal = () => {
     setOpenSettempModal(false)
@@ -66,71 +47,26 @@ export default function AHUtable(AHUlist) {
     setShowModalAutomationstart(false)
     setShowModalAutomationstop(false)
     setLoading(false)
-    // setShowModalStop(false);
-    // setShowModalStart(false);
+    
 };
-const handleChangeValueSettemp = async () => {
-  setLoading(true);
-  const res = await ChangeValueSettempAHU(DecviceId, Values);
-  if (res.status === 200) {
-    setAlertTitle(res.data.title);
-    setAlertmessage(res.data.message);
-    console.log(res.data)
-    setLoading(false);
-    closeModal();
-    notifySuccess(res.data.title,res.data.message);
-  } else if (res.response.status === 401) {
-    setAlertTitle(res.data.title);
-    setAlertmessage(res.data.message);
-    setLoading(false);
-    closeModal();
-    setModalError(true)
-  } else if (res.response.status === 500) {
-    setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
-    setLoading(false);
-    closeModal();
-    setModalError(true)
-  }
-}
-const openModalAutomationIsStop = (DecviceId,Decvicename) => {
+
+const openModalAutomationIsStop = (DecviceId,Decvicename,DevId) => {
   setDeviceId(DecviceId)
   setDeviceName(Decvicename)
+  setDevId(DevId)
   setValues('off')
   setShowModalAutomationstop(true);
   
 }
-const openModalAutomationIsStart = (DecviceId,Decvicename) => {
+const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
   setDeviceId(DecviceId)
   setDeviceName(Decvicename)
+  setDevId(DevId)
   setValues('on')
   setShowModalAutomationstart(true);
   
 }
-async function clickChangestatusAutomation() {
-  setLoading(true);
-  const res = await ChangeAutomationAHU(DecviceId, Values);
-  if (res.status === 200) {
-    console.log(res.data)
-    setAlertTitle(res.data.title);
-    setAlertmessage(res.data.message);
-    closeModal();
-    setLoading(false);
-    notifySuccess(res.data.title,res.data.message);
-  } else if (res.response.status === 401) {
-    setAlertTitle(res.response.data.title);
-    setAlertmessage(res.response.data.message);
-    closeModal();
-    setLoading(false);
-    
-  }
-  else if (res.response.status === 500) {
-    setAlertTitle(res.response.data.title);
-    setAlertmessage(res.response.data.message);
-    closeModal();
-    setLoading(false);
-  }
-}
+
   return (
 <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
         <div className="flex flex-col gap-4 p-2">
@@ -186,16 +122,16 @@ async function clickChangestatusAutomation() {
                 </tr>
               </thead>
               <tbody>
-                {AHUlist.AHUlist.length > 0 &&
-                  AHUlist.AHUlist.filter((item) => {
+                {List.length > 0 &&
+                  List.filter((item) => {
                     // let data = []
                     //  if (item.power.toString().includes(searchTable)){
                     //   data = item
                     // }
                     // console.log(data)
                     return (
-                      item.deviceName.includes(searchTable) ||
-                      item.deviceName.toLowerCase().includes(searchTable) ||
+                      item.deviceName.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
                       String(item.supplyTemp.toFixed(2)).includes(searchTable) ||
@@ -253,14 +189,14 @@ async function clickChangestatusAutomation() {
                         <td className="whitespace-nowrap px-6 py-4 text-center ">
                         {item.status == "offline" ? "-" : item.status == "off" ? <Highlighter
                                     className="font-bold cursor-pointer"
-                                    onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,event.preventDefault()) : null}
+                                    onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,item.devId,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.supplyTempSetPoint.toFixed(2))} // Replace this with your text
                                   />: <Highlighter
                                     className="text-[#5eead4] underline font-bold cursor-pointer"
-                                    onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,event.preventDefault()) : null}
+                                    onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,item.devId,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
@@ -324,8 +260,8 @@ async function clickChangestatusAutomation() {
                         {item.status == "offline" ? "-" : item.status == "off" ? <div className='toggle-container-disable' onClick={() =>
                                 item.status == "on" ?
                                 item.automation == "on"
-                                    ? openModalAutomationIsStop(item.id,item.deviceName)
-                                    : openModalAutomationIsStart(item.id,item.deviceName)
+                                    ? openModalAutomationIsStop(item.id,item.deviceName,item.devId)
+                                    : openModalAutomationIsStart(item.id,item.deviceName,item.devId)
                                  :  null }>
                                     <div className={`toggle-btn-disable ${item.automation=="off" ? "disableNone" : ""}`}>
                                         {item.automation=="on" ? "ON" : "OFF"}
@@ -335,8 +271,8 @@ async function clickChangestatusAutomation() {
                                 : <div className='toggle-container' onClick={() =>
                                 item.status == "on" ?
                                 item.automation == "on"
-                                    ? openModalAutomationIsStop(item.id,item.deviceName)
-                                    : openModalAutomationIsStart(item.id,item.deviceName)
+                                    ? openModalAutomationIsStop(item.id,item.deviceName,item.devId)
+                                    : openModalAutomationIsStart(item.id,item.deviceName,item.devId)
                                  :  null }>
                                     <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
                                         {item.automation=="on" ? "ON" : "OFF"}
@@ -383,7 +319,7 @@ async function clickChangestatusAutomation() {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSettemp()}
+                  onClick={() => {onSubmitSettemp(DecviceId,Values,DevId); setOpenSettempModal(false)}}
                 >
                   Confirm
                 </button>
@@ -436,7 +372,7 @@ async function clickChangestatusAutomation() {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomation()}
+                    onClick={() => {onSubmitAutomation(DecviceId,Values,DevId); setShowModalAutomationstart(false)}}
                   >
                     Confirm
                   </button>
@@ -464,7 +400,7 @@ async function clickChangestatusAutomation() {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomation()}
+                    onClick={() => {onSubmitAutomation(DecviceId,Values,DevId); setShowModalAutomationstop(false)}}
                   >
                     Confirm
                   </button>

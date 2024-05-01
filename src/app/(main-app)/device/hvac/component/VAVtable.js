@@ -9,9 +9,10 @@ import {
 } from "@/utils/api";
 import Loading from "./Loading";
 
-export default function VAVtable(VAVList) {
+export default function VAVtable({VAVList,onSubmitSettemp}) {
     const [searchTable, setSerachTable] = useState("");
     const [DecviceId, setDeviceId] = useState(null);
+    const [DevId,setDevId] = useState()
   const [DeviceName, setDeviceName] = useState('');
   const [Values, setValues] = useState();
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
@@ -19,39 +20,23 @@ export default function VAVtable(VAVList) {
   const [ModalError, setModalError] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
+  const [List, setList] = useState([]);
   const min = 0;
   const max = 100;
+  useEffect (() => {
+    setList(VAVList)
+  },[VAVList,]) 
   function titleCase(str) {
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
   }
-  const notifySuccess = (title,message) =>
-  toast.success(
-    <div className="px-2">
-    <div className="flex flex-row font-bold">{title}</div>
-    <div className="flex flex-row text-xs">{message}</div>
-    </div>,
-    {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    }
-  );
 
-  const onChangeValue = (event) => {
-    let { value, min, max } = event.target;
-    value = Math.max(Number(min), Math.min(Number(max), Number(value)));
-    setValues(value);
-  };
-  const onclickOPenSettemp = (id, DecviceId, values) => {
+
+  const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
     setOpenSettempModal(true)
     setDeviceId(id)
     setDeviceName(DecviceId)
     setValues(values)
+    setDevId(DevId)
   }
   const closeModal = () => {
     setOpenSettempModal(false)
@@ -60,33 +45,6 @@ export default function VAVtable(VAVList) {
     // setShowModalStop(false);
     // setShowModalStart(false);
 };
-
-const handleChangeValueSettemp = async () => {
-  setLoading(true);
-  const res = await ChangeValueDamperVAV(DecviceId, Values);
-  if (res.status === 200) {
-    setAlertTitle(res.data.title);
-    setAlertmessage(res.data.message);
-    console.log(res.data)
-    closeModal();
-    setLoading(false);
-    notifySuccess(res.data.title,res.data.message);
-  } else if (res.response.status === 401) {
-    setAlertTitle(res.data.title);
-    setAlertmessage(res.data.message);
-    closeModal();
-    setLoading(false);
-    setModalError(true)
-  } else if (res.response.status === 500) {
-    setAlertTitle(res.data.title);
-    setAlertmessage(res.data.message);
-    closeModal();
-    setLoading(false);
-    setModalError(true)
-  }
-}
-
-
     
   return (
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
@@ -128,16 +86,16 @@ const handleChangeValueSettemp = async () => {
                 </tr>
               </thead>
               <tbody>
-                {VAVList.VAVList.length > 0 &&
-                  VAVList.VAVList.filter((item) => {
+                {List.length > 0 &&
+                  List.filter((item) => {
                     // let data = []
                     //  if (item.power.toString().includes(searchTable)){
                     //   data = item
                     // }
                     // console.log(data)
                     return (
-                      item.deviceName.includes(searchTable) ||
-                      item.deviceName.toLowerCase().includes(searchTable) ||
+                      item.deviceName.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
                       String(item.temp.toFixed(2)).includes(searchTable) ||
@@ -209,7 +167,7 @@ const handleChangeValueSettemp = async () => {
                                   /> :
                              <Highlighter
                         className="text-[#5eead4] underline font-bold cursor-pointer"
-                        onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.damper ,event.preventDefault()) : null}
+                        onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.damper ,item.devId,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
@@ -267,7 +225,7 @@ const handleChangeValueSettemp = async () => {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSettemp()}
+                  onClick={() => {onSubmitSettemp(DecviceId,Values,DevId); setOpenSettempModal(false)}}
                 >
                   Confirm
                 </button>

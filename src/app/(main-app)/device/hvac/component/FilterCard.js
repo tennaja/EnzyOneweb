@@ -294,10 +294,10 @@ export default function FilterCard() {
         // IOTlist = {IOTList}
       />
       
-      <SplitTypetable SplittypeList={SplittypeList} />
-      <AHUtable AHUlist={AHUList} />
-      <VAVtable VAVList={VAVList} />
-      <SmartIRtable IotList={IOTList} />
+      {/* <SplitTypetable SplittypeList={SplittypeList} onsubmit = {Confirm} />
+      <AHUtable AHUlist={AHUList}/>
+      <VAVtable VAVList={VAVList}/>
+      <SmartIRtable IotList={IOTList}/> */}
       
       
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">

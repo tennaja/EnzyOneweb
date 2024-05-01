@@ -48,24 +48,23 @@ ChartJS.register(
 
 export default function SummaryCard() {
   //toast notify
-  const notifySuccess = () =>
-    toast.success(
+  const notifySuccess = (title,message) =>
+  toast.success(
     <div className="px-2">
-      <div className="flex flex-row font-bold">{alerttitle}</div>
-      <div className="flex flex-row text-xs">{alertmassage}</div>
-      </div>,
-    
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
+    <div className="flex flex-row font-bold">{title}</div>
+    <div className="flex flex-row text-xs">{message}</div>
+    </div>,
+    {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    }
+  );
     const { MonthPicker, RangePicker } = DatePicker;
     const dateFormat = 'YYYY/MM/DD';
   //funtion Zoom graph
@@ -276,12 +275,12 @@ export default function SummaryCard() {
     if (res.status === 200) {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
-      notifySuccess();
       onSearchTable();
       closeModal();
       setUsername("");
       setPassword("");
       setLoading(false);
+      notifySuccess(res.data.title,res.data.message);
     } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
@@ -309,11 +308,11 @@ export default function SummaryCard() {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
       onSearchTable();
-      notifySuccess();
       closeModal();
       setUsername("");
       setPassword("");
       setLoading(false);
+      notifySuccess(res.data.title,res.data.message);
     } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
