@@ -271,7 +271,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                   />
                                 )}
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center ">
+                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                                 {item.status == "offline" ? (
                                   "-"
                                 ) : item.status == "off" ? (
@@ -303,7 +303,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                   />
                                 )}
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center ">
+                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                                 {item.status == "offline" ? (
                                   "-"
                                 ) : item.status == "off" ? (
@@ -351,7 +351,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                   />
                                 )}
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center ">
+                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                                 {item.status == "offline" ? (
                                   "-"
                                 ) : item.status == "off" ? (
@@ -395,7 +395,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                   />
                                 )}
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center">
+                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                                 <div className="flex flex-col items-center">
                                   {item.status == "offline" ? (
                                     "-"
@@ -407,7 +407,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                           ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
                                           : item.control == "off"
                                           ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                          : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
+                                          : "text-white bg-red-500 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
                                       }
                                       onClick={() =>
                                         item.control == "on"

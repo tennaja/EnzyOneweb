@@ -780,7 +780,7 @@ export default function FloorPlan({ FloorId }) {
                                           </span></div>
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            CO2 (ppm) : : {marker.co2.toFixed(2)}
+                                            CO2 (ppm) : {marker.co2.toFixed(2)}
                                           </span></div>
 
                                       </div>
@@ -1037,7 +1037,7 @@ export default function FloorPlan({ FloorId }) {
                                           </span></div>
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            CO2 (ppm) : : {marker.co2.toFixed(2)}
+                                            CO2 (ppm) : {marker.co2.toFixed(2)}
                                           </span></div>
 
                                       </div>

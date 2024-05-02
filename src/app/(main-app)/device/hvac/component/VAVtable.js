@@ -157,7 +157,7 @@ export default function VAVtable({VAVList,onSubmitSettemp}) {
                         
                           
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-center" >
+                        <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold" >
                         {item.status == "offline" ? "-" : item.status == "off" ? <Highlighter
                         className="font-bold cursor-pointer"
                                     highlightClassName="highlight" // Define your custom highlight class

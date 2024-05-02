@@ -47,6 +47,17 @@ ChartJS.register(
 );
 
 export default function SummaryCard() {
+
+const generateRandomColors = (count) =>{
+    // Generate random colors from the color array
+    const { colors } = chartList;
+    const randomizedColors = [];
+    for (let i = 0; i < count; i++) {
+      const randomIndex = Math.floor(Math.random() * colors.length);
+      randomizedColors.push(colors[randomIndex]);
+    }
+    return randomizedColors;
+  }
   //toast notify
   const notifySuccess = (title,message) =>
   toast.success(
@@ -565,7 +576,7 @@ export default function SummaryCard() {
                                   />
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                {item.status == "offline" ? "-" :  <Highlighter
+                                {item.status == "Offline" ? "-" :  <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
@@ -600,9 +611,9 @@ export default function SummaryCard() {
                                   />}
                                   
                                 </td>
-                                <td className="whitespace-nowrap px-6 py-4 text-center">
+                                <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                                   <div className="flex flex-col items-center">
-                                {item.status == "offline" ? "-" : <button
+                                {item.status == "Offline" ? "-" : <button
                                     type="button"
                                     className={
                                       item.status == "On"
@@ -615,7 +626,7 @@ export default function SummaryCard() {
                                         : openModalIsStart(item.id)
                                     }
                                   ><IoMdPower size="1.5em"/>
-                                  </button>}<div className="text-xs mt-1 text-gray-500 font-bold">{item.status == "On" ? "On" : "Off"}</div>
+                                  </button>}<div className="text-xs mt-1 text-gray-500 font-bold">{item.status == "On" ? "On" : item.status == "Off" ? "Off" : null }</div>
                                   
                                   </div>
                                 </td>
@@ -815,11 +826,10 @@ export default function SummaryCard() {
             </select>
           </div>
           <div className="flex gap-5">
-          <div style={{ position: "relative"  }}>
+          
           <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(startDate), dateFormat), dayjs(formatDate(endDate), dateFormat)]}
       format={dateFormat}/>
-<div className="bg-white shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200" style={{position: "absolute", paddingLeft : "1rem", paddingRight : "1rem" , paddingBottom : "0.5rem", paddingTop: "1rem" ,left: "15.2rem",top: "0.1em",}}></div>
-</div>
+
             <button
               className="border border-slate-300 rounded-md h-9 px-2"
               onClick={onResetZoom}
@@ -852,17 +862,14 @@ export default function SummaryCard() {
               <Line
                 data={{
                   labels: ListLabel,
-                  datasets: chartList.map((item) => {
+                  datasets: chartList.map((item,index) => {
+                    const randomizedColors = generateRandomColors(item.length);
                     return {
                       label: item.name,
                       data: item.data.map((data) => {
                         return data.value;
                       }),
-                      borderColor: chartList.map((item, index) => {
-                        const colorIndex = index % colors.length;
-                        const color = colors[colorIndex];
-                        return color;
-                      }),
+                      borderColor: randomizedColors[index],
                       fill: false,
                       tension: 0,
                     };
