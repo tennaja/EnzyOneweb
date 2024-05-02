@@ -311,7 +311,7 @@ const generateRandomColors = (count) =>{
     }
   };
 
-  //Click ss on
+  //Click is on
   async function clickChangestatusStart() {
     setLoading(true);
     const res = await ChangestatusIsOn(DecviceId, username, password);

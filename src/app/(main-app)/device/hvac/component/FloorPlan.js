@@ -200,7 +200,7 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
       notifySuccess(res.data.title, res.data.message);
       getSplittypeList(floorId);
-      getSplitTypeDetail(DevId)
+      getSplitdetail(DevId)
     } else if (res.response.status === 401) {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
@@ -224,7 +224,7 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
       notifySuccess(res.data.title, res.data.message);
       getSplittypeList(FloorId);
-      getSplitTypeDetail(DevId)
+      getSplitdetail(DevId)
     } else if (res.response.status === 401) {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
@@ -250,7 +250,7 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
       notifySuccess(res.data.title, res.data.message);
       getSplittypeList(FloorId);
-      getSplitTypeDetail(DevId)
+      getSplitdetail(DevId)
     } else if (res.response.status === 401) {
       setAlertTitle(res.data.title);
       setAlertmessage(res.data.message);
@@ -277,7 +277,7 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
       notifySuccess(res.data.title, res.data.message);
       getSplittypeList(FloorId);
-      getSplitTypeDetail(DevId)
+      getSplitdetail(DevId)
     } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
@@ -301,7 +301,7 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
       notifySuccess(res.data.title, res.data.message);
       getSplittypeList(FloorId);
-      getSplitTypeDetail(DevId)
+      getSplitdetail(DevId)
     } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
@@ -1655,7 +1655,7 @@ export default function FloorPlan({ FloorId }) {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => { handleChangeValueSetFan(DecviceId, Values); setOpenSetModeModal(false) }}
+                  onClick={() => { handleChangeValueSetFan(DecviceId, Values,DevId); setOpenSetModeModal(false) }}
                 >
                   Confirm
                 </button>
@@ -1713,7 +1713,7 @@ export default function FloorPlan({ FloorId }) {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => { handleChangeValueSetMode(DecviceId, Values); setOpenSetFanModal(false) }}
+                  onClick={() => { handleChangeValueSetMode(DecviceId, Values,DevId); setOpenSetFanModal(false) }}
                 >
                   Confirm
                 </button>
@@ -1817,7 +1817,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => { clickChangestatusControle(DecviceId, Values); setShowModalControleOn(false) }}
+                    onClick={() => { clickChangestatusControle(DecviceId, Values,DevId); setShowModalControleOn(false) }}
                   >
                     Confirm
                   </button>
@@ -1848,7 +1848,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => { clickChangestatusControle(DecviceId, Values); setShowModalControleOff(false) }}
+                    onClick={() => { clickChangestatusControle(DecviceId, Values,DevId); setShowModalControleOff(false) }}
                   >
                     Confirm
                   </button>
@@ -1879,7 +1879,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => { clickChangestatusAutomation(DecviceId, Values); setShowModalAutomationAHUOn(false) }}
+                    onClick={() => { clickChangestatusAutomation(DecviceId, Values,DevId); setShowModalAutomationAHUOn(false) }}
                   >
                     Confirm
                   </button>
@@ -1910,7 +1910,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => { clickChangestatusAutomation(DecviceId, Values); setShowModalAutomationAHUOff(false) }}
+                    onClick={() => { clickChangestatusAutomation(DecviceId, Values,DevId); setShowModalAutomationAHUOff(false) }}
                   >
                     Confirm
                   </button>
