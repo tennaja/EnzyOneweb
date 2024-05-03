@@ -48,16 +48,9 @@ ChartJS.register(
 
 export default function SummaryCard() {
 
-const generateRandomColors = (count) =>{
-    // Generate random colors from the color array
-    const { colors } = chartList;
-    const randomizedColors = [];
-    for (let i = 0; i < count; i++) {
-      const randomIndex = Math.floor(Math.random() * colors.length);
-      randomizedColors.push(colors[randomIndex]);
-    }
-    return randomizedColors;
-  }
+  function getRandomColor() {
+    return colors[Math.floor(Math.random() * colors.length)];
+}
   //toast notify
   const notifySuccess = (title,message) =>
   toast.success(
@@ -827,7 +820,7 @@ const generateRandomColors = (count) =>{
           </div>
           <div className="flex gap-5">
           
-          <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(startDate), dateFormat), dayjs(formatDate(endDate), dateFormat)]}
+          <RangePicker type="number" className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(startDate), dateFormat), dayjs(formatDate(endDate), dateFormat)]}
       format={dateFormat}/>
 
             <button
@@ -863,13 +856,12 @@ const generateRandomColors = (count) =>{
                 data={{
                   labels: ListLabel,
                   datasets: chartList.map((item,index) => {
-                    const randomizedColors = generateRandomColors(item.length);
                     return {
                       label: item.name,
                       data: item.data.map((data) => {
                         return data.value;
                       }),
-                      borderColor: randomizedColors[index],
+                      borderColor: getRandomColor(),
                       fill: false,
                       tension: 0,
                     };
