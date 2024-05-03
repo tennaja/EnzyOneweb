@@ -89,6 +89,7 @@ export async function getVariableData(req) {
   }
 }
 
+//-----------------------Air Compressor-----------------------------
 export async function ChangestatusIsOff (devId,username,password) {
   try {
     let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/air-compressor/stop`;
@@ -196,6 +197,7 @@ export async function getFloor(buildingId) {
     return error;
   }
 }
+
 
 //-------------------Hvac----------------------------------- 
 export async function getFloorplanHvac(floorId) {
@@ -477,7 +479,7 @@ export async function ChangeValueDamperVAV (devId,value) {
     return error
   }
 }
-
+//Detail
 export async function getVAVDetail(devId) {
   try {
     const url =
@@ -534,6 +536,9 @@ export async function getIoTDetail(devId) {
     return error;
   }
 }
+
+
+
 //-------------------------Iot-----------------------------------------------*
 export async function getFloorplanIoT(floorId) {
   try {
@@ -818,7 +823,6 @@ export async function getHeaterWater(floorId) {
     return error;
   }
 }    
-
 export async function getIotModuleGraph(req) {
   
   const deviceParameterId = req.deviceParameterId;
@@ -838,7 +842,6 @@ export async function getIotModuleGraph(req) {
     return error;
   }
 }
-
 export async function SmartIRSetTemp (devId,value) {
   try {
     let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/smart-ir/temp`;
@@ -859,7 +862,6 @@ export async function SmartIRSetTemp (devId,value) {
     return error
   }
 }
-
 export async function ChangeControlSmartIR (devId,value) {
   try {
     let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/smart-ir/control`;
@@ -921,7 +923,6 @@ export async function ChangeSetModeSmartIR (devId,value) {
     return error
   }
 }
-
 export async function ChangeControlLightning (devId,value) {
   try {
     let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/lighting/control`;
@@ -962,5 +963,231 @@ export async function ChangeControleHeater (devId,value) {
   } catch (error) {
     console.log("error", error);
     return error
+  }
+}
+
+//Detail
+export async function getindoortemphumidDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/indoor-temp-humid/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getoutndoortemphumidDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/outdoor-temp-humid/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getpressuregaugeDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/pressure-gauge/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getpowermeterDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/power-meter/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getinverterDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/inverter/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getflowmeterDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/flow-meter/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getmotionsensorDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/motion-sensor/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getlightingDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/lighting/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getcounterDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/counter/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getsmartirDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/smart-ir/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getefficiencyDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/efficiency/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getCCTVDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/cctv/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getco2Detail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/co2/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getwatermeterDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/water-meter/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getheaterDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/heater/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getheaterwaterDetail(devId) {
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/iot/heater-water/detail/'+devId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
   }
 }

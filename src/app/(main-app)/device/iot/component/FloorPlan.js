@@ -3214,7 +3214,7 @@ export default function FloorPlan({ FloorId }) {
               ) : 
               null}
                
-              {option != "All Type" ? (
+              {option != "All Type" || "CCTV" ? (
                 <Chart deviceTypeId={deviceTypeId} />
                ): null}
       
