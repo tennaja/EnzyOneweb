@@ -9,9 +9,10 @@ import {
 } from "@/utils/api";
 import Loading from "./Loading";
 import { IoMdPower } from "react-icons/io";
-export default function Ligthing(Ligthinglist) {
+export default function Ligthing({Ligthinglist,onSubmitControl}) {
   const [searchTable, setSerachTable] = useState("");
   const [DecviceId, setDeviceId] = useState(null);
+  const [DevId,setDevId] = useState()
   const [DeviceName, setDeviceName] = useState('');
   const [Values, setValues] = useState();
   const [OpenSettempModal, setOpenSettempModal] = useState(false);
@@ -22,23 +23,7 @@ export default function Ligthing(Ligthinglist) {
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
 
-  const notifySuccess = (title,message) =>
-  toast.success(
-    <div className="px-2">
-    <div className="flex flex-row font-bold">{title}</div>
-    <div className="flex flex-row text-xs">{message}</div>
-    </div>,
-    {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    }
-  );
+ 
   function titleCase(str) {
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
   }
@@ -51,47 +36,23 @@ export default function Ligthing(Ligthinglist) {
     
 };
 
-const openModalControleIsStop = (DecviceId,DeviceName) => {
+const openModalControleIsStop = (DecviceId,DeviceName,DevId) => {
   setDeviceId(DecviceId)
+  setDevId(DevId)
   setDeviceName(DeviceName);
   setValues('off')
   setShowModalControlestop(true);
   
 }
-const openModalControleIsStart = (DecviceId,DeviceName) => {
+const openModalControleIsStart = (DecviceId,DeviceName,DevId) => {
   setDeviceId(DecviceId)
+  setDevId(DevId)
   setDeviceName(DeviceName);
   setValues('on')
   setShowModalControlestart(true);
   
 }
-async function clickChangecControle() {
-  setLoading(true);
-  const res = await ChangeControlLightning(DecviceId, Values);
-  if (res.status === 200) {
-    closeModal();
-    console.log(res.data)
-    setAlertTitle(res.data.title);
-    setAlertmessage(res.data.message);
-    
-    setLoading(false);
-    notifySuccess(res.data.title,res.data.message);
-  } else if (res.response.status === 401) {
-    closeModal();
-    setAlertTitle(res.response.data.title);
-    setAlertmessage(res.response.data.message);
-    
-    setLoading(false);
-    
-  }
-  else if (res.response.status === 500) {
-    closeModal();
-    setAlertTitle(res.response.data.title);
-    setAlertmessage(res.response.data.message);
-    
-    setLoading(false);
-  }
-}
+
 
   return (
 <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
@@ -128,8 +89,8 @@ async function clickChangecControle() {
                 </tr>
               </thead>
               <tbody>
-                {Ligthinglist.Ligthinglist.length > 0 &&
-                  Ligthinglist.Ligthinglist.filter((item) => {
+                {Ligthinglist.length > 0 &&
+                  Ligthinglist.filter((item) => {
                     // let data = []
                     //  if (item.power.toString().includes(searchTable)){
                     //   data = item
@@ -189,8 +150,8 @@ async function clickChangecControle() {
                                       }
                                     onClick={() =>
                                       item.control == "on"
-                                        ? openModalControleIsStop(item.id,item.deviceName)
-                                        : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName) : null
+                                        ? openModalControleIsStop(item.id,item.deviceName,item.devId)
+                                        : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName,item.devId) : null
                                     }
                                   ><IoMdPower size="1.5em"/>
                                     
@@ -261,7 +222,7 @@ async function clickChangecControle() {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangecControle()}
+                    onClick={() => {onSubmitControl(DecviceId,Values,DevId); setShowModalControlestart(false)}}
                   >
                     Confirm
                   </button>
@@ -289,7 +250,7 @@ async function clickChangecControle() {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangecControle()}
+                    onClick={() => {onSubmitControl(DecviceId,Values,DevId); setShowModalControlestop(false)}}
                   >
                     Confirm
                   </button>

@@ -14,13 +14,13 @@ import {
 } from "@/utils/api";
 import Loading from "./Loading";
 import ModalPopError from "./ModalError";
-export default function SmartIRtable(SmartIRlist) {
+export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettemp,onSubmitSetMode,onSubmitSetFan}) {
   const [searchTable, setSerachTable] = useState("");
   const [OpenSettempModal, setOpenSettempModal] = useState(false)
   const [DecviceId, setDeviceId] = useState(null);
+  const [DevId,setDevId] = useState()
   const [DeviceName, setDeviceName] = useState('');
   const [Values, setValues] = useState();
-  const [isPrivate, setPrivate] = useState(true);
   const [OpenSetFanModal, setOpenSetFanModal] = useState(false)
   const [OpenSetModeModal, setOpenSetModeModal] = useState(false)
   const [loading, setLoading] = useState(false);
@@ -40,17 +40,18 @@ export default function SmartIRtable(SmartIRlist) {
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
   }
 
-  const openModalControleIsStop = (DecviceId,Devicename) => {
+  const openModalControleIsStop = (DecviceId,Devicename,DevId) => {
     setDeviceId(DecviceId)
     setDeviceName(Devicename)
+    setDevId(DevId)
     setValues('off')
     setShowModalControlestop(true);
     
   }
-  const openModalControleIsStart = (DecviceId,Devicename) => {
+  const openModalControleIsStart = (DecviceId,Devicename,DevId) => {
     setDeviceId(DecviceId)
     setDeviceName(Devicename)
-
+    setDevId(DevId)
     setValues('on')
     setShowModalControlestart(true);
     
@@ -168,25 +169,28 @@ export default function SmartIRtable(SmartIRlist) {
     setValues(event);
   };
 
-  const onclickOPenSettemp = (id, DecviceId, values) => {
+  const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
     console.log(id)
     setOpenSettempModal(true)
     setDeviceId(id)
+    setDevId(DevId)
     setDeviceName(DecviceId)
     setValues(values)
   }
 
-  const onclickOPenSetFan = (id, mode,DecviceId) => {
+  const onclickOPenSetFan = (id, mode,DecviceId,DevId) => {
     
     setDeviceId(id)
+    setDevId(DevId)
     setValues(mode)
     setDeviceName(DecviceId)
     setOpenSetFanModal(true)
   }
 
-  const onclickOPenSetMode = (id,fan, DecviceId) => {
+  const onclickOPenSetMode = (id,fan, DecviceId,DevId) => {
     
     setDeviceId(id)
+    setDevId(DevId)
     setValues(fan)
     setDeviceName(DecviceId)
     setOpenSetModeModal(true)
@@ -253,8 +257,8 @@ export default function SmartIRtable(SmartIRlist) {
                       </tr>
                     </thead>
                     <tbody>
-                      {SmartIRlist.SmartIRlist.length > 0 &&
-                        SmartIRlist.SmartIRlist.filter((item) => {
+                      {SmartIRlist.length > 0 &&
+                        SmartIRlist.filter((item) => {
                           // let data = []
                           //  if (item.power.toString().includes(searchTable)){
                           //   data = item
@@ -311,7 +315,7 @@ export default function SmartIRtable(SmartIRlist) {
                                 
                               { item.status == "on"  ? 
                               <Highlighter
-                              className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.setTemp ,event.preventDefault()) : null}
+                              className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.setTemp,item.devId ,event.preventDefault()) : null}
                                 highlightClassName="highlight" // Define your custom highlight class
                                 searchWords={[searchTable]}
                                 autoEscape={true}
@@ -331,7 +335,7 @@ export default function SmartIRtable(SmartIRlist) {
                               
                               {item.status == "on" ? 
                               <Highlighter
-                              className="text-[#5eead4] underline font-bold cursor-pointer"onClick={(event) => item.status == "on" ? onclickOPenSetMode(item.id,item.fan, item.deviceName,event.preventDefault()) : null}
+                              className="text-[#5eead4] underline font-bold cursor-pointer"onClick={(event) => item.status == "on" ? onclickOPenSetMode(item.id,item.fan, item.deviceName,item.devId ,event.preventDefault()) : null}
                                 highlightClassName="highlight" // Define your custom highlight class
                                 searchWords={[searchTable]}
                                 autoEscape={true}
@@ -350,7 +354,7 @@ export default function SmartIRtable(SmartIRlist) {
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center " >
                               { item.status == "on"  ? <Highlighter
-                                className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id,item.mode, item.deviceName,event.preventDefault()) : null}
+                                className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id,item.mode, item.deviceName,item.devId ,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
@@ -380,8 +384,8 @@ export default function SmartIRtable(SmartIRlist) {
                                       }
                                     onClick={() =>
                                       item.control == "on"
-                                        ? openModalControleIsStop(item.id,item.deviceName)
-                                        : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName) : null
+                                        ? openModalControleIsStop(item.id,item.deviceName,item.devId )
+                                        : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName,item.devId ) : null
                                     }
                                   ><IoMdPower size="1.5em"/>
                                     
@@ -444,7 +448,7 @@ export default function SmartIRtable(SmartIRlist) {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSettemp()}
+                  onClick={() => {onSubmitSettemp(DecviceId,Values,DevId); setOpenSettempModal(false)}}
                 >
                   Confirm
                 </button>
@@ -504,7 +508,7 @@ export default function SmartIRtable(SmartIRlist) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => handleChangeValueSetFan()}
+                    onClick={() => {onSubmitSetMode(DecviceId,Values,DevId); setOpenSetModeModal(false)}}
                   >
                     Confirm
                   </button>
@@ -556,7 +560,7 @@ export default function SmartIRtable(SmartIRlist) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => handleChangeValueSetMode()}
+                    onClick={() => {onSubmitSetFan(DecviceId,Values,DevId); setOpenSetFanModal(false)}}
                   >
                     Confirm
                   </button>
@@ -610,7 +614,7 @@ export default function SmartIRtable(SmartIRlist) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControle()}
+                    onClick={() => {onSubmitControl(DecviceId,Values,DevId); setShowModalControlestart(false)}}
                   >
                     Confirm
                   </button>
@@ -638,7 +642,7 @@ export default function SmartIRtable(SmartIRlist) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControle()}
+                    onClick={() => {onSubmitControl(DecviceId,Values,DevId); setShowModalControlestop(false)}}
                   >
                     Confirm
                   </button>

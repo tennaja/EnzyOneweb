@@ -191,7 +191,7 @@ export default function FloorPlan({ FloorId }) {
 
   const handleChangeValueSetFan = async (DecviceId, Values,DevId) => {
     setLoading(true);
-    const res = await ChangeValueSetFan(DecviceId, Values,DevId);
+    const res = await ChangeValueSetFan(DecviceId, Values);
     if (res.status === 200) {
       setOpenSetModeModal(false)
       setAlertTitle(res.data.title);

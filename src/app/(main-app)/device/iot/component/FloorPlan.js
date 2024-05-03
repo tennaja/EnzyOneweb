@@ -6,7 +6,8 @@ import React, { useEffect, useState, useRef } from "react";
 import ImageMarker, { Marker } from "react-image-marker";
 import {
   getFloorplanIoT,getdeviceparameter,getindoortemphumid,getoutdoortemphumid,getPressuregauge,getPowerMeter,getInveter,getFlowMeter,getMotionSensor,getLighting,getCounter,getSmartIR,getEfficiency,getCCTV,getCO2Sensor,
-  getWaterMeter,getHeater,getHeaterWater,ChangeControlLightning,ChangeControlSmartIR,SmartIRSetTemp, ChangeSetModeSmartIR, ChangeSetFanSmartIR 
+  getWaterMeter,getHeater,getHeaterWater,ChangeControlLightning,ChangeControlSmartIR,SmartIRSetTemp, ChangeSetModeSmartIR, ChangeSetFanSmartIR ,getindoortemphumidDetail,getoutndoortemphumidDetail,getpressuregaugeDetail,getpowermeterDetail,
+  getinverterDetail,getflowmeterDetail,getmotionsensorDetail,getlightingDetail,getcounterDetail,getsmartirDetail,getefficiencyDetail,getCCTVDetail,getco2Detail,getwatermeterDetail,getheaterDetail,getheaterwaterDetail
 } from "@/utils/api";
 import Heatertable from "./Heatertable";
 import VAVtable from "./Outdoorhumidtable";
@@ -36,6 +37,7 @@ export default function FloorPlan({ FloorId }) {
   // console.log(FloorId);
   const [Values, setValues] = useState();
   const [Decvicetype, setDevicetype] = useState();
+  const [DevId,setDevId] = useState()
   const [valueSettemp, setvalueSettemp] = useState();
   const [DecviceId, setDeviceId] = useState();
   const [Listcontrol, setListcontrol] = useState({});
@@ -52,6 +54,7 @@ export default function FloorPlan({ FloorId }) {
   const [showModalControleOffSmartIr, setShowModalControleOffSmartIr] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
   const [alertmassage, setAlertmessage] = useState("");
+  //List all Device 
   const [indoortemphumidList, setIndoortemphumidList] = useState([]);
   const [outdoortemphumidList, setOutdoortemphumidList] = useState([]);
   const [PressuregaugeList, setPressuregaugeList] = useState([]);
@@ -68,6 +71,23 @@ export default function FloorPlan({ FloorId }) {
   const [WaterMeterList, setWaterMeterList] = useState([]);
   const [HeaterList, setHeaterList] = useState([]);
   const [HeaterWaterList, setHeaterWaterList] = useState([]);
+//detail all device 
+  const [indoortemphumidDetailList, setIndoortemphumidDetailList] = useState([]);
+  const [outdoortemphumidDetailList, setOutdoortemphumidDetailList] = useState([]);
+  const [PressuregaugeDetailList, setPressuregaugeDetailList] = useState([]);
+  const [PowerMeterDetailList, setPowerMeterDetailList] = useState([]);
+  const [InveterDetailList, setInveterDetailList] = useState([]);
+  const [FlowMeterDetailList, setFlowMeterDetailList] = useState([]);
+  const [MotionSensorDetailList, setMotionSensorDetailList] = useState([]);
+  const [LightingDetailList, setLightingDetailList] = useState([]);
+  const [CounterDetailList, setCounterDetailList] = useState([]);
+  const [SmartIRDetailList, setSmartIRDetailList] = useState([]);
+  const [EfficiencyDetailList, setEfficiencyDetailList] = useState([]);
+  const [CCTVDetailList, setCCTVDetailList] = useState([]);
+  const [CO2SensorDetailList, setCO2SensorDetailList] = useState([]);
+  const [WaterMeterDetailList, setWaterMeterDetailList] = useState([]);
+  const [HeaterDetailList, setHeaterDetailList] = useState([]);
+  const [HeaterWaterDetailList, setHeaterWaterDetailList] = useState([]);
   const [deviceTypeId,setdeviceTypeId] = useState();
   const [floorId, setFloorId] = useState();
   const [floorplanList, setFloorplanList] = useState([]);
@@ -76,6 +96,25 @@ export default function FloorPlan({ FloorId }) {
   const [isFirst,setIsfirst] = useState(true)
   const min = 10;
   const max = 40;
+
+  const notifySuccess = (title,message) =>
+  toast.success(
+    <div className="px-2">
+    <div className="flex flex-row font-bold">{title}</div>
+    <div className="flex flex-row text-xs">{message}</div>
+    </div>,
+    {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    }
+  );
+
   useEffect(() => {
     if (FloorId != 0 && option) {
       getfloorplan(FloorId);
@@ -83,7 +122,10 @@ export default function FloorPlan({ FloorId }) {
     }
   }, [FloorId,option]);
   
-
+  function onChangeValue(value) {
+    setDevicetype(value);
+  }
+  //Get Floorplan
   const getfloorplan = async (floorId) => {
     setFloorId(floorId);
     const result = await getFloorplanIoT(floorId);
@@ -101,6 +143,7 @@ export default function FloorPlan({ FloorId }) {
     
   
   };
+  //Get List All Deviced 
   const getIndoortemphumidList = async (floorId) => {
     setFloorId(floorId);
     console.log(floorId);
@@ -108,7 +151,7 @@ export default function FloorPlan({ FloorId }) {
     console.log(result.data);
     setIndoortemphumidList(result.data);
   
-    };
+  };
   const getoutdoortemphumidList = async (floorId) => {
     setFloorId(floorId);
     
@@ -218,24 +261,172 @@ export default function FloorPlan({ FloorId }) {
     console.log(result.data);
     setHeaterWaterList(result.data);
   };
+//Get Detail All Deviced 
+const getIndoortemphumiddetail = async (devId) => {
+  setDevId(devId);
+  const result = await getindoortemphumidDetail(devId);
+  console.log(result.data);
+  setIndoortemphumidDetailList([result.data]);
+  getIndoortemphumidList(FloorId)
+};
+const getOutdoortemphumiddetail = async (devId) => {
+  setDevId(devId);
+  console.log(floorId);
+  const result = await getoutndoortemphumidDetail(devId);
+  console.log(result.data);
+  setOutdoortemphumidDetailList([result.data]);
+  getoutdoortemphumidList(FloorId)
+};
+const getPressuregaugedetail = async (devId) => {
+  setDevId(devId);
+  console.log(floorId);
+  const result = await getpressuregaugeDetail(devId);
+  console.log(result.data);
+  setPressuregaugeDetailList([result.data]);
+  getPressuregaugeList(FloorId)
+};
+const getPowerMeterdetail = async (devId) => {
+  setDevId(devId);
+  console.log(floorId);
+  const result = await getpowermeterDetail(devId);
+  console.log(result.data);
+  setPowerMeterDetailList([result.data]);
+  getPressuregaugeList(FloorId)
+};
+const getInveterdetail = async (devId) => {
+  setDevId(devId);
+  const result = await getinverterDetail(devId);
+  console.log(result.data);
+  setInveterDetailList([result.data]);
+  getInveterList(FloorId)
+};
+const getFlowMeterdetail = async (devId) => {
+  setDevId(devId);
+  const result = await getflowmeterDetail(devId);
+  console.log(result.data);
+  setFlowMeterDetailList([result.data]);
+  getFlowMeterList(FloorId)
+};
+const getMotionSensordetail = async (devId) => {
+  setDevId(devId);
+  const result = await getmotionsensorDetail(devId);
+  console.log(result.data);
+  setMotionSensorDetailList([result.data]);
+  getMotionSensorList(FloorId)
+};
+const getLightingdetail = async (devId) => {
+  setDevId(devId);
+  const result = await getlightingDetail(devId);
+  console.log(result.data);
+  setLightingDetailList([result.data]);
+  getLightingList(FloorId)
+};
+const getCounterdetail = async (devId) => {
+  setDevId(devId);
+  const result = await getcounterDetail(devId);
+  console.log(result.data);
+  setCounterDetailList([result.data]);
+  getCounterList(FloorId)
+};
+const getSmartIRdetail = async (devId) => {
+  setDevId(devId);
+  const result = await getsmartirDetail(devId);
+  console.log(result.data);
+  setSmartIRDetailList([result.data]);
+  getSmartIRList(FloorId)
+};
+const getEfficiencydetail = async (devId) => {
+  setDevId(devId);
+  const result = await getefficiencyDetail(devId);
+  console.log(result.data);
+  setEfficiencyDetailList([result.data]);
+  getEfficiencyList(FloorId)
+};
+const getCCTVdetail = async (devId) => {
+  setDevId(devId);
+  const result = await getCCTVDetail(devId);
+  console.log(result.data);
+  setCCTVDetailList([result.data]);
+  getCCTVList(FloorId)
+};
+const getCO2detail = async (devId) => {
+  setDevId(devId);
+  const result = await getco2Detail(devId);
+  console.log(result.data);
+  setCO2SensorDetailList([result.data]);
+  getCO2SensorList(FloorId)
+};
+const getWaterMeterdetail = async (devId) => {
+  setDevId(devId);
+  const result = await getwatermeterDetail(devId);
+  console.log(result.data);
+  setWaterMeterDetailList([result.data]);
+  getWaterMeterList(FloorId)
+};
+const getHeaterdetail = async (devId) => {
+  setDevId(devId);
+  const result = await getheaterDetail(devId);
+  console.log(result.data);
+  setHeaterDetailList([result.data]);
+  getHeaterList(FloorId)
+};
+const getHeaterWaterdetail = async (devId) => {
+  setDevId(devId);
+  const result = await getheaterwaterDetail(devId);
+  console.log(result.data);
+  setHeaterWaterDetailList([result.data]);
+  getHeaterWaterList(FloorId)
+};
+
+//Ligthing------------------
+const openModalControleIsStopLighting = (DecviceId, deviceName) => {
+  setDeviceId(DecviceId);
+  setValues("off");
+  setDeviceName(deviceName);
+  setShowModalControleOffLighting(true);
+};
+const openModalControleIsStartLighting = (DecviceId, deviceName) => {
+  setDeviceId(DecviceId);
+  setValues("on");
+  setDeviceName(deviceName);
+  setShowModalControleOnLighting(true);
+};
+async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
+  setLoading(true);
+  const res = await ChangeControlLightning(DecviceId, Values);
+  if (res.status === 200) {
+    console.log(res.data);
+    setAlertTitle(res.data.title);
+    setAlertmessage(res.data.message);
+    closeModal();
+    setLoading(false);
+    notifySuccess(res.data.title,res.data.message);
+    getLightingdetail(DevId)
+    getLightingList(FloorId)
+  } else if (res.response.status === 401) {
+    setAlertTitle(res.response.data.title);
+    setAlertmessage(res.response.data.message);
+    closeModal();
+    setLoading(false);
+  } else if (res.response.status === 500) {
+    setAlertTitle(res.response.data.title);
+    setAlertmessage(res.response.data.message);
+    closeModal();
+    setLoading(false);
+  }
+}
+
+
+
+
+
+
   const onclickOPenSetMode = (id, fan,DecviceId) => {
     
     setDeviceId(id);
     setValues(fan)
     setDeviceName(DecviceId);
     setOpenSetModeModal(true);
-  };
-  const openModalControleIsStopLighting = (DecviceId, deviceName) => {
-    setDeviceId(DecviceId);
-    setValues("off");
-    setDeviceName(deviceName);
-    setShowModalControleOffLighting(true);
-  };
-  const openModalControleIsStartLighting = (DecviceId, deviceName) => {
-    setDeviceId(DecviceId);
-    setValues("on");
-    setDeviceName(deviceName);
-    setShowModalControleOnLighting(true);
   };
   const openModalControleIsStopSmartIr = (DecviceId, deviceName) => {
     setDeviceId(DecviceId);
@@ -255,12 +446,7 @@ export default function FloorPlan({ FloorId }) {
     setDeviceName(DecviceId);
     setOpenSetFanModal(true);
   };
-  function onChangeValue(value, dataId) {
-    setListcontrol(dataId);
-    setDevicetype(value);
-    console.log(Values);
-    console.log(Listcontrol);
-  }
+  
   const onclickOPenSettemp = (id, DecviceId, values) => {
     console.log(id);
     setOpenSettempModal(true);
@@ -268,31 +454,7 @@ export default function FloorPlan({ FloorId }) {
     setDeviceName(DecviceId);
     setValues(values);
   };
-
-
-  const handleToggleChange = () => {
-    setToggle(!toggle);
-  };
-
-  const notifySuccess = (title,message) =>
-  toast.success(
-    <div className="px-2">
-    <div className="flex flex-row font-bold">{title}</div>
-    <div className="flex flex-row text-xs">{message}</div>
-    </div>,
-    {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    }
-  );
-
-  const handleChangeValueSetFan = async () => {
+  const handleChangeValueSetFan = async (DecviceId, Values,DevId) => {
     setLoading(true);
     const res = await ChangeSetFanSmartIR(DecviceId, Values);
     if (res.status === 200) {
@@ -300,6 +462,8 @@ export default function FloorPlan({ FloorId }) {
       closeModal();
       setLoading(false);
       notifySuccess(res.data.title,res.data.message);
+      getSmartIRdetail(DevId)
+      getSmartIRList(FloorId)
     } else if (res.response.status === 401) {
       closeModal();
       setAlertTitle(res.response.data.title);
@@ -314,9 +478,7 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
     }
   };
-  
- 
-  const handleChangeValueSetMode = async () => {
+  const handleChangeValueSetMode = async (DecviceId, Values,DevId) => {
     setLoading(true);
     const res = await ChangeSetModeSmartIR(DecviceId, Values);
     if (res.status === 200) {
@@ -326,6 +488,8 @@ export default function FloorPlan({ FloorId }) {
       setAlertmessage(res.data.message);
       setLoading(false);
       notifySuccess(res.data.title,res.data.message);
+      getSmartIRdetail(DevId)
+      getSmartIRList(FloorId)
     } else if (res.response.status === 401) {
       closeModal();
       setAlertTitle(res.response.data.title);
@@ -340,8 +504,7 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
     }
   };
-  
-  const handleChangeValueSettemp = async () => {
+  const handleChangeValueSettemp = async (DecviceId, Values,DevId) => {
     setLoading(true);
     const res = await SmartIRSetTemp(DecviceId, Values);
     if (res.status === 200) {
@@ -349,6 +512,8 @@ export default function FloorPlan({ FloorId }) {
       closeModal();
       setLoading(false);
       notifySuccess(res.data.title,res.data.message);
+      getSmartIRdetail(DevId)
+      getSmartIRList(FloorId)
     } else if (res.response.status === 401) {
       closeModal();
       setAlertTitle(res.response.data.title);
@@ -363,42 +528,7 @@ export default function FloorPlan({ FloorId }) {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (Listcontrol && Decvicetype != 0) {
-      onChangeValue(Decvicetype, Listcontrol);
-    }
-  }, [Listcontrol, Decvicetype]);
-
-  // const onChangeValueSettemp = (event) => {
-  //   setValues(event);
-  // };
-
-  
-
-  async function clickChangestatusControleLighting() {
-    setLoading(true);
-    const res = await ChangeControlLightning(DecviceId, Values);
-    if (res.status === 200) {
-      console.log(res.data);
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
-      closeModal();
-      setLoading(false);
-      notifySuccess(res.data.title,res.data.message);
-    } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    } else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
-      closeModal();
-      setLoading(false);
-    }
-  }
-  async function clickChangestatusControleSmartIr() {
+  async function clickChangestatusControleSmartIr(DecviceId, Values,DevId) {
     setLoading(true);
     const res = await ChangeControlSmartIR(DecviceId, Values);
     if (res.status === 200) {
@@ -408,6 +538,8 @@ export default function FloorPlan({ FloorId }) {
       closeModal();
       setLoading(false);
       notifySuccess(res.data.title,res.data.message);
+      getSmartIRdetail(DevId)
+      getSmartIRList(FloorId)
     } else if (res.response.status === 401) {
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
@@ -421,6 +553,13 @@ export default function FloorPlan({ FloorId }) {
     }
   }
 
+
+  useEffect(() => {
+    if (Listcontrol && Decvicetype != 0) {
+      onChangeValue(Decvicetype, Listcontrol);
+    }
+  }, [Listcontrol, Decvicetype]);
+ 
   
   const OnchangeListFloorplan = (event) => {
     const selectedValue = event
@@ -470,7 +609,6 @@ export default function FloorPlan({ FloorId }) {
     else if(option == "Heater"){getHeaterList(FloorId);}
     else if(option == "Heater Water"){getHeaterWaterList(FloorId);}
   }
-
   const closeModal = () => {
     setOpenSettempModal(false);
     setOpenSetFanModal(false);
@@ -1257,7 +1395,7 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("1", [marker])}
+                            onClick={() => {onChangeValue("1"); getIndoortemphumiddetail(marker.devId)}}
                           >
                             <div
                               class={
@@ -1317,7 +1455,7 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("2", [marker])}
+                            onClick={() => {onChangeValue("2"); getOutdoortemphumiddetail(marker.devId)}}
                             // onClick={() => onChangeValue('AHU',item.deviceName)}
                           >
                             <div
@@ -1380,7 +1518,7 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("3", [marker])}
+                            onClick={() => {onChangeValue("3"); getPressuregaugedetail(marker.devId)}}
                             // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
                           >
                             <div
@@ -1435,7 +1573,7 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("4", [marker])}
+                            onClick={() => {onChangeValue("4"); getPowerMeterdetail(marker.devId)}}
                           >
                             <div
                               class={
@@ -1505,7 +1643,7 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("5", [marker])}
+                            onClick={() => {onChangeValue("5"); getInveterdetail(marker.devId)}}
                           >
                             <div
                               class={
@@ -1571,7 +1709,7 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("6", [marker])}
+                            onClick={() => {onChangeValue("6"); getFlowMeterdetail(marker.devId)}}
                            >
                             <div
                               class={
@@ -1624,7 +1762,7 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("7", [marker])}>
+                            onClick={() => {onChangeValue("7"); getMotionSensordetail(marker.devId)}}>
                             <div
                               class={
                                 marker.status == "on"
@@ -1677,10 +1815,10 @@ export default function FloorPlan({ FloorId }) {
                               position: "absolute",
                             }}
                             onClick={() =>
-                              onChangeValue(
-                                "8",
-                                [marker]
-                              )
+                             { onChangeValue(
+                                "8"); getLightingdetail(marker.devId)
+                                
+                              }
                             }
                           >
                             <div
@@ -1729,7 +1867,7 @@ export default function FloorPlan({ FloorId }) {
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("9", [marker])}
+                            onClick={() => {onChangeValue("9"); getCounterdetail(marker.devId)}}
                             >
                             <div
                               class={
@@ -1783,10 +1921,8 @@ export default function FloorPlan({ FloorId }) {
                               position: "absolute",
                             }}
                             onClick={() =>
-                              onChangeValue(
-                                "10",
-                                [marker]
-                              )
+                              {onChangeValue(
+                                "10") ; getSmartIRdetail(marker.devId)}
                             }
                           >
                             <div
@@ -1841,10 +1977,8 @@ export default function FloorPlan({ FloorId }) {
                               position: "absolute",
                             }}
                             onClick={() =>
-                              onChangeValue(
-                                "11",
-                                [marker]
-                              )
+                              {onChangeValue(
+                                "11"); getEfficiencydetail(marker.devId)} 
                             }
                           >
                             <div
@@ -1897,7 +2031,7 @@ export default function FloorPlan({ FloorId }) {
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }}  onClick={() => onChangeValue("12", [marker])}>
+                            }}  onClick={() => {onChangeValue("12"); getCCTVdetail(marker.devId)}}>
                             <div
                               class={
                                 marker.status == "on"
@@ -1942,7 +2076,7 @@ export default function FloorPlan({ FloorId }) {
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }} onClick={() => onChangeValue("13", [marker])} >
+                            }} onClick={() => {onChangeValue("13"); getCO2detail(marker.devId)}} >
                             <div
                               class={
                                 marker.status == "on"
@@ -1993,7 +2127,7 @@ export default function FloorPlan({ FloorId }) {
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }} onClick={() => onChangeValue("14", [marker])}>
+                            }} onClick={() => {onChangeValue("14"); getWaterMeterdetail(marker.devId)}}>
                             <div
                               class={
                                 marker.status == "on"
@@ -2044,7 +2178,7 @@ export default function FloorPlan({ FloorId }) {
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }} onClick={() => onChangeValue("15", [marker])}>
+                            }} onClick={() => {onChangeValue("15"); getHeaterdetail(marker.devId)}}>
                             <div
                               class={
                                 marker.status == "on"
@@ -2099,7 +2233,7 @@ export default function FloorPlan({ FloorId }) {
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }}  onClick={() => onChangeValue("16", [marker])}>
+                            }}  onClick={() => {onChangeValue("16"); getHeaterWaterdetail(marker.devId)}}>
                             <div
                               class={
                                 marker.status == "on"
@@ -2128,8 +2262,8 @@ export default function FloorPlan({ FloorId }) {
           </div>
           <div className="flex justify-end w-auto">
             {Decvicetype == "1"
-              ? Listcontrol.length > 0 && 
-                Listcontrol.map((marker, index) => {
+              ? indoortemphumidDetailList.length > 0 && 
+              indoortemphumidDetailList.map((marker, index) => {
                   //
                   return (
                     <div key={marker.id}>
@@ -2164,8 +2298,8 @@ export default function FloorPlan({ FloorId }) {
                   );
                 })
               : Decvicetype == "2"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? outdoortemphumidDetailList.length > 0 && 
+              outdoortemphumidDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2200,8 +2334,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "3"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? PressuregaugeDetailList.length > 0 && 
+              PressuregaugeDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2232,8 +2366,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "4"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? PowerMeterDetailList.length > 0 && 
+              PowerMeterDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2284,8 +2418,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "5"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? InveterDetailList.length > 0 && 
+              InveterDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2330,8 +2464,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "6"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? FlowMeterDetailList.length > 0 && 
+              FlowMeterDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2362,8 +2496,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "7"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? MotionSensorDetailList.length > 0 && 
+              MotionSensorDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2394,8 +2528,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "8"
-              ? Listcontrol.length > 0 &&
-                Listcontrol.map((marker, index) => {
+              ? LightingDetailList.length > 0 &&
+              LightingDetailList.map((marker, index) => {
                   //
                   return (
                     <div key={marker.id}>
@@ -2455,8 +2589,8 @@ export default function FloorPlan({ FloorId }) {
                   );
                 })
                 : Decvicetype == "9"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? CounterDetailList.length > 0 && 
+              CounterDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2487,8 +2621,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "10"
-              ? Listcontrol.length > 0 &&
-              Listcontrol.map((marker, index) => {
+              ? SmartIRDetailList.length > 0 &&
+              SmartIRDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2504,7 +2638,7 @@ export default function FloorPlan({ FloorId }) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {titleCase(marker.status)}
+                        {marker.status}
                         </span> 
                         </span>
                       </div>
@@ -2556,7 +2690,7 @@ export default function FloorPlan({ FloorId }) {
                             }
                           >
                           <IoMdPower size="1.2em"/>
-                          </button><div className="text-xs  text-gray-500 font-bold">{titleCase(marker.control)}</div></div>}
+                          </button><div className="text-xs  text-gray-500 font-bold">{marker.control}</div></div>}
                           
                         </span>
                       </div>
@@ -2608,8 +2742,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "11"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? EfficiencyDetailList.length > 0 && 
+              EfficiencyDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2640,8 +2774,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "12"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? CCTVDetailList.length > 0 && 
+              CCTVDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2668,8 +2802,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "13"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? CO2SensorDetailList.length > 0 && 
+              CO2SensorDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2700,8 +2834,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "14"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? WaterMeterDetailList.length > 0 && 
+              WaterMeterDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2732,8 +2866,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "15"
-              ? Listcontrol.length > 0 &&
-              Listcontrol.map((marker, index) => { 
+              ? HeaterDetailList.length > 0 &&
+              HeaterDetailList.map((marker, index) => { 
                 //
                 return (
                   <div key={marker.id}>
@@ -2815,8 +2949,8 @@ export default function FloorPlan({ FloorId }) {
                 );
               })
               : Decvicetype == "16"
-              ? Listcontrol.length > 0 && 
-              Listcontrol.map((marker, index) => {
+              ? HeaterWaterDetailList.length > 0 && 
+              HeaterWaterDetailList.map((marker, index) => {
                 //
                 return (
                   <div key={marker.id}>
@@ -2889,7 +3023,7 @@ export default function FloorPlan({ FloorId }) {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                  onClick={() => handleChangeValueSettemp()}
+                  onClick={() => {handleChangeValueSettemp(DecviceId, Values,DevId); setOpenSettempModal(false)}}
                 >
                   Confirm
                 </button>
@@ -2973,7 +3107,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => handleChangeValueSetFan()}
+                    onClick={() => {handleChangeValueSetFan(DecviceId, Values,DevId); setOpenSetModeModal(false)}}
                   >
                     Confirm
                   </button>
@@ -3025,7 +3159,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => handleChangeValueSetMode()}
+                    onClick={() => {handleChangeValueSetMode(DecviceId, Values,DevId); setOpenSetFanModal(false)}}
                   >
                     Confirm
                   </button>
@@ -3056,7 +3190,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControleSmartIr()}
+                    onClick={() => {clickChangestatusControleSmartIr(DecviceId, Values,DevId); setShowModalControleOnSmartIr(false)}}
                   >
                     Confirm
                   </button>
@@ -3087,7 +3221,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControleSmartIr()}
+                    onClick={() => {clickChangestatusControleSmartIr(DecviceId, Values,DevId); setShowModalControleOffSmartIr(false)}}
                   >
                     Confirm
                   </button>
@@ -3118,7 +3252,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControleLighting()}
+                    onClick={() => {clickChangestatusControleLighting(DecviceId, Values,DevId); setShowModalControleOnLighting(false)}}
                   >
                     Confirm
                   </button>
@@ -3149,7 +3283,7 @@ export default function FloorPlan({ FloorId }) {
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusControleLighting()}
+                    onClick={() => {clickChangestatusControleLighting(DecviceId, Values,DevId); setShowModalControleOffLighting(false)}}
                   >
                     Confirm
                   </button>
@@ -3194,11 +3328,11 @@ export default function FloorPlan({ FloorId }) {
               ) : option == "Motion Sensor" ? (
                 <MotionSensor Motionsensorlist={MotionSensorList} />
               ) : option == "Lighting" ? (
-                <Ligthing Ligthinglist={LightingList} />
+                <Ligthing Ligthinglist={LightingList} onSubmitControl={clickChangestatusControleLighting} />
               ) : option == "Counter" ? (
                 <Counter Counterlist={CounterList} />
               ) : option == "Smart IR" ? (
-                <SmartIRtable SmartIRlist={SmartIRList} />
+                <SmartIRtable SmartIRlist={SmartIRList} onSubmitControl={clickChangestatusControleSmartIr} onSubmitSettemp={handleChangeValueSettemp} onSubmitSetMode={handleChangeValueSetMode} onSubmitSetFan={handleChangeValueSetFan} />
               ) : option == "Efficiency" ? (    
                 <Efficiency Efficiencylist={EfficiencyList} />
               ) : option == "CCTV" ? ( 

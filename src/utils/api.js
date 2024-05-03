@@ -952,7 +952,6 @@ export async function ChangeControleHeater (devId,value) {
       {
         devId : devId,
         value : value,
-        
       },
       {
         withCredentials: true,
@@ -1191,3 +1190,23 @@ export async function getheaterwaterDetail(devId) {
     return error;
   }
 }
+
+
+
+
+  // const [indoortemphumidDetailList, setIndoortemphumidDetailList] = useState([]);
+  // const [outdoortemphumidDetailList, setOutdoortemphumidDetailList] = useState([]);
+  // const [PressuregaugeDetailList, setPressuregaugeDetailList] = useState([]);
+  // const [PowerMeterDetailList, setPowerMeterDetailList] = useState([]);
+  // const [InveterDetailList, setInveterDetailList] = useState([]);
+  // const [FlowMeterDetailList, setFlowMeterDetailList] = useState([]);
+  // const [MotionSensorDetailList, setMotionSensorDetailList] = useState([]);
+  // const [LightingDetailList, setLightingDetailList] = useState([]);
+  // const [CounterDetailList, setCounterDetailList] = useState([]);
+  // const [SmartIRDetailList, setSmartIRDetailList] = useState([]);
+  // const [EfficiencyDetailList, setEfficiencyDetailList] = useState([]);
+  // const [CCTVDetailList, setCCTVDetailList] = useState([]);
+  // const [CO2SensorDetailList, setCO2SensorDetailList] = useState([]);
+  // const [WaterMeterDetailList, setWaterMeterDetailList] = useState([]);
+  // const [HeaterDetailList, setHeaterDetailList] = useState([]);
+  // const [HeaterWaterDetailList, setHeaterWaterDetailList] = useState([]);
