@@ -508,7 +508,7 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => {onSubmitSetMode(DecviceId,Values,DevId); setOpenSetModeModal(false)}}
+                    onClick={() => {onSubmitSetFan(DecviceId,Values,DevId); setOpenSetModeModal(false)}}
                   >
                     Confirm
                   </button>
@@ -560,7 +560,7 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => {onSubmitSetFan(DecviceId,Values,DevId); setOpenSetFanModal(false)}}
+                    onClick={() => {onSubmitSetMode(DecviceId,Values,DevId); setOpenSetFanModal(false)}}
                   >
                     Confirm
                   </button>
