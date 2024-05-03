@@ -655,11 +655,11 @@ export default function SummaryCard() {
                   />
                 </div>
                 <div className="flex justify-center gap-5 items-center mt-5 px-1 ml-12">
-                  <p className="text-gray-900">Password : </p>
+                  <p className="text-gray-900 ml-3">Password : </p>
                   <input
                     type={isShowPassword ? "text" : "password"}
                     placeholder="********"
-                    className="border border-slate-300 rounded-md h-9 px-2 ml-2"
+                    className="border border-slate-300 rounded-md h-9 px-2 "
                     onChange={(e) => {
                       onChangePassword(e.target.value);
                     }}
@@ -680,13 +680,13 @@ export default function SummaryCard() {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusStop()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
@@ -715,11 +715,11 @@ export default function SummaryCard() {
                   />
                 </div>
                 <div className="flex justify-center gap-5 items-center mt-5 px-1 ml-12">
-                  <p className="text-gray-900">Password : </p>
+                  <p className="text-gray-900 ml-3">Password : </p>
                   <input
                     type={isShowPassword ? "text" : "password"}
                     placeholder="********"
-                    className="border border-slate-300 rounded-md h-9 px-2 ml-2"
+                    className="border border-slate-300 rounded-md h-9 px-2"
                     onChange={(e) => {
                       onChangePassword(e.target.value);
                     }}
@@ -740,13 +740,13 @@ export default function SummaryCard() {
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
                     onClick={() => clickChangestatusStart()}
                   >
-                    confirm
+                    Confirm
                   </button>
                 </div>
               </div>
