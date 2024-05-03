@@ -311,7 +311,7 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
 
                               </td>
                               
-                              <td className="whitespace-nowrap px-6 py-4 text-center " >
+                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold" >
                                 
                               { item.status == "on"  ? 
                               <Highlighter
@@ -331,7 +331,7 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
                               />}
                                 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center ">
+                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                               
                               {item.status == "on" ? 
                               <Highlighter
@@ -352,7 +352,7 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
                               />}
                                 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center " >
+                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold" >
                               { item.status == "on"  ? <Highlighter
                                 className="text-[#5eead4] underline font-bold cursor-pointer" onClick={(event) => item.status == "on" ? onclickOPenSetFan(item.id,item.mode, item.deviceName,item.devId ,event.preventDefault()) : null}
                                   highlightClassName="highlight" // Define your custom highlight class
@@ -371,7 +371,7 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
                                 
                                 
                               </td>
-                              <td className="whitespace-nowrap px-6 py-4 text-center">
+                              <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                               <div className="flex flex-col items-center">
                               {item.status == "offline" ? "-" : 
                               <button

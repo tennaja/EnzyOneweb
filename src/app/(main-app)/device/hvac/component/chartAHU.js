@@ -168,7 +168,10 @@ export default function ChartAHU({ FloorId }) {
       }
     }
   }
-
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current > dayjs().endOf('day');
+  };
   function onChangeDay(date, dateString) {
     console.log(dateString);
     GetAHUGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
@@ -179,7 +182,7 @@ export default function ChartAHU({ FloorId }) {
         <div className="flex gap-4">
           
           <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
-      format={dateFormat}/>
+      format={dateFormat} disabledDate={disabledDate}/>
       
           <button
             className="border border-slate-300 rounded-md h-9 px-2"

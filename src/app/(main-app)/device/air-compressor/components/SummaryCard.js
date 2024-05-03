@@ -394,7 +394,10 @@ export default function SummaryCard() {
 
     return [year, month, day].join("-");
   };
-
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current > dayjs().endOf('day');
+  };
   return (
     <div>
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
@@ -821,7 +824,7 @@ export default function SummaryCard() {
           <div className="flex gap-5">
           
           <RangePicker type="number" className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(startDate), dateFormat), dayjs(formatDate(endDate), dateFormat)]}
-      format={dateFormat}/>
+      format={dateFormat} disabledDate={disabledDate}/>
 
             <button
               className="border border-slate-300 rounded-md h-9 px-2"

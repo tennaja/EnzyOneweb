@@ -136,7 +136,7 @@ const openModalControleIsStart = (DecviceId,DeviceName,DevId) => {
                                   />
                           
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-center">
+                        <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                                
                         <div className="flex flex-col items-center">
                               {item.status == "offline" ? "-" : 

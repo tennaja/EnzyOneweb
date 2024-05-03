@@ -3348,7 +3348,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
               ) : 
               null}
                
-              {option != "All Type" || "CCTV" ? (
+              {option != "All Type" ? (
                 <Chart deviceTypeId={deviceTypeId} />
                ): null}
       

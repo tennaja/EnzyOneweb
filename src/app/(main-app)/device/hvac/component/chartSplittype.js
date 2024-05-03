@@ -189,13 +189,17 @@ export default function ChartSplittype({FloorId}) {
         console.log(dateString);
         GetSplittypeGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
       }
+      const disabledDate = (current) => {
+        // Can not select days before today and today
+        return current && current > dayjs().endOf('day');
+      };
     return (
         <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
             <div className="flex flex-col gap-4 p-2">
                 <div className="flex gap-4">
                 
                 <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
-      format={dateFormat}/>
+      format={dateFormat} disabledDate={disabledDate}/>
       
                     <button
               className="border border-slate-300 rounded-md h-9 px-2"
