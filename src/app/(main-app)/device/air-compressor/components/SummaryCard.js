@@ -268,7 +268,7 @@ export default function SummaryCard() {
       formatDate(new Date())
     );
     setTableList(result.data);
-    setDeviceId(result.data[0].id);
+    // setDeviceId(result.data[0].id);
     setIsFirst(false);
   };
 
@@ -644,7 +644,7 @@ export default function SummaryCard() {
                   Are you sure?
                 </h3>
                 <div className="flex gap-5 justify-center items-center mt-5 ">
-                  <span>Are you sure to control this device?</span>
+                  <span>Are you sure to control this device st?</span>
                 </div>
                 <div className="flex gap-5 justify-center items-center mt-5 ">
                   <p className="text-gray-900">Username : </p>

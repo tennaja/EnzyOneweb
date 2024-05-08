@@ -560,18 +560,8 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
     }
   }, [Listcontrol, Decvicetype]);
  
-  
-  const OnchangeListFloorplan = (event) => {
-    const selectedValue = event
-    const selected = deviceTypeList.find(item => item.id === parseInt(selectedValue));
-    if (selected){
-      console.log(selected.id)
-      setdeviceTypeId(selected.id);
-      setOption(selected.displayName)
-    }
-   
  
-  
+  useEffect(() => {
     if (option == "All Type"){
       getIndoortemphumidList(FloorId);
       getoutdoortemphumidList(FloorId);
@@ -608,6 +598,16 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
     else if(option == "Water Meter"){getWaterMeterList(FloorId);}
     else if(option == "Heater"){getHeaterList(FloorId);}
     else if(option == "Heater Water"){getHeaterWaterList(FloorId);}
+  }, [option,deviceTypeId]);
+ 
+  const OnchangeListFloorplan = (event) => {
+    const selectedValue = event
+    const selected = deviceTypeList.find(item => item.id === parseInt(selectedValue));
+    if (selected){
+      console.log(selected.id)
+      setdeviceTypeId(selected.id);
+      setOption(selected.displayName)
+    }
   }
   const closeModal = () => {
     setOpenSettempModal(false);
@@ -3303,9 +3303,9 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                  <Inverter Inverterlist={InveterList} />
                  <FlowMeter FlowMeterlist={FlowMeterList} />
                  <MotionSensor Motionsensorlist={MotionSensorList} />
-                 <Ligthing Ligthinglist={LightingList} />
+                 <Ligthing Ligthinglist={LightingList} onSubmitControl={clickChangestatusControleLighting} />
                  <Counter Counterlist={CounterList} />
-                 <SmartIRtable SmartIRlist={SmartIRList} />
+                 <SmartIRtable SmartIRlist={SmartIRList} onSubmitControl={clickChangestatusControleSmartIr} onSubmitSettemp={handleChangeValueSettemp} onSubmitSetMode={handleChangeValueSetMode} onSubmitSetFan={handleChangeValueSetFan} />
                  <Efficiency Efficiencylist={EfficiencyList} />
                  <CCTV CCTVlist={CCTVList} />
                  <CO2Sensor CO2Sensorlist={CO2SensorList} />
@@ -3348,7 +3348,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
               ) : 
               null}
                
-              {option != "All Type" ? (
+              {option != "All Type" && option != "CCTV"? (
                 <Chart deviceTypeId={deviceTypeId} />
                ): null}
       

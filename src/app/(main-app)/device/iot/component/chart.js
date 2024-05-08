@@ -105,9 +105,12 @@ export default function Chart({deviceTypeId}) {
   const getDeviceparameterList = async (deviceTypeId) => {
     const result = await getdeviceparameter(deviceTypeId);
     console.log(result.data);
-    setDeviceparameterList(result.data);
-    setDeviceParameterId(result.data[0].id)
-    setOption(result.data[0].name)
+    if (result.data){
+      setDeviceparameterList(result.data);
+      setDeviceParameterId(result.data[0].id)
+      setOption(result.data[0].name)
+    }
+    
     
     };
 
