@@ -65,7 +65,7 @@ export default function SmartIRtable(IotList) {
                       String(item.co2.toFixed(2)).includes(searchTable) 
                       
                     );
-                  }).map((item) => {
+                  }).map?((item) => {
                    
                     return (
                       <tr
@@ -133,7 +133,7 @@ export default function SmartIRtable(IotList) {
                         
                       </tr>
                     );
-                  })}
+                  }): <h1>No Data ...</h1>}
               </tbody>
             </table>
           </div>
