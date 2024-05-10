@@ -116,14 +116,15 @@ async function clickChangestatusAutomation() {
                   <th scope="col" className="px-6 py-4 text-center">
                   Model
                   </th>
-                  <th scope="col" className="px-6 py-4 text-center">
-                  Control
-                  </th>
+                  
                   <th scope="col" className="px-6 py-4 text-center">
                   Waste
                   </th>
                   <th scope="col" className="px-6 py-4 text-center">
                   Counter
+                  </th>
+                  <th scope="col" className="px-6 py-4 text-center">
+                  Control
                   </th>
                 </tr>
               </thead>
@@ -207,6 +208,26 @@ async function clickChangestatusAutomation() {
                                   />
                           
                         </td>
+                       
+                        <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
+                        <Highlighter
+                                    highlightClassName="highlight" // Define your custom highlight class
+                                    searchWords={[searchTable]}
+                                    autoEscape={true}
+                                    textToHighlight={String(item.waste)} // Replace this with your text
+                                  />
+                        
+                        </td>
+                        <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
+                        <Highlighter
+                                    highlightClassName="highlight" // Define your custom highlight class
+                                    searchWords={[searchTable]}
+                                    autoEscape={true}
+                                    textToHighlight={String(item.counter)} // Replace this with your text
+                                  />
+                          
+                        </td>
+
                         <td className="whitespace-nowrap px-6 py-4 text-center">
                                
                                <button
@@ -231,26 +252,6 @@ async function clickChangestatusAutomation() {
                                />
                                  </button>
                              </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={String(item.waste)} // Replace this with your text
-                                  />
-                        
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={String(item.counter)} // Replace this with your text
-                                  />
-                          
-                        </td>
-
-                        
                         
                       </tr>
                     );

@@ -1416,7 +1416,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                               </div>
                               <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                Humidity (%) : {String(marker.humidity)}
+                                Humidity (%) : {marker.humidity == "-" ? "-" : marker.humidity.toFixed(2)}
                                 </span>
                               </div>
                             </div>
@@ -1535,7 +1535,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                             <div className="bg-white border border-black ml-4">
                               <div class="px-3">
                                 <span class="text-gray-700 text-xs">
-                                  Pressure : {marker.pressure}
+                                Pressure (bar) : {marker.pressure}
                                 </span>
                               </div>
                             </div>
@@ -1661,18 +1661,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                                 <span class="text-gray-700 text-xs">
                                 Power (kW) : {marker.power}
                                 </span></div>
-                                <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                Current (A) : {marker.current}
-                                </span></div>
-                                <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                Volt (V) : {marker.volt}
-                                </span></div>
-                                <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                Energy (kWh)  : {marker.energy}
-                                </span></div>
+                                
                               
                             </div>
                           </div>
@@ -1995,7 +1984,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                             <div className="bg-white ml-4 border border-black">
                               <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                Efficiency : {marker.efficiency}
+                                Efficiency (%) : {marker.efficiency}
                                 </span></div>
                             </div>
                           </div>
@@ -2290,7 +2279,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                          Humidity (%) : {marker.humidity }
+                          Humidity (%) : {marker.humidity == "-" ? "-" : marker.humidity.toFixed(2)}
                           </span>
                         </div>
                       </div>

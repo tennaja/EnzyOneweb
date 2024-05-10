@@ -258,7 +258,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                 )}
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                                {item.status == "offline" ? (
+                                {item.status == "Offline" ? (
                                   "-"
                                 ) : (
                                   <Highlighter
