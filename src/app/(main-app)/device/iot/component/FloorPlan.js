@@ -2310,7 +2310,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                       </div>
                       <div class="px-3">
                         <span class="text-gray-700 text-sm">
-                        Room Temp. (°C) : {marker.roomTemp}
+                        Temp. (°C) : {marker.roomTemp}
                         </span>
                       </div>
                       <div class="px-3">
@@ -2997,7 +2997,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
               min={10}
               max={40}
               value={Values} 
-              decimalScale={0}
+              decimalScale={2}
               onChange={e => setValues(e.target.value)}
     onBlur={e => {
         setValues(Math.min(max, Math.max(min, Values)).toFixed(2));

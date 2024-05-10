@@ -116,7 +116,6 @@ async function clickChangestatusAutomation() {
                   <th scope="col" className="px-6 py-4 text-center">
                   Model
                   </th>
-                  
                   <th scope="col" className="px-6 py-4 text-center">
                   Waste
                   </th>

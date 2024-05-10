@@ -36,6 +36,7 @@ export default function Chart({deviceTypeId}) {
   const [dateFrom, setdateFrom] = useState(new Date());
   const [dateTo, setdateTo] = useState(new Date());
   const [option, setOption] = useState();
+  const [unit,setUnit] = useState();
   const dateFormat = 'YYYY/MM/DD';
   const formatDate = (date) => {
     var d = new Date(date),
@@ -97,6 +98,7 @@ export default function Chart({deviceTypeId}) {
       console.log(selected.id)
       setDeviceParameterId(selected.id);
       setOption(selected.name)
+      setUnit(selected.unit)
       GetGraph(event,dateFrom,dateTo)
     }
     
@@ -109,6 +111,7 @@ export default function Chart({deviceTypeId}) {
       setDeviceparameterList(result.data);
       setDeviceParameterId(result.data[0].id)
       setOption(result.data[0].name)
+      setUnit(result.data[0].unit)
     }
     
     
@@ -167,7 +170,7 @@ export default function Chart({deviceTypeId}) {
                 deviceparameterList.map((item) => {
                   
                   return (
-                  <option className="rounded-lg" key={item.id} value={item.id}>{item.name}</option>)
+                  <option className="rounded-lg" key={item.id} value={item.id}>{item.name} {item.unit}</option>)
                 })}
             </select>
           <button
@@ -186,7 +189,7 @@ export default function Chart({deviceTypeId}) {
             datasets: [
               ...chartList.map((item) => {
                 return {
-                  label: item.name,
+                  label: item.name + item.unit,
                   data: item.data.map((data) => {
                     return data.value;
                   }),
@@ -228,7 +231,7 @@ export default function Chart({deviceTypeId}) {
 
         title: {
           display: true,
-          text: option,
+          text: option+unit,
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
       },
