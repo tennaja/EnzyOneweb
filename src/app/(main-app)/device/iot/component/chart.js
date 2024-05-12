@@ -170,7 +170,7 @@ export default function Chart({deviceTypeId}) {
                 deviceparameterList.map((item) => {
                   
                   return (
-                  <option className="rounded-lg" key={item.id} value={item.id}>{item.name} {item.unit}</option>)
+                  <option className="rounded-lg" key={item.id} value={item.id}>{item.name} ({item.unit})</option>)
                 })}
             </select>
           <button
@@ -189,7 +189,7 @@ export default function Chart({deviceTypeId}) {
             datasets: [
               ...chartList.map((item) => {
                 return {
-                  label: item.name + item.unit,
+                  label: item.name + " ("+item.unit+")",
                   data: item.data.map((data) => {
                     return data.value;
                   }),
@@ -231,7 +231,7 @@ export default function Chart({deviceTypeId}) {
 
         title: {
           display: true,
-          text: option+unit,
+          text: option+ " ("+unit+")",
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
       },

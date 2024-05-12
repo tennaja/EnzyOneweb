@@ -25,7 +25,7 @@
     "@mui/x-date-pickers": "^6.19.4",
     "@reduxjs/toolkit": "^1.9.7",
     "@unicef/material-ui-currency-textfield": "^0.8.6",
-    "antd": "^5.10.3",
+    "antd": "^5.17.0",
     "apexcharts": "^3.46.0",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",

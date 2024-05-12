@@ -310,7 +310,7 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
               min={10}
               max={40}
               value={Values} 
-              decimalScale={0}
+              decimalScale={2}
               onChange={e => setValues(e.target.value)}
     onBlur={e => {
         setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
