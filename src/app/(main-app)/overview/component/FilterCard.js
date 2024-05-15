@@ -12,6 +12,8 @@ import {
 } from "@/utils/api";
 import HistoricalChart from "./chartHistorical";
 import ChartEnergyConsumption from "./chartEnergy";
+import Summary from "./Summary";
+
 export default function FilterCard() {
   const [chartListAHU1, setChartListAHU1] = useState([]);
   const [isFirst, setIsFirst] = useState(true);
@@ -88,7 +90,7 @@ export default function FilterCard() {
         <div className="flex flex-col gap-4 p-2">
           <span className="text-lg  font-bold">Overview</span>
           <div className="w-full py-1 pb-2">
-            <div className="inline-flex">
+            <div className="inline-flex items-center">
               <div className="flex justify-center bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
                 <p className=" text-red-700 mx-2 ">*</p>
                 <label>
@@ -167,8 +169,10 @@ export default function FilterCard() {
         </div>
         
       </div>
-      <HistoricalChart FloorId= {floorId}/>
+      <Summary FloorId= {floorId}/>
       <ChartEnergyConsumption FloorId= {floorId}/>
+      <HistoricalChart FloorId= {floorId}/>
+      
     </div>
   );
 }

@@ -13,7 +13,7 @@ import {
 import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 import dayjs from 'dayjs';
-import { getAHUGraph } from "@/utils/api";
+import { getHistoricalChart } from "@/utils/api";
 import { DatePicker, Radio} from "antd";
 import moment from "moment";
 const { MonthPicker, RangePicker ,YearPicker} = DatePicker;
@@ -30,10 +30,10 @@ ChartJS.register(
 
 export default function HistoricalChart({ FloorId }) {
   const [floorId, setFloorId] = useState();
-  const [chartListAHU1, setChartListAHU1] = useState([]);
-  const [chartListAHU2, setChartListAHU2] = useState([]);
-  const [chartListAHU3, setChartListAHU3] = useState([]);
-  const [ListLabelAHU, setListLabelAHU] = useState([0]);
+  const [currentpower, setCurrentPower] = useState([]);
+  const [powergeneration, setPowergeneration] = useState([]);
+  const [numberpeople, setNumberpeople] = useState([]);
+  const [ListLabel, setListLabel] = useState([0]);
   const [dateFrom, setdateFrom] = useState(new Date());
   const [dateTo, setdateTo] = useState(new Date());
   const dateFormat = 'YYYY/MM/DD';
@@ -51,7 +51,7 @@ export default function HistoricalChart({ FloorId }) {
 
   useEffect(() => {
     if (FloorId != 0) {
-      GetAHUGraph(FloorId, formatDate(new Date()), formatDate(new Date()));
+      GetHistoricalGraph(FloorId, formatDate(new Date()), formatDate(new Date()));
     }
   }, [FloorId]);
   const zoomOptions = {
@@ -101,7 +101,7 @@ export default function HistoricalChart({ FloorId }) {
 
         title: {
           display: true,
-          text: "Controle Valve %",
+          text: "Power (kW)",
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
       },
@@ -112,7 +112,7 @@ export default function HistoricalChart({ FloorId }) {
         position: "right",
         title: {
           display: true,
-          text: "Temp",
+          text: "No. of people",
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
         grid: {
@@ -132,39 +132,59 @@ export default function HistoricalChart({ FloorId }) {
     return "#" + randomColor;
   };
 
-  async function GetAHUGraph(floorId, dateFrom, dateTo) {
+  async function GetHistoricalGraph(floorId, dateFrom, dateTo) {
     setFloorId(floorId);
     const paramsNav = {
       floorId: floorId,
       dateFrom: dateFrom,
       dateTo: dateTo,
     };
-    const res = await getAHUGraph(paramsNav);
+    const res = await getHistoricalChart(paramsNav);
     console.log(paramsNav);
     if (res.status === 200) {
-      if (res.data.controlValve.length > 0) {
-        setChartListAHU1(res.data.controlValve);
+      console.log(res.data.power[0])
+      if (res.data.power[0]) {
+        console.log([res.data.power[0]])
+        setCurrentPower([res.data.power[0]]);
         let label = [];
         let modday = 0;
-        console.log(res.data.controlValve);
-        for (let j = 0; j < res.data.controlValve[0].data.length; j++) {
-          label.push(res.data.controlValve[0].data[j].time);
-        }
-        setListLabelAHU(label);
+        if (res.data.power[0].data != null){
+          for (let j = 0; j < res.data.power[0].data.length; j++) {
+            label.push(res.data.power[0].data[j].time);
+          }
+          setListLabel(label);
         console.log(label)
+        }    
+        
         // console.log(label);
+      }else{
+        console.log("No Data .....")
       }
-      if (res.data.supplyTemp.length > 0) {
-        setChartListAHU2(res.data.supplyTemp);
+      if (res.data.power[1]) {
+        console.log(res.data.power[1])
+        setPowergeneration([res.data.power[1]]);
         let label = [];
         let modday = 0;
-        console.log(res.data.supplyTemp);
+        if (res.data.power[1].data != null){
+          for (let j = 0; j < res.data.power[1].data.length; j++) {
+            label.push(res.data.power[1].data[j].time);
+          }
+          setListLabel(label);
+          console.log(label)
+        }  
+      
       }
-      if (res.data.returnTemp.length > 0) {
-        setChartListAHU3(res.data.returnTemp);
+      if (res.data.count[0]) {
+        setNumberpeople([res.data.count[0]]);
         let label = [];
         let modday = 0;
-        console.log(res.data.returnTemp);
+        if (res.data.count[0].data != null){
+          for (let j = 0; j < res.data.count[0].data.length; j++) {
+            label.push(res.data.count[0].data[j].time);
+          }
+        setListLabel(label);
+        console.log(label)
+        }   
       }
     }
   }
@@ -174,7 +194,15 @@ export default function HistoricalChart({ FloorId }) {
   };
   function onChangeDay(date, dateString) {
     console.log(dateString);
-    GetAHUGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
+    if(dateString[0] != "" && dateString[1] != ""){
+    GetHistoricalGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
+    }
+    else {
+      setCurrentPower([])
+      setPowergeneration([])
+      setNumberpeople([])
+      setListLabel([])
+    }
   }
 
   // const [placement, SetPlacement] = useState('day');
@@ -206,14 +234,15 @@ export default function HistoricalChart({ FloorId }) {
       {typeof window !== "undefined" && (
         <Line
           data={{
-            labels: ListLabelAHU,
+            labels: ListLabel,
             datasets: [
-              ...chartListAHU1.map((item) => {
+              ...currentpower.map((item) => {
+                console.log(item)
                 return {
-                  label: "Controle Value " + item.deviceName,
-                  data: item.data.map((data) => {
+                  label: item.label + " (kW)",
+                  data: item.data != null ? item.data?.map((data) => {
                     return data.value;
-                  }),
+                  }) : null,
                   borderColor: RandomColor(),
                   fill: false,
                   tension: 0,
@@ -221,27 +250,26 @@ export default function HistoricalChart({ FloorId }) {
                 };
               }),
 
-              ...chartListAHU2.map((item) => {
+              ...powergeneration.map((item) => {
                 return {
-                  label: "Supply Temp " + item.deviceName,
-                  data: item.data.map((data) => {
+                  label: item.label + " (kW)",
+                  data: item.data != null ? item.data.map((data) => {
                     return data.value;
-                  }),
+                  }) : null,
                   borderColor: RandomColor(),
-                  borderWidth: 1,
-                  borderDash: [10, 5],
+            
                   fill: true,
                   tension: 0,
-                  yAxisID: "y1",
+                  yAxisID: "y",
                 };
               }),
 
-              ...chartListAHU3.map((item) => {
+              ...numberpeople.map((item) => {
                 return {
-                  label: "Return Temp " + item.deviceName,
-                  data: item.data.map((data) => {
+                  label: item.label,
+                  data: item.data != null ? item.data.map((data) => {
                     return data.value;
-                  }),
+                  }) : null,
                   borderColor: RandomColor(),
                   borderWidth: 1,
                   borderDash: [10, 5],

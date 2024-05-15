@@ -1191,22 +1191,54 @@ export async function getheaterwaterDetail(devId) {
   }
 }
 
+//Overview-----------------------------------------------
+export async function getHistoricalChart(req) {
+  
+  const floorId = req.floorId;
+  const dateFrom = req.dateFrom
+  const dateTo = req.dateTo
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/overview/historical?floorId=${floorId}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",},
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+export async function getEnergyConsumptionChart(req) {
+  
+  const floorId = req.floorId;
+  const date = req.date
+  const period = req.period
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/overview/consumption/graph?floorId=${floorId}&date=${date}&period=${period}`;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",},
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+export async function getSummary(floorId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/overview/summary/'+floorId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
 
 
-
-  // const [indoortemphumidDetailList, setIndoortemphumidDetailList] = useState([]);
-  // const [outdoortemphumidDetailList, setOutdoortemphumidDetailList] = useState([]);
-  // const [PressuregaugeDetailList, setPressuregaugeDetailList] = useState([]);
-  // const [PowerMeterDetailList, setPowerMeterDetailList] = useState([]);
-  // const [InveterDetailList, setInveterDetailList] = useState([]);
-  // const [FlowMeterDetailList, setFlowMeterDetailList] = useState([]);
-  // const [MotionSensorDetailList, setMotionSensorDetailList] = useState([]);
-  // const [LightingDetailList, setLightingDetailList] = useState([]);
-  // const [CounterDetailList, setCounterDetailList] = useState([]);
-  // const [SmartIRDetailList, setSmartIRDetailList] = useState([]);
-  // const [EfficiencyDetailList, setEfficiencyDetailList] = useState([]);
-  // const [CCTVDetailList, setCCTVDetailList] = useState([]);
-  // const [CO2SensorDetailList, setCO2SensorDetailList] = useState([]);
-  // const [WaterMeterDetailList, setWaterMeterDetailList] = useState([]);
-  // const [HeaterDetailList, setHeaterDetailList] = useState([]);
-  // const [HeaterWaterDetailList, setHeaterWaterDetailList] = useState([]);

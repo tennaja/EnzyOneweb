@@ -9,16 +9,19 @@ import {
   Title,
   Tooltip,
   Legend,
+  BarElement,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 import dayjs from 'dayjs';
-import { getAHUGraph } from "@/utils/api";
-import { DatePicker, Radio} from "antd";
+import { getEnergyConsumptionChart } from "@/utils/api";
+import { DatePicker, TimePicker,Radio} from "antd";
 import moment from "moment";
-const { MonthPicker, RangePicker ,YearPicker} = DatePicker;
+import { red } from "@mui/material/colors";
+
 ChartJS.register(
   zoomPlugin,
+  BarElement,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -34,9 +37,10 @@ export default function ChartEnergyConsumption({ FloorId }) {
   const [chartListAHU2, setChartListAHU2] = useState([]);
   const [chartListAHU3, setChartListAHU3] = useState([]);
   const [ListLabelAHU, setListLabelAHU] = useState([0]);
-  const [dateFrom, setdateFrom] = useState(new Date());
-  const [dateTo, setdateTo] = useState(new Date());
+  const [date, setdate] = useState(new Date());
   const dateFormat = 'YYYY/MM/DD';
+  // const yearlabel =['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+  
   const formatDate = (date) => {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -51,7 +55,7 @@ export default function ChartEnergyConsumption({ FloorId }) {
 
   useEffect(() => {
     if (FloorId != 0) {
-      GetAHUGraph(FloorId, formatDate(new Date()), formatDate(new Date()));
+      GetEnergyGraph(FloorId, formatDate(new Date()),placement );
     }
   }, [FloorId]);
   const zoomOptions = {
@@ -101,24 +105,11 @@ export default function ChartEnergyConsumption({ FloorId }) {
 
         title: {
           display: true,
-          text: "Controle Valve %",
+          text: "Energy Consumption (kWh)",
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
       },
-      y1: {
-        beginAtZero: true,
-        type: "linear",
-        display: true,
-        position: "right",
-        title: {
-          display: true,
-          text: "Temp",
-          padding: { top: 30, left: 0, right: 0, bottom: 0 },
-        },
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        },
-      },
+    
     },
   };
   const chartRef = useRef(null);
@@ -132,39 +123,38 @@ export default function ChartEnergyConsumption({ FloorId }) {
     return "#" + randomColor;
   };
 
-  async function GetAHUGraph(floorId, dateFrom, dateTo) {
+  async function GetEnergyGraph(floorId, date, period) {
     setFloorId(floorId);
     const paramsNav = {
       floorId: floorId,
-      dateFrom: dateFrom,
-      dateTo: dateTo,
+      date: date,
+      period: placement,
     };
-    const res = await getAHUGraph(paramsNav);
+    const res = await getEnergyConsumptionChart(paramsNav);
     console.log(paramsNav);
     if (res.status === 200) {
-      if (res.data.controlValve.length > 0) {
-        setChartListAHU1(res.data.controlValve);
+      console.log(res.data)
+      if (res.data.length > 0) {
+        setChartListAHU1(res.data);
         let label = [];
+        let yearlabel =['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
         let modday = 0;
-        console.log(res.data.controlValve);
-        for (let j = 0; j < res.data.controlValve[0].data.length; j++) {
-          label.push(res.data.controlValve[0].data[j].time);
+
+        if(placement == "year"){
+          setListLabelAHU(yearlabel)
         }
-        setListLabelAHU(label);
+        else {
+          if (res.data[0].data != null){
+            for (let j = 0; j < res.data[0].data.length; j++) {
+              label.push(res.data[0].data[j].time);
+              }
+              setListLabelAHU(label);
+          }
+          
+        }
+        
         console.log(label)
         // console.log(label);
-      }
-      if (res.data.supplyTemp.length > 0) {
-        setChartListAHU2(res.data.supplyTemp);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.supplyTemp);
-      }
-      if (res.data.returnTemp.length > 0) {
-        setChartListAHU3(res.data.returnTemp);
-        let label = [];
-        let modday = 0;
-        console.log(res.data.returnTemp);
       }
     }
   }
@@ -173,10 +163,9 @@ export default function ChartEnergyConsumption({ FloorId }) {
     return current && current > dayjs().endOf('day');
   };
   function onChangeDay(date, dateString) {
-    console.log(dateString);
-    GetAHUGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
+    console.log(formatDate(dateString));
+    GetEnergyGraph(FloorId, formatDate(dateString),placement);
   }
-
   const [placement, SetPlacement] = useState('day');
   const placementChange = (e) => {
     SetPlacement(e.target.value);
@@ -186,14 +175,14 @@ export default function ChartEnergyConsumption({ FloorId }) {
       <div className="flex flex-col gap-4 p-2">
       <span className="text-lg  font-bold">Energy Consumption</span>
         <div className="flex justify-center gap-4 items-center">
-        <Radio.Group value={placement} onChange={placementChange} buttonStyle="solid" style={{color : "primary"}}>
+        <Radio.Group value={placement} onChange={placementChange} buttonStyle="solid" style={{ backgroundcolor: '#2563eb'}}>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="day">Day</Radio.Button>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="month">Month</Radio.Button>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="year">Year</Radio.Button>
       </Radio.Group>
           {/* <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
       format={dateFormat} disabledDate={disabledDate}/> */}
-      
+      {placement == "day" ? <DatePicker defaultValue={[dayjs(formatDate(date), dateFormat)]} onChange={onChangeDay}/> : placement == "month" ? <DatePicker onChange={onChangeDay} picker="month" /> : <DatePicker onChange={onChangeDay} picker="year" />}
           <button
             className="border border-slate-300 rounded-md h-9 px-2"
             onClick={onResetZoom}
@@ -204,52 +193,24 @@ export default function ChartEnergyConsumption({ FloorId }) {
       </div>
 
       {typeof window !== "undefined" && (
-        <Line
+        <Bar
           data={{
             labels: ListLabelAHU,
             datasets: [
               ...chartListAHU1.map((item) => {
                 return {
-                  label: "Controle Value " + item.deviceName,
-                  data: item.data.map((data) => {
+                  label: "Controle Value " + item.label,
+                  data: item.data != null ? item.data.map((data) => {
                     return data.value;
-                  }),
-                  borderColor: RandomColor(),
+                  }) : null,
+                  backgroundColor : '#2563eb',
+                  borderColor: 'red',
                   fill: false,
                   tension: 0,
-                  yAxisID: "y",
                 };
               }),
 
-              ...chartListAHU2.map((item) => {
-                return {
-                  label: "Supply Temp " + item.deviceName,
-                  data: item.data.map((data) => {
-                    return data.value;
-                  }),
-                  borderColor: RandomColor(),
-                  borderWidth: 1,
-                  borderDash: [10, 5],
-                  fill: true,
-                  tension: 0,
-                  yAxisID: "y1",
-                };
-              }),
-
-              ...chartListAHU3.map((item) => {
-                return {
-                  label: "Return Temp " + item.deviceName,
-                  data: item.data.map((data) => {
-                    return data.value;
-                  }),
-                  borderColor: RandomColor(),
-                  borderWidth: 1,
-                  borderDash: [10, 5],
-                  fill: true,
-                  tension: 0,
-                  yAxisID: "y1",
-                };
-              }),
+              
             ],
           }}
           ref={chartRef}
