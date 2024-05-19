@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 
 export default function SmartIRtable(IotList) {
- 
+//  console.log(IotList)
   const [searchTable, setSerachTable] = useState("");
   function titleCase(str) {
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
@@ -50,6 +50,7 @@ export default function SmartIRtable(IotList) {
               <tbody>
                 {IotList.IotList.length > 0 &&
                   IotList.IotList.filter((item) => {
+                    // console.log(item)
                     // let data = []
                     //  if (item.power.toString().includes(searchTable)){
                     //   data = item
@@ -65,7 +66,7 @@ export default function SmartIRtable(IotList) {
                       String(item.co2.toFixed(2)).includes(searchTable) 
                       
                     );
-                  }).map?((item) => {
+                  }).map((item) => {
                    
                     return (
                       <tr
@@ -104,7 +105,7 @@ export default function SmartIRtable(IotList) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.temp.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.temp)} // Replace this with your text
                                   />}
                        
       
@@ -114,7 +115,7 @@ export default function SmartIRtable(IotList) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.humidity.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.humidity)} // Replace this with your text
                                   />}
                         
                           
@@ -124,7 +125,7 @@ export default function SmartIRtable(IotList) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.co2.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.co2)} // Replace this with your text
                                   />}
                         
                           
@@ -133,7 +134,7 @@ export default function SmartIRtable(IotList) {
                         
                       </tr>
                     );
-                  }): <h1>No Data ...</h1>}
+                  })}
               </tbody>
             </table>
           </div>

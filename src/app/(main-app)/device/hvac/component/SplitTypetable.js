@@ -19,8 +19,8 @@ import {
 import Loading from "./Loading";
 
 export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSettemp,onSubmitSetMode,onSubmitSetFan,onSubmitAutomation}) {
-  console.log(SplittypeList)
-  console.log(onSubmitControl)
+  // console.log(SplittypeList)
+  // console.log(onSubmitControl)
 
   const [List, setList] = useState([]);
   const [searchTable, setSerachTable] = useState("");
@@ -44,10 +44,10 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
   const [toggle, setToggle] = useState(false);
   const min = 10;
   const max = 40;
-
   useEffect (() => {
     setList(SplittypeList)
   },[SplittypeList,]) 
+  
 
   function titleCase(str) {
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
@@ -174,6 +174,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                     <tbody>
                       {List.length > 0 &&
                         List.filter((item) => {
+                          // console.log
                           // let data = []
                           //  if (item.power.toString().includes(searchTable)){
                           //   data = item
@@ -189,10 +190,10 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                               .includes(searchTable.toUpperCase()) ||
                             item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
                             item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
-                            String(item.roomTemp.toFixed(2)).includes(
+                            String(item.roomTemp).includes(
                               searchTable
                             ) ||
-                            String(item.humidity.toFixed(2)).includes(
+                            String(item.humidity).includes(
                               searchTable
                             ) ||
                             String(item.setTemp).includes(searchTable) ||
@@ -207,7 +208,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                             item.mode.includes(searchTable) ||
                             item.automation.includes(searchTable)
                           );
-                        }).map?((item) => {
+                        }).map((item) => {
                           return (
                             <tr
                               className="border-b dark:border-neutral-500"
@@ -251,9 +252,8 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(
-                                      item.roomTemp.toFixed(2)
-                                    )} // Replace this with your text
+                                    textToHighlight=
+                                    {String(item.roomTemp)} // Replace this with your text
                                   />
                                 )}
                               </td>
@@ -266,7 +266,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(
-                                      item.humidity.toFixed(2)
+                                      item.humidity
                                     )} // Replace this with your text
                                   />
                                 )}
@@ -444,7 +444,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                 </div>
                               </td>
 
-                              <td className="whitespace-nowrap px-6 py-4 flex justify-center items-center font-extrabold">
+                              <td className="whitespace-nowrap px-6 py-4 flex flex-justify-center items-center text-center font-extrabold">
                                 {item.status == "offline" ? (
                                   "-"
                                 ) : item.status == "off" ? (
@@ -505,7 +505,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                               </td>
                             </tr>
                           );
-                        }):null}
+                        })}
                     </tbody>
                   </table>
                 </div>

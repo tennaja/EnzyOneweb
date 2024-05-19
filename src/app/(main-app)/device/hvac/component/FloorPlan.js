@@ -32,6 +32,7 @@ import {
 } from "@/utils/api";
 import Loading from "./Loading";
 import { Slackside_One } from 'next/font/google';
+import ColorLoop from './test';
 
 export default function FloorPlan({ FloorId }) {
   console.log(FloorId);
@@ -76,7 +77,7 @@ export default function FloorPlan({ FloorId }) {
   const minA = 10;
   const maxA = 40;
   useEffect(() => {
-    if (FloorId != 0) {
+    if (FloorId) {
       getfloorplan(FloorId);
       getAHUList(FloorId);
       getVAVList(FloorId);
@@ -112,6 +113,7 @@ export default function FloorPlan({ FloorId }) {
 
     console.log(result.data.deviceType);
     if (result.data.deviceType){
+      console.log("devicetypeList",result.data.deviceType)
     setdeviceTypeList(result.data.deviceType);}
     // if (result.data.deviceType.length > 0) {
     //   console.log(result.data.deviceType)
@@ -153,34 +155,34 @@ export default function FloorPlan({ FloorId }) {
   const getVAVdetail = async (devId) => {
     setDevId(devId);
     const result = await getVAVDetail(devId);
-    console.log(result.data);
+    
     setVAVDetailList([result.data]);
-    console.log(VAVDetailList)
+    
     getVAVList(FloorId)
     
   };
   const getSplitdetail = async (devId) => {
     setDevId(devId);
-    console.log(devId);
+    
     const result = await getSplitTypeDetail(devId);
-    console.log(result.data);
+    
     setSplittypeDetailList([result.data]);
     console.log(SplittypeDetailList)
     getSplittypeList(FloorId);
   };
   const getAHUdetail = async (devId) => {
     setDevId(devId);
-    console.log(devId);
+    
     const result = await getAHUDetail(devId);
-    console.log(result.data);
+    
     setAHUDetailList([result.data]);
     getAHUList(FloorId);
   };
   const getIoTdetail = async (devId) => {
     setDevId(devId);
-    console.log(devId);
+   console.log(devId)
     const result = await getIoTDetail(devId);
-    console.log(result.data);
+    console.log([result.data])
     setIoTDetailList([result.data]);
     getIOTList(FloorId);
   };
@@ -515,7 +517,7 @@ export default function FloorPlan({ FloorId }) {
         <div className="flex flex-col gap-4 p-2">
           {floorplanList.length > 0 &&
             floorplanList.map((item, index) => {
-              
+              console.log(item)
               return (
                 <div key={item.id}>
                   <div className="flex flex-row gap-4 p-2">
@@ -528,7 +530,7 @@ export default function FloorPlan({ FloorId }) {
 
                       {deviceTypeList.length > 0 &&
                         deviceTypeList.map((item) => {
-                          
+                          console.log(item)
                           return (
                             <option key={item.id}>{item.displayName}</option>)
                         })}
@@ -546,7 +548,7 @@ export default function FloorPlan({ FloorId }) {
                         {option == "All Type" ? (
                           <div>
                             {AHUList.length > 0 &&
-                              AHUList.map?  ((marker, index) => {
+                              AHUList.map ((marker, index) => {
                                 console.log(marker);
                                 return (
                                   <div key={marker.id}>
@@ -591,23 +593,23 @@ export default function FloorPlan({ FloorId }) {
                                         <div class="px-3 py-2">
                                           <span class="text-gray-700 text-xs">
                                             Supply Temp. (°C) :{" "}
-                                            {String(marker.supplyTemp.toFixed(2))}
+                                            {String(marker.supplyTemp)}
                                           </span>
                                         </div>
 
                                         <div class="px-3">
                                           <span class="text-gray-700 text-xs">
                                             Return Temp. (°C) :{" "}
-                                            {String(marker.returnTemp.toFixed(2))}
+                                            {String(marker.returnTemp)}
                                           </span>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 );
-                              }):null}
+                              })}
                             {VAVList.length > 0 &&
-                              VAVList.map?((marker, index) => {
+                              VAVList.map((marker, index) => {
                                 console.log(marker);
                                 return (
                                   <div key={index}>
@@ -651,26 +653,26 @@ export default function FloorPlan({ FloorId }) {
                                       <div className="bg-white border border-black ml-4">
                                         <div class="px-3">
                                           <span class="text-gray-700 text-xs">
-                                            Temp. (°C) : {marker.temp.toFixed(2)}
+                                            Temp. (°C) : {marker.temp}
                                           </span>
                                         </div>
                                         <div class="px-3">
                                           <span class="text-gray-700 text-xs">
-                                            Air Flow (CFM) : {marker.airFlow.toFixed(2)}
+                                            Air Flow (CFM) : {marker.airFlow}
                                           </span>
                                         </div>
                                         <div class="px-3">
                                           <span class="text-gray-700 text-xs">
-                                            Damper (%) : {marker.damper.toFixed(2)}
+                                            Damper (%) : {marker.damper}
                                           </span>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 );
-                              }):null}
+                              })}
                             {SplittypeList.length > 0 &&
-                              SplittypeList.map?((marker, index) => {
+                              SplittypeList.map((marker, index) => {
                                 return (
                                   <div key={marker.id}>
                                     <div
@@ -713,12 +715,12 @@ export default function FloorPlan({ FloorId }) {
                                       <div className="bg-white border border-black ml-4">
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            Room Temp. (°C) : {String(marker.roomTemp.toFixed(2))}
+                                            Room Temp. (°C) : {String(marker.roomTemp)}
                                           </span>
                                         </div>
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            Humidity (%) : {String(marker.humidity.toFixed(2))}
+                                            Humidity (%) : {String(marker.humidity)}
                                           </span>
                                         </div>
 
@@ -726,10 +728,10 @@ export default function FloorPlan({ FloorId }) {
                                     </div>
                                   </div>
                                 );
-                              }):null}
+                              })}
 
                             {IOTList.length > 0 &&
-                              IOTList.map?((marker, index) => {
+                              IOTList.map((marker, index) => {
                                 return (
                                   <div key={marker.id}>
                                     <div
@@ -773,22 +775,22 @@ export default function FloorPlan({ FloorId }) {
                                       <div className="bg-white ml-4 border border-black">
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            Temp. (°C) :  {marker.temp.toFixed(2)}
+                                            Temp. (°C) :  {marker.temp}
                                           </span></div>
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            Humidity (%) : {marker.humidity.toFixed(2)}
+                                            Humidity (%) : {marker.humidity}
                                           </span></div>
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            CO2 (ppm) : {marker.co2.toFixed(2)}
+                                            CO2 (ppm) : {marker.co2}
                                           </span></div>
 
                                       </div>
                                     </div>
                                   </div>
                                 );
-                              }):null}
+                              })}
                           </div>
                         ) : option == "Split Type" ? (
                           <div>
@@ -837,12 +839,12 @@ export default function FloorPlan({ FloorId }) {
                                       <div className="bg-white border border-black ml-4">
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            Room Temp. (°C) : {String(marker.roomTemp.toFixed(2))}
+                                            Room Temp. (°C) : {String(marker.roomTemp)}
                                           </span>
                                         </div>
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            Humidity (%) : {String(marker.humidity.toFixed(2))}
+                                            Humidity (%) : {String(marker.humidity)}
                                           </span>
                                         </div>
 
@@ -900,13 +902,13 @@ export default function FloorPlan({ FloorId }) {
                                         <div class="px-3 py-2">
                                           <span class="text-gray-700 text-xs">
                                             Supply Temp. (°C) :{" "}
-                                            {String(marker.supplyTemp.toFixed(2))}
+                                            {String(marker.supplyTemp)}
                                           </span>
                                         </div>
                                         <div class="px-3">
                                           <span class="text-gray-700 text-xs">
                                             Return Temp. (°C) :{" "}
-                                            {String(marker.returnTemp.toFixed(2))}
+                                            {String(marker.returnTemp)}
                                           </span>
                                         </div>
 
@@ -964,17 +966,17 @@ export default function FloorPlan({ FloorId }) {
                                       <div className="bg-white border border-black ml-4">
                                         <div class="px-3">
                                           <span class="text-gray-700 text-xs">
-                                            Temp. (°C) : {marker.temp.toFixed(2)}
+                                            Temp. (°C) : {marker.temp}
                                           </span>
                                         </div>
                                         <div class="px-3">
                                           <span class="text-gray-700 text-xs">
-                                            Air Flow (CFM) : {marker.airFlow.toFixed(2)}
+                                            Air Flow (CFM) : {marker.airFlow}
                                           </span>
                                         </div>
                                         <div class="px-3">
                                           <span class="text-gray-700 text-xs">
-                                            Damper (%) : {marker.damper.toFixed(2)}
+                                            Damper (%) : {marker.damper}
                                           </span>
                                         </div>
                                       </div>
@@ -1030,15 +1032,15 @@ export default function FloorPlan({ FloorId }) {
                                       <div className="bg-white ml-4 border border-black">
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            Temp. (°C) :  {marker.temp.toFixed(2)}
+                                            Temp. (°C) :  {marker.temp}
                                           </span></div>
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            Humidity (%) : {marker.humidity.toFixed(2)}
+                                            Humidity (%) : {marker.humidity}
                                           </span></div>
                                         <div class="px-3 ">
                                           <span class="text-gray-700 text-xs">
-                                            CO2 (ppm) : {marker.co2.toFixed(2)}
+                                            CO2 (ppm) : {marker.co2}
                                           </span></div>
 
                                       </div>
@@ -1083,16 +1085,16 @@ export default function FloorPlan({ FloorId }) {
                                   <span class="text-gray-700 text-sm">
                                     Temp. (°C) : {" "}
                                     {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                      {marker.temp.toFixed(2)}
-                                    </span> : marker.temp.toFixed(2)}
+                                      {marker.temp}
+                                    </span> : marker.temp}
                                   </span>
                                 </div>
                                 <div class="px-3">
                                   <span class="text-gray-700 text-sm">
                                     Air Flow (CFM) : {" "}
                                     {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                      {marker.airFlow.toFixed(2)}
-                                    </span> : marker.airFlow.toFixed(2)}
+                                      {marker.airFlow}
+                                    </span> : marker.airFlow}
 
                                   </span>
                                 </div>
@@ -1110,9 +1112,9 @@ export default function FloorPlan({ FloorId }) {
                                         ) : null
                                       }
                                     >
-                                      {marker.damper.toFixed(2)}
+                                      {marker.damper}
                                     </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                      {marker.damper.toFixed(2)}
+                                      {marker.damper}
                                     </span> : "-"}
                                   </span>
                                 </div>
@@ -1151,8 +1153,8 @@ export default function FloorPlan({ FloorId }) {
                                     <span class="text-gray-700 text-sm">
                                       Supply Temp. (°C) : {" "}
                                       {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                        {marker.supplyTemp.toFixed(2)}
-                                      </span> : marker.supplyTemp.toFixed(2)}
+                                        {marker.supplyTemp}
+                                      </span> : marker.supplyTemp}
                                     </span>
                                   </div>
                                   <div class="px-3">
@@ -1168,9 +1170,9 @@ export default function FloorPlan({ FloorId }) {
                                           ) : null
                                         }
                                       >
-                                        {marker.supplyTempSetPoint.toFixed(2)}
+                                        {marker.supplyTempSetPoint}
                                       </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                        {marker.supplyTempSetPoint.toFixed(2)}
+                                        {marker.supplyTempSetPoint}
                                       </span> : "-"}
                                     </span>
                                   </div>
@@ -1178,40 +1180,40 @@ export default function FloorPlan({ FloorId }) {
                                     <span class="text-gray-700 text-sm">
                                       Return Temp. (°C) : {" "}
                                       {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                        {marker.returnTemp.toFixed(2)}
-                                      </span> : marker.returnTemp.toFixed(2)}
+                                        {marker.returnTemp}
+                                      </span> : marker.returnTemp}
                                     </span>
                                   </div>
                                   <div class="px-3">
                                     <span class="text-gray-700 text-sm">
                                       VSD %Drive (Hz) : {" "}
                                       {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                        {marker.vsdDrive.toFixed(2)}
-                                      </span> : marker.vsdDrive.toFixed(2)}
+                                        {marker.vsdDrive}
+                                      </span> : marker.vsdDrive}
                                     </span>
                                   </div>
                                   <div class="px-3">
                                     <span class="text-gray-700 text-sm">
                                       VSD Power (kW) : {" "}
                                       {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                        {marker.vsdPower.toFixed(2)}
-                                      </span> : marker.vsdPower.toFixed(2)}
+                                        {marker.vsdPower}
+                                      </span> : marker.vsdPower}
                                     </span>
                                   </div>
                                   <div class="px-3">
                                     <span class="text-gray-700 text-sm">
                                       VSD Speed (rpm) : {" "}
                                       {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                        {marker.vsdSpeed.toFixed(2)}
-                                      </span> : marker.vsdSpeed.toFixed(2)}
+                                        {marker.vsdSpeed}
+                                      </span> : marker.vsdSpeed}
                                     </span>
                                   </div>
                                   <div class="px-3">
                                     <span class="text-gray-700 text-sm">
                                       Control Valve (%) : {" "}
                                       {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                        {marker.controlValve.toFixed(2)}
-                                      </span> : marker.controlValve.toFixed(2)}
+                                        {marker.controlValve}
+                                      </span> : marker.controlValve}
                                     </span>
                                   </div>
                                   <div class="px-3 flex gap-2">
@@ -1494,8 +1496,8 @@ export default function FloorPlan({ FloorId }) {
                                           Temp. (°C) :
                                           {" "}
                                           {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                            {marker.temp.toFixed(2)}
-                                          </span> : marker.temp.toFixed(2)}
+                                            {marker.temp}
+                                          </span> : marker.temp}
 
                                         </span>
                                       </div>
@@ -1504,8 +1506,8 @@ export default function FloorPlan({ FloorId }) {
                                           Humidity (%) :
                                           {" "}
                                           {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                            {marker.humidity.toFixed(2)}
-                                          </span> : marker.humidity.toFixed(2)}
+                                            {marker.humidity}
+                                          </span> : marker.humidity}
 
                                         </span>
                                       </div>
@@ -1514,8 +1516,8 @@ export default function FloorPlan({ FloorId }) {
                                           CO2 (ppm) :
                                           {" "}
                                           {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                            {marker.co2.toFixed(2)}
-                                          </span> : marker.co2.toFixed(2)}
+                                            {marker.co2}
+                                          </span> : marker.co2}
 
                                         </span>
                                       </div>

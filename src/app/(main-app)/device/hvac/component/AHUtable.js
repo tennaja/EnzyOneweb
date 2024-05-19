@@ -12,7 +12,7 @@ import Loading from "./Loading";
 import TextField from '@mui/material/TextField';
 import { message } from "antd";
 export default function AHUtable({AHUlist,onSubmitAutomation,onSubmitSettemp}) {
-  console.log(AHUlist)
+  // console.log(AHUlist)
   const [searchTable, setSerachTable] = useState("");
   const [DecviceId, setDeviceId] = useState(null);
   const [DevId,setDevId] = useState()
@@ -181,7 +181,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.supplyTemp.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.supplyTemp)} // Replace this with your text
                                   />}
                         
                         
@@ -193,14 +193,14 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.supplyTempSetPoint.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
                                   />: <Highlighter
                                     className="text-[#5eead4] underline font-bold cursor-pointer"
                                     onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,item.devId,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.supplyTempSetPoint.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
                                   />}
                         
                           
@@ -210,7 +210,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.returnTemp.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.returnTemp)} // Replace this with your text
                                   />}
                        
                           
@@ -220,7 +220,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.vsdDrive.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.vsdDrive)} // Replace this with your text
                                   />}
                         
                         
@@ -230,7 +230,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.vsdPower.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.vsdPower)} // Replace this with your text
                                   />}
                         
                           
@@ -240,7 +240,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.vsdSpeed.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.vsdSpeed)} // Replace this with your text
                                   />}
                        
                 
@@ -250,7 +250,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.controlValve.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.controlValve)} // Replace this with your text
                                   />
                           }
                         

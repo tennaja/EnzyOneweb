@@ -13,6 +13,7 @@ import {
 import HistoricalChart from "./chartHistorical";
 import ChartEnergyConsumption from "./chartEnergy";
 import Summary from "./Summary";
+import Testttttt from "./test";
 
 export default function FilterCard() {
   const [chartListAHU1, setChartListAHU1] = useState([]);
@@ -172,6 +173,7 @@ export default function FilterCard() {
       <Summary FloorId= {floorId}/>
       <ChartEnergyConsumption FloorId= {floorId}/>
       <HistoricalChart FloorId= {floorId}/>
+    
       
     </div>
   );

@@ -140,7 +140,7 @@ export default function ChartAHU({ FloorId }) {
       dateTo: dateTo,
     };
     const res = await getAHUGraph(paramsNav);
-    console.log(paramsNav);
+    // console.log(paramsNav);
     if (res.status === 200) {
       if (res.data.controlValve.length > 0) {
         setChartListAHU1(res.data.controlValve);
@@ -151,7 +151,7 @@ export default function ChartAHU({ FloorId }) {
           label.push(res.data.controlValve[0].data[j].time);
         }
         setListLabelAHU(label);
-        console.log(label)
+        // console.log(label)
         // console.log(label);
       }
       if (res.data.supplyTemp.length > 0) {

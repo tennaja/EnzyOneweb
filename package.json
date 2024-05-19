@@ -35,6 +35,7 @@
     "classnames": "^2.3.2",
     "date-fns": "^3.3.1",
     "dayjs": "^1.11.10",
+    "echarts": "^5.5.0",
     "flowbite-react": "^0.7.2",
     "hammerjs": "^2.0.8",
     "js-cookie": "^3.0.5",
@@ -54,6 +55,7 @@
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
     "react-flatpickr": "^3.10.13",
+    "react-gauge-chart": "^0.5.1",
     "react-highlight-words": "^0.20.0",
     "react-icons": "^4.12.0",
     "react-image-marker": "^1.2.0",
@@ -66,7 +68,8 @@
     "react-toastify": "^10.0.4",
     "redux-persist": "^6.0.0",
     "styled-components": "^6.1.8",
-    "swr": "^2.2.4"
+    "swr": "^2.2.4",
+    "zingchart": "^2.9.13"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

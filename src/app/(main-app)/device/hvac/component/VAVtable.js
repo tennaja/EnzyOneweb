@@ -142,7 +142,7 @@ export default function VAVtable({VAVList,onSubmitSettemp}) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.temp.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.temp)} // Replace this with your text
                                   />
        }
                        
@@ -152,7 +152,7 @@ export default function VAVtable({VAVList,onSubmitSettemp}) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.airFlow.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.airFlow)} // Replace this with your text
                                   />}
                         
                           
@@ -163,7 +163,7 @@ export default function VAVtable({VAVList,onSubmitSettemp}) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.damper.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.damper)} // Replace this with your text
                                   /> :
                              <Highlighter
                         className="text-[#5eead4] underline font-bold cursor-pointer"
@@ -171,7 +171,7 @@ export default function VAVtable({VAVList,onSubmitSettemp}) {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.damper.toFixed(2))} // Replace this with your text
+                                    textToHighlight={String(item.damper)} // Replace this with your text
                                   />}
                         
                           

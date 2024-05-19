@@ -34,9 +34,8 @@ ChartJS.register(
 export default function ChartEnergyConsumption({ FloorId }) {
   const [floorId, setFloorId] = useState();
   const [chartListAHU1, setChartListAHU1] = useState([]);
-  const [chartListAHU2, setChartListAHU2] = useState([]);
-  const [chartListAHU3, setChartListAHU3] = useState([]);
   const [ListLabelAHU, setListLabelAHU] = useState([0]);
+  const [placement, SetPlacement] = useState('day');
   const [date, setdate] = useState(new Date());
   const dateFormat = 'YYYY/MM/DD';
   // const yearlabel =['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
@@ -54,10 +53,10 @@ export default function ChartEnergyConsumption({ FloorId }) {
   };
 
   useEffect(() => {
-    if (FloorId != 0) {
+    if (FloorId != 0 && placement) {
       GetEnergyGraph(FloorId, formatDate(new Date()),placement );
     }
-  }, [FloorId]);
+  }, [FloorId,placement]);
   const zoomOptions = {
     pan: {
       enabled: true,
@@ -162,20 +161,22 @@ export default function ChartEnergyConsumption({ FloorId }) {
     // Can not select days before today and today
     return current && current > dayjs().endOf('day');
   };
-  function onChangeDay(date, dateString) {
+  function onChangeDay(dateString) {
     console.log(formatDate(dateString));
     GetEnergyGraph(FloorId, formatDate(dateString),placement);
   }
-  const [placement, SetPlacement] = useState('day');
-  const placementChange = (e) => {
-    SetPlacement(e.target.value);
+  
+  const placementChange = (event) => {
+    console.log(event)
+    onChangeDay(new Date())
+    SetPlacement(event);
   };
   return (
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
       <div className="flex flex-col gap-4 p-2">
       <span className="text-lg  font-bold">Energy Consumption</span>
         <div className="flex justify-center gap-4 items-center">
-        <Radio.Group value={placement} onChange={placementChange} buttonStyle="solid" style={{ backgroundcolor: '#2563eb'}}>
+        <Radio.Group value={placement} onChange={(event) => placementChange(event.target.value)} buttonStyle="solid" style={{ backgroundcolor: '#2563eb'}}>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="day">Day</Radio.Button>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="month">Month</Radio.Button>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="year">Year</Radio.Button>
