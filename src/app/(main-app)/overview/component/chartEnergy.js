@@ -35,7 +35,7 @@ export default function ChartEnergyConsumption({ FloorId }) {
   const [chartListAHU1, setChartListAHU1] = useState([]);
   const [ListLabelAHU, setListLabelAHU] = useState([0]);
   const [placement, SetPlacement] = useState('day');
-  const [date, setdate] = useState(new Date());
+  const [startdate, setStartDate] = useState(new Date());
   const dateFormat = 'YYYY/MM/DD';
   // const yearlabel =['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
   
@@ -162,12 +162,13 @@ export default function ChartEnergyConsumption({ FloorId }) {
   };
   function onChangeDay(dateString) {
     console.log(formatDate(dateString));
+    setStartDate(dateString)
     GetEnergyGraph(FloorId, formatDate(dateString),placement);
   }
   
   const placementChange = (event) => {
     console.log(event)
-    onChangeDay(new Date())
+    onChangeDay(startdate)
     SetPlacement(event);
   };
   return (
@@ -182,7 +183,7 @@ export default function ChartEnergyConsumption({ FloorId }) {
       </Radio.Group>
           {/* <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
       format={dateFormat} disabledDate={disabledDate}/> */}
-      {placement == "day" ? <DatePicker defaultValue={[dayjs(formatDate(date), dateFormat)]} onChange={onChangeDay}/> : placement == "month" ? <DatePicker onChange={onChangeDay} picker="month" /> : <DatePicker onChange={onChangeDay} picker="year" />}
+      {placement == "day" ? <DatePicker defaultValue={[dayjs(formatDate(startdate), dateFormat)]} onChange={onChangeDay}/> : placement == "month" ? <DatePicker onChange={onChangeDay} picker="month" /> : <DatePicker onChange={onChangeDay} picker="year" />}
           <button
             className="border border-slate-300 rounded-md h-9 px-2"
             onClick={onResetZoom}
