@@ -13,10 +13,9 @@ import {
 import HistoricalChart from "./chartHistorical";
 import ChartEnergyConsumption from "./chartEnergy";
 import Summary from "./Summary";
-import Testttttt from "./test";
+
 
 export default function FilterCard() {
-  const [chartListAHU1, setChartListAHU1] = useState([]);
   const [isFirst, setIsFirst] = useState(true);
   const companyData = useSelector((state) => state.companyData.company);
   const [branchList, setBranchList] = useState([]);

@@ -16,8 +16,7 @@ import zoomPlugin from "chartjs-plugin-zoom";
 import dayjs from 'dayjs';
 import { getEnergyConsumptionChart } from "@/utils/api";
 import { DatePicker, TimePicker,Radio} from "antd";
-import moment from "moment";
-import { red } from "@mui/material/colors";
+
 
 ChartJS.register(
   zoomPlugin,
