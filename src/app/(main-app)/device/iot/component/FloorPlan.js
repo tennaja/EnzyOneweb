@@ -7,7 +7,7 @@ import ImageMarker, { Marker } from "react-image-marker";
 import {
   getFloorplanIoT,getdeviceparameter,getindoortemphumid,getoutdoortemphumid,getPressuregauge,getPowerMeter,getInveter,getFlowMeter,getMotionSensor,getLighting,getCounter,getSmartIR,getEfficiency,getCCTV,getCO2Sensor,
   getWaterMeter,getHeater,getHeaterWater,ChangeControlLightning,ChangeControlSmartIR,SmartIRSetTemp, ChangeSetModeSmartIR, ChangeSetFanSmartIR ,getindoortemphumidDetail,getoutndoortemphumidDetail,getpressuregaugeDetail,getpowermeterDetail,
-  getinverterDetail,getflowmeterDetail,getmotionsensorDetail,getlightingDetail,getcounterDetail,getsmartirDetail,getefficiencyDetail,getCCTVDetail,getco2Detail,getwatermeterDetail,getheaterDetail,getheaterwaterDetail
+  getinverterDetail,getflowmeterDetail,getmotionsensorDetail,getlightingDetail,getcounterDetail,getsmartirDetail,getefficiencyDetail,getCCTVDetail,getco2Detail,getwatermeterDetail,getheaterDetail,getheaterwaterDetail,ChangeControleHeater
 } from "@/utils/api";
 import Heatertable from "./Heatertable";
 import VAVtable from "./Outdoorhumidtable";
@@ -50,6 +50,8 @@ export default function FloorPlan({ FloorId }) {
   const [toggle, setToggle] = useState(false);
   const [showModalControleOnLighting, setShowModalControleOnLighting] = useState(false);
   const [showModalControleOffLighting, setShowModalControleOffLighting] = useState(false);
+  const [showModalControleOnHeater, setShowModalControleOnHeater] = useState(false);
+  const [showModalControleOffHeater, setShowModalControleOffHeater] = useState(false);
   const [showModalControleOnSmartIr, setShowModalControleOnSmartIr] = useState(false);
   const [showModalControleOffSmartIr, setShowModalControleOffSmartIr] = useState(false);
   const [alerttitle, setAlertTitle] = useState("");
@@ -417,8 +419,43 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
   }
 }
 
-
-
+//heater
+const openModalControleIsStopHeater = (DecviceId, deviceName) => {
+  setDeviceId(DecviceId);
+  setValues("off");
+  setDeviceName(deviceName);
+  setShowModalControleOffHeater(true);
+};
+const openModalControleIsStartHeater = (DecviceId, deviceName) => {
+  setDeviceId(DecviceId);
+  setValues("on");
+  setDeviceName(deviceName);
+  setShowModalControleOnHeater(true);
+};
+async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
+  setLoading(true);
+  const res = await ChangeControleHeater(DecviceId, Values);
+  if (res.status === 200) {
+    console.log(res.data);
+    setAlertTitle(res.data.title);
+    setAlertmessage(res.data.message);
+    closeModal();
+    setLoading(false);
+    notifySuccess(res.data.title,res.data.message);
+    getLightingdetail(DevId)
+    getLightingList(FloorId)
+  } else if (res.response.status === 401) {
+    setAlertTitle(res.response.data.title);
+    setAlertmessage(res.response.data.message);
+    closeModal();
+    setLoading(false);
+  } else if (res.response.status === 500) {
+    setAlertTitle(res.response.data.title);
+    setAlertmessage(res.response.data.message);
+    closeModal();
+    setLoading(false);
+  }
+}
 
 
 
@@ -1417,7 +1454,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                               </div>
                               <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                Humidity (%) : {marker.humidity == "-" ? "-" : marker.humidity.toFixed(2)}
+                                Humidity (%) : {marker.humidity == "-" ? "-" : marker.humidity}
                                 </span>
                               </div>
                             </div>
@@ -2280,7 +2317,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                         </div>
                         <div class="px-3">
                           <span class="text-gray-700 text-sm">
-                          Humidity (%) : {marker.humidity == "-" ? "-" : marker.humidity.toFixed(2)}
+                          Humidity (%) : {marker.humidity == "-" ? "-" : marker.humidity}
                           </span>
                         </div>
                       </div>
@@ -2903,35 +2940,40 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
                         </span>
                       </div>
                     
-                      <div class="px-3">
-                        <span class="text-gray-700 text-sm">
-                          Control :{" "}
-                          {marker.status == "offline" ? "-" : <button
-                            type="button"
-                            className={
-                              marker.control == "on"
-                                ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                : marker.control == "off"
-                                ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
-                            }
-                            onClick={() =>
-                              marker.control == "on"
-                                ? openModalControleIsStop(
-                                    marker.id,
-                                    marker.deviceName
-                                  )
-                                : marker.control == "off" ? openModalControleIsStart(
-                                    marker.id,
-                                    marker.deviceName
-                                  ) : null
-                            }
-                          >
-                            {marker.control}
-                          </button>}
-                          
-                        </span>
-                      </div>
+                      <div class="px-3 flex">
+                          <span class="text-gray-700 text-sm flex flex-row items-center">
+                            Control :{" "}
+                            
+                            {marker.status == "offline" ? "-" : 
+                            <div className='flex flex-col items-center pl-2'>
+                            <button
+                              type="button"
+                              className={
+                                marker.control == "on"
+                                  ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center"
+                                  : marker.control == "off"
+                                  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center"
+                                  : "text-white bg-red-500  font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
+                              }
+                              onClick={() =>
+                                marker.control == "on"
+                                  ? openModalControleIsStopHeater(
+                                      marker.id,
+                                      marker.deviceName
+                                    )
+                                  : marker.control == "off" ? openModalControleIsStartHeater(
+                                      marker.id,
+                                      marker.deviceName
+                                    ) : null
+                              }
+                            >
+                               
+                              <IoMdPower size="1.2em"/>
+                            </button><div className="text-xs text-gray-500 font-bold">{marker.control}</div></div>}
+                            
+                            
+                          </span>
+                        </div>
                      
                      
                     </div>
@@ -3001,7 +3043,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
               decimalScale={2}
               onChange={e => setValues(e.target.value)}
     onBlur={e => {
-        setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
+        setValues(Math.min(max, Math.max(min, Values)));
     }}
               />
               <div className="flex justify-center mt-10 gap-5">
@@ -3282,6 +3324,68 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
             </div>
           </div>
         ) : null}
+        {showModalControleOnHeater ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2">
+                    {" "}
+                    Are you sure you want to start {DeviceName} now ?{" "}
+                  </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => {clickChangestatusControleHeater(DecviceId, Values,DevId); setShowModalControleOnHeater(false)}}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalControleOffHeater ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2">
+                    {" "}
+                    Are you sure you want to stop {DeviceName} now ?{" "}
+                  </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => {clickChangestatusControleHeater(DecviceId, Values,DevId); setShowModalControleOffHeater(false)}}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
 
               {option == "All Type" ? (
@@ -3332,7 +3436,7 @@ async function clickChangestatusControleLighting(DecviceId, Values,DevId) {
               ) : option == "Water Meter" ? (
                 <WaterMetertable Watermeterlist={WaterMeterList} />
               ) : option == "Heater" ? (
-                <Heatertable Heaterlist={HeaterList} />
+                <Heatertable Heaterlist={HeaterList} onSubmitControl={clickChangestatusControleHeater}/>
               ) : option == "Heater Water" ? (
                 <HeaterWatertable HeaterWaterlist={HeaterWaterList} />
               ) : 

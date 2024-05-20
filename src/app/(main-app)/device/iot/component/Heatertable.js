@@ -8,15 +8,19 @@ import {
   ChangeValueSettempAHU,ChangeAutomationAHU
 } from "@/utils/api";
 import Loading from "./Loading";
+import { IoMdPower } from "react-icons/io";
 
-export default function Heatertable(Heaterlist) {
+export default function Heatertable({Heaterlist,onSubmitControl}) {
+  console.log(Heaterlist)
   const [searchTable, setSerachTable] = useState("");
+  const [DevId,setDevId] = useState()
   const [DecviceId, setDeviceId] = useState(null);
   const [DeviceName, setDeviceName] = useState('');
   const [Values, setValues] = useState();
   const [loading, setLoading] = useState(false);
   const [ModalError, setModalError] = useState(false);
-  const [showModalControle, setShowModalControle] = useState(false);
+  const [showModalControlestart, setShowModalControlestart] = useState(false);
+  const [showModalControlestop, setShowModalControlestop] = useState(false);
   function titleCase(str) {
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
   }
@@ -35,50 +39,30 @@ export default function Heatertable(Heaterlist) {
   });
  
   const closeModal = () => {
-    setOpenSettempModal(false)
+    
     setModalError(false)
     setDeviceId(null);
-    setShowModalAutomation(false)
-    // setShowModalStop(false);
-    // setShowModalStart(false);
+    setShowModalControle(false)
+    
 };
 
-const openModalControleIsStop = (DecviceId,values) => {
+const openModalControleIsStop = (DecviceId,DeviceName,DevId) => {
   setDeviceId(DecviceId)
+  setDevId(DevId)
+  setDeviceName(DeviceName);
   setValues('off')
-  setShowModalControle(true);
+  setShowModalControlestop(true);
   
 }
-const openModalControleIsStart = (DecviceId,values) => {
+const openModalControleIsStart = (DecviceId,DeviceName,DevId) => {
   setDeviceId(DecviceId)
+  setDevId(DevId)
+  setDeviceName(DeviceName);
   setValues('on')
-  setShowModalControle(true);
+  setShowModalControlestart(true);
   
 }
-async function clickChangestatusAutomation() {
-  setLoading(true);
-  const res = await ChangeAutomationAHU(DecviceId, Values);
-  if (res.status === 200) {
-    console.log(res.data)
-    setAlertTitle(res.data.title);
-    setAlertmessage(res.data.message);
-    closeModal();
-    setLoading(false);
-    notifySuccess();
-  } else if (res.response.status === 401) {
-    setAlertTitle(res.response.data.title);
-    setAlertmessage(res.response.data.message);
-    closeModal();
-    setLoading(false);
-    
-  }
-  else if (res.response.status === 500) {
-    setAlertTitle(res.response.data.title);
-    setAlertmessage(res.response.data.message);
-    closeModal();
-    setLoading(false);
-  }
-}
+
   return (
 <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
         <div className="flex flex-col gap-4 p-2">
@@ -128,8 +112,8 @@ async function clickChangestatusAutomation() {
                 </tr>
               </thead>
               <tbody>
-                {Heaterlist.Heaterlist.length > 0 &&
-                  Heaterlist.Heaterlist.filter((item) => {
+                {Heaterlist.length > 0 &&
+                  Heaterlist.filter((item) => {
                     // let data = []
                     //  if (item.power.toString().includes(searchTable)){
                     //   data = item
@@ -227,29 +211,34 @@ async function clickChangestatusAutomation() {
                           
                         </td>
 
-                        <td className="whitespace-nowrap px-6 py-4 text-center">
-                               
-                               <button
-                                   type="button"
-                                   className={
-                                     item.control == "on"
-                                       ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                       : item.control == "off"  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                       : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
-                                     }
-                                   onClick={() =>
-                                     item.control == "on"
-                                       ? openModalControleIsStop(item.id,item.deviceName)
-                                       : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName) : null
-                                   }
-                                 >
-                                   <Highlighter
-                                 highlightClassName="highlight" // Define your custom highlight class
-                                 searchWords={[searchTable]}
-                                 autoEscape={true}
-                                 textToHighlight={item.control} // Replace this with your text
-                               />
-                                 </button>
+                        <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
+                        <div className="flex flex-col items-center">
+                        {item.status == "offline" ? "-" : 
+                              <button
+                                    type="button"
+                                    className={
+                                      item.control == "on"
+                                        ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        : item.control == "off"  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
+                                      }
+                                    onClick={() =>
+                                      item.control == "on"
+                                        ? openModalControleIsStop(item.id,item.deviceName,item.devId)
+                                        : item.control == "off" ? openModalControleIsStart(item.id,item.deviceName,item.devId) : null
+                                    }
+                                  ><IoMdPower size="1.5em"/>
+                                    
+                                  </button>}
+                                  {item.status == "offline" ? null : <Highlighter
+                                  className='text-xs mt-1 text-gray-500 font-bold'
+                                  highlightClassName="highlight " // Define your custom highlight class
+                                  
+                                  searchWords={[searchTable]}
+                                  autoEscape={true}
+                                  textToHighlight={item.control} // Replace this with your text
+                                />}
+                                </div>
                              </td>
                         
                       </tr>
@@ -288,7 +277,7 @@ async function clickChangestatusAutomation() {
             </div>
           </div>
         ) : null}
-        {showModalControle  ? (
+        {showModalControlestart  ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
               <div className="text-center">
@@ -296,20 +285,48 @@ async function clickChangestatusAutomation() {
                   Are you sure ?
                 </h3>
                 <div className="mt-2 px-7 py-3">
-                  <p className="text-lg text-gray-500 mt-2"> Are you sure this device start {DeviceName} now ? </p>
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure you want to start {DeviceName} now ? </p>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">
                   <button
                     className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
-                    onClick={() => clickChangestatusAutomation()}
+                    onClick={() => {onSubmitControl(DecviceId,Values,DevId); setShowModalControlestart(false)}}
                   >
-                    confirm
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showModalControlestop  ? (
+          <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mt-5">
+                  Are you sure ?
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-lg text-gray-500 mt-2"> Are you sure you want to stop {DeviceName} now ? </p>
+                </div>
+                <div className="flex justify-center mt-10 gap-5">
+                  <button
+                    className="px-4 py-2 bg-white text-[#14b8a6] border border-teal-300 font-medium rounded-md  focus:outline-none"
+                    onClick={() => closeModal()}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#14b8a6] text-white font-medium rounded-md  focus:outline-none"
+                    onClick={() => {onSubmitControl(DecviceId,Values,DevId); setShowModalControlestop(false)}}
+                  >
+                    Confirm
                   </button>
                 </div>
               </div>

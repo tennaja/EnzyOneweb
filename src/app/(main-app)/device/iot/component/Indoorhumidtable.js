@@ -123,7 +123,7 @@ export default function IndoorHumid(Indoorlist) {
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(
-                                      item.humidity.toFixed(2)
+                                      item.humidity
                                     )} // Replace this with your text
                                   />
                                 )}
