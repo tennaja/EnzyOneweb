@@ -3404,7 +3404,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                  <CCTV CCTVlist={CCTVList} />
                  <CO2Sensor CO2Sensorlist={CO2SensorList} />
                  <WaterMetertable Watermeterlist={WaterMeterList} />
-                 <Heatertable Heaterlist={HeaterList} />
+                 <Heatertable Heaterlist={HeaterList} onSubmitControl={clickChangestatusControleHeater}/>
                  <HeaterWatertable HeaterWaterlist={HeaterWaterList} />
                  </div>
               ) : option == "Indoor Temp & Humid" ? (
