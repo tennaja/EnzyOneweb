@@ -155,7 +155,7 @@ const handleChangeValueSettemp = async () => {
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
-                                    textToHighlight={String(item.roomTemp)} // Replace this with your text
+                                    textToHighlight={String(item.temp)} // Replace this with your text
                                   />
       
                         </td>

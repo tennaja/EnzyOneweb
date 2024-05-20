@@ -1511,7 +1511,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                               <div class="px-3 py-2">
                                 <span class="text-gray-700 text-xs">
                                 Temp. (°C) :{" "}
-                                  {String(marker.roomTemp )}
+                                  {String(marker.temp )}
                                 </span>
                               </div>
                               <div class="px-3">
@@ -2348,7 +2348,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                       </div>
                       <div class="px-3">
                         <span class="text-gray-700 text-sm">
-                        Temp. (°C) : {marker.roomTemp}
+                        Temp. (°C) : {marker.temp}
                         </span>
                       </div>
                       <div class="px-3">
