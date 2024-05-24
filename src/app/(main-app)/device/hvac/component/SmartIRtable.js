@@ -61,9 +61,9 @@ export default function SmartIRtable(IotList) {
                       item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
-                      String(item.temp.toFixed(2)).includes(searchTable) ||
-                      String(item.humidity.toFixed(2)).includes(searchTable) ||
-                      String(item.co2.toFixed(2)).includes(searchTable) 
+                      String(item.temp).includes(searchTable) ||
+                      String(item.humidity).includes(searchTable) ||
+                      String(item.co2).includes(searchTable) 
                       
                     );
                   }).map((item) => {
@@ -134,7 +134,7 @@ export default function SmartIRtable(IotList) {
                         
                       </tr>
                     );
-                  })}
+                  }) }
               </tbody>
             </table>
           </div>

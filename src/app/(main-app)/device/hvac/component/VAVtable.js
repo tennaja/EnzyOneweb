@@ -180,7 +180,7 @@ export default function VAVtable({VAVList,onSubmitSettemp}) {
                         
                       </tr>
                     );
-                  })}
+                  }) }
               </tbody>
             </table>
           </div>

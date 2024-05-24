@@ -137,6 +137,7 @@ export default function FloorPlan({ FloorId }) {
     setFloorplanList(data);
     setdeviceTypeList(result.data.deviceType);
     console.log(result.data.deviceType)
+    console.log(result.data)
     if(isFirst) {
       const selected = result.data.deviceType.find(item => item.displayName.toLowerCase() === ("All Type").toLowerCase() );
       setdeviceTypeId(selected.id)

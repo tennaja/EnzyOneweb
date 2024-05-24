@@ -69,7 +69,7 @@ export default function FloorPlan({ FloorId }) {
   const [floorId, setFloorId] = useState();
   const [floorplanList, setFloorplanList] = useState([]);
   const [deviceTypeList, setdeviceTypeList] = useState([]);
-  const [option, setOption] = useState("All Type");
+  const [option, setOption] = useState();
   const minS = 10;
   const maxS = 40;
   const minV = 0;
@@ -103,22 +103,15 @@ export default function FloorPlan({ FloorId }) {
         theme: "light",
       }
     );
-  const getfloorplan = async (floorId) => {
+    const getfloorplan = async (floorId) => {
     setFloorId(floorId);
     const result = await getFloorplanHvac(floorId);
-    let data = [];
-    data.push(result.data);
-    console.log(result.data);
-    setFloorplanList(data);
-
-    console.log(result.data.deviceType);
-    if (result.data.deviceType){
-      console.log("devicetypeList",result.data.deviceType)
-    setdeviceTypeList(result.data.deviceType);}
-    // if (result.data.deviceType.length > 0) {
-    //   console.log(result.data.deviceType)
-    //   setdeviceTypeList(result.data.deviceType)
-    // }
+    setFloorplanList(result.data);
+    result.data.map((item) => {setdeviceTypeList(item.deviceType); setOption(item.deviceType[0].displayName) })
+    // console.log(result.data);
+   
+    // setdeviceTypeList(result.data.deviceType);
+    
   };
 
   const getAHUList = async (floorId) => {
@@ -155,36 +148,71 @@ export default function FloorPlan({ FloorId }) {
   const getVAVdetail = async (devId) => {
     setDevId(devId);
     const result = await getVAVDetail(devId);
-    
+    if(result.status === 200){
     setVAVDetailList([result.data]);
     
-    getVAVList(FloorId)
+    getVAVList(FloorId);}
+    else if(result.status === 401){
+      setVAVDetailList([]);
+      
+      getVAVList(FloorId);}
+      else if(result.status === 500){
+        setVAVDetailList([]);
+        
+        getVAVList(FloorId);}
     
   };
   const getSplitdetail = async (devId) => {
     setDevId(devId);
     
     const result = await getSplitTypeDetail(devId);
-    
+    if(result.status === 200){
     setSplittypeDetailList([result.data]);
+    console.log(result.data)
     console.log(SplittypeDetailList)
     getSplittypeList(FloorId);
+    }
+    else if(result.status === 500) {
+      setSplittypeDetailList([]);
+      getSplittypeList(FloorId);
+      console.log("error")
+    }
   };
   const getAHUdetail = async (devId) => {
     setDevId(devId);
     
     const result = await getAHUDetail(devId);
-    
+    if(result.status === 200){
     setAHUDetailList([result.data]);
     getAHUList(FloorId);
+    }
+    else if(result.status === 401){
+      setAHUDetailList([]);
+      getAHUList(FloorId);
+      }
+    else if(result.status === 500){
+        setAHUDetailList([]);
+        getAHUList(FloorId);
+        }
   };
   const getIoTdetail = async (devId) => {
+    
     setDevId(devId);
-   console.log(devId)
+    
     const result = await getIoTDetail(devId);
+    if(result.status === 200){
     console.log([result.data])
     setIoTDetailList([result.data]);
     getIOTList(FloorId);
+    }
+    else if(result.status === 401){
+    setIoTDetailList([]);
+    getIOTList(FloorId);
+    }
+    else if(result.status === 500){
+    setIoTDetailList([]);
+    getIOTList(FloorId);
+    }
   };
   const handleToggleChange = () => {
     setToggle(!toggle);
@@ -518,11 +546,13 @@ export default function FloorPlan({ FloorId }) {
           {floorplanList.length > 0 &&
             floorplanList.map((item, index) => {
               console.log(item)
+              
               return (
                 <div key={item.id}>
                   <div className="flex flex-row gap-4 p-2">
                     <span className="text-lg  font-bold">HVAC Floor</span>
                     <span className="text-lg  font-bold">{item.name}</span>
+                    
                     <select
                       className="w-44 border border-slate-300 mx-2 rounded-md h-9"
                       onChange={(e) => setOption(e.target.value)}
@@ -796,6 +826,7 @@ export default function FloorPlan({ FloorId }) {
                           <div>
                             {SplittypeList.length > 0 &&
                               SplittypeList.map((marker, index) => {
+                                console.log(marker)
                                 return (
                                   <div key={marker.id}>
                                     <div
@@ -989,6 +1020,7 @@ export default function FloorPlan({ FloorId }) {
                           <div>
                             {IOTList.length > 0 &&
                               IOTList.map((marker, index) => {
+                                console.log(marker)
                                 return (
                                   <div key={marker.id}>
                                     <div
@@ -1302,8 +1334,8 @@ export default function FloorPlan({ FloorId }) {
                                         Room Temp. (°C) :
                                         {" "}
                                         {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                          {marker.roomTemp.toFixed(2)}
-                                        </span> : marker.roomTemp.toFixed(2)}
+                                          {marker.roomTemp}
+                                        </span> : marker.roomTemp}
 
                                       </span>
                                     </div>
@@ -1311,8 +1343,8 @@ export default function FloorPlan({ FloorId }) {
                                       <span class="text-gray-700 text-sm">
                                         Humidity (%) : {" "}
                                         {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                          {marker.humidity.toFixed(2)}
-                                        </span> : marker.humidity.toFixed(2)}
+                                          {marker.humidity}
+                                        </span> : marker.humidity}
                                       </span>
                                     </div>
                                     <div class="px-3 flex gap-2">
@@ -1554,7 +1586,7 @@ export default function FloorPlan({ FloorId }) {
                 decimalScale={0}
                 onChange={e => setValues(e.target.value)}
                 onBlur={e => {
-                  setValues(Math.min(maxS, Math.max(minS, Values)).toFixed(2));
+                  setValues(Math.min(maxS, Math.max(minS, Values)));
                 }}
               />
               <div className="flex justify-center mt-10 gap-5">
@@ -1779,7 +1811,7 @@ export default function FloorPlan({ FloorId }) {
                 decimalScale={2}
                 onChange={e => setValues(e.target.value)}
                 onBlur={e => {
-                  setValues(Math.min(maxV, Math.max(minV, Values)).toFixed(2));
+                  setValues(Math.min(maxV, Math.max(minV, Values)));
                 }}
               />
 
@@ -1817,7 +1849,7 @@ export default function FloorPlan({ FloorId }) {
                 decimalScale={2}
                 onChange={e => setValues(e.target.value)}
                 onBlur={e => {
-                  setValues(Math.min(maxA, Math.max(minA, Values)).toFixed(2));
+                  setValues(Math.min(maxA, Math.max(minA, Values)));
                 }}
               />
 
