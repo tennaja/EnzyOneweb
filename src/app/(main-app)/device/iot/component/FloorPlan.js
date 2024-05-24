@@ -1630,22 +1630,8 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                                 <span class="text-gray-700 text-xs">
                                 Power (kW) : {marker.power}
                                 </span></div>
-                                <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                Current (A) : {marker.current}
-                                </span></div>
-                                <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                Volt (V) : {marker.volt}
-                                </span></div>
-                                <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                Energy import (kWh) : {marker.energy_import}
-                                </span></div>
-                                <div class="px-3 ">
-                                <span class="text-gray-700 text-xs">
-                                Energy export (kWh) : {marker.energy_export}
-                                </span></div>
+                                
+
                               
                             </div>
                           </div>
