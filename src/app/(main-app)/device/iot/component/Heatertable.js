@@ -42,7 +42,8 @@ export default function Heatertable({Heaterlist,onSubmitControl}) {
     
     setModalError(false)
     setDeviceId(null);
-    setShowModalControle(false)
+    setShowModalControlestart(false)
+    setShowModalControlestop(false)
     
 };
 

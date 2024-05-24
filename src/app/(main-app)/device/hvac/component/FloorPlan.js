@@ -605,7 +605,7 @@ export default function FloorPlan({ FloorId }) {
                                         top: marker.position.y,
                                         position: "absolute",
                                       }}
-                                      onClick={() => {onChangeValue("AHU"); getAHUdetail(marker.devId);}}
+                                      onClick={() => {onChangeValue("AHU"); getAHUdetail(marker.id);}}
                                     // onClick={() => onChangeValue('AHU',item.deviceName)}
                                     >
                                       <div
@@ -666,7 +666,7 @@ export default function FloorPlan({ FloorId }) {
                                         top: marker.position.y,
                                         position: "absolute",
                                       }}
-                                      onClick={() => {onChangeValue("VAV"); getVAVdetail(marker.devId);}}
+                                      onClick={() => {onChangeValue("VAV"); getVAVdetail(marker.id);}}
                                     // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
                                     >
                                       <div
@@ -729,7 +729,7 @@ export default function FloorPlan({ FloorId }) {
                                         top: marker.position.y,
                                         position: "absolute",
                                       }}
-                                      onClick={() =>  {onChangeValue("SPLIT"); getSplitdetail(marker.devId);}}
+                                      onClick={() =>  {onChangeValue("SPLIT"); getSplitdetail(marker.id);}}
                                     >
                                       <div
                                         class={
@@ -788,7 +788,7 @@ export default function FloorPlan({ FloorId }) {
                                         position: "absolute",
                                       }}
                                       onClick={() =>
-                                        {onChangeValue("IoT"); getIoTdetail(marker.devId);}
+                                        {onChangeValue("IoT"); getIoTdetail(marker.id);}
                                       }
                                     >
                                       <div
@@ -853,7 +853,7 @@ export default function FloorPlan({ FloorId }) {
                                         top: marker.position.y,
                                         position: "absolute",
                                       }}
-                                      onClick={() => {onChangeValue("SPLIT"); getSplitdetail(marker.devId);}}
+                                      onClick={() => {onChangeValue("SPLIT"); getSplitdetail(marker.id);}}
                                       
                                     >
                                       <div
@@ -915,7 +915,7 @@ export default function FloorPlan({ FloorId }) {
                                         top: marker.position.y,
                                         position: "absolute",
                                       }}
-                                      onClick={() => {onChangeValue("AHU"); getAHUdetail(marker.devId);}}
+                                      onClick={() => {onChangeValue("AHU"); getAHUdetail(marker.id);}}
                                     // onClick={() => onChangeValue('AHU',item.deviceName)}
                                     >
                                       <div
@@ -980,7 +980,7 @@ export default function FloorPlan({ FloorId }) {
                                         top: marker.position.y,
                                         position: "absolute",
                                       }}
-                                      onClick={() => {onChangeValue("VAV"); getVAVdetail(marker.devId);}}
+                                      onClick={() => {onChangeValue("VAV"); getVAVdetail(marker.id);}}
                                     // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
                                     >
                                       <div
@@ -1047,7 +1047,7 @@ export default function FloorPlan({ FloorId }) {
                                         position: "absolute",
                                       }}
                                       onClick={() =>
-                                        {onChangeValue("IoT"); getIoTdetail(marker.devId);}
+                                        {onChangeValue("IoT"); getIoTdetail(marker.id);}
                                       }
                                     >
                                       <div
