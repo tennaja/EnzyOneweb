@@ -121,7 +121,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                   </th>
                 </tr>
               </thead>
-              
+              <tbody>
                 {List.length > 0 &&
                   List.filter((item) => {
                     return (
@@ -140,7 +140,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                   }).map((item) => {
                     
                     return (
-                      <tbody>
+                      
                       <tr
                         className="border-b dark:border-neutral-500"
                         key={item.id}
@@ -281,10 +281,10 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                                        </td>
                         
                       </tr>
-                      </tbody>
+                      
                     );
                   })}
-              
+              </tbody>
             </table>
           </div>
         </div>
