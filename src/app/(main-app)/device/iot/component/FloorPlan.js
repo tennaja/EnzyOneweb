@@ -656,6 +656,8 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
     setShowModalControleOffLighting(false);
     setShowModalControleOnSmartIr(false);
     setShowModalControleOffSmartIr(false);
+    setShowModalControleOnHeater(false);
+    setShowModalControleOffHeater(false);
     setModalError(false);
     setDeviceId(null);
     // setShowModalStop(false);
