@@ -26,7 +26,7 @@ export default function Summary({ FloorId }) {
   return (
     <div className="flex flex-row justify-center gap-5 mt-5 ">
       <div className="w-52 flex-nowrap rounded-xl items-center justify-center bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
-        <div className="px-5 py-5 flex flex-col justify-center items-center">
+        <div className="px-5 py-5 flex flex-col justify-center items-center gap-2">
           {summaryList1.length > 0 && summaryList1.map((item) => {
             return (
               <>
@@ -60,7 +60,7 @@ export default function Summary({ FloorId }) {
       </div>
 
       <div className="w-auto flex items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
-      <div className="px-5 py-5 flex flex-col justify-center items-center">
+      <div className="px-5 py-5 flex flex-col justify-center items-center gap-3">
       {summaryList2.map((item) => {
         return (
           <>
@@ -83,7 +83,7 @@ export default function Summary({ FloorId }) {
             
             className="w-auto flex items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 "
           >
-            <div className="px-5 py-5 flex flex-col items-center gap-3">
+            <div className="px-5 py-5 flex flex-col items-center gap-2">
       {summaryList3.map((item) => {
         return (
           <>
