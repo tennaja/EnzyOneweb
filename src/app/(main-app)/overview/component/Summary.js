@@ -68,7 +68,7 @@ export default function Summary({ FloorId }) {
             {item.value != null ? 
             <div >
               
-              <span key={item.id} className="font-bold text-3xl">{item.value}</span>
+              <span key={item.id} className="font-bold text-2xl">{item.value}</span>
               
             </div> : "-"}
             </> 
@@ -89,7 +89,7 @@ export default function Summary({ FloorId }) {
           <>
           <span key={item.id} className="font-bold text-2xl">{item.name}</span>
           {item.value != null ?
-          <><span key={item.id} className="font-bold text-3xl">{item.value}</span></> : "-"}
+          <><span key={item.id} className="font-bold text-2xl">{item.value}</span></> : "-"}
           
           
           </>
