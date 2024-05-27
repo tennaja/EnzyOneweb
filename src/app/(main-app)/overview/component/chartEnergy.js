@@ -175,7 +175,7 @@ export default function ChartEnergyConsumption({ FloorId }) {
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
       <div className="flex flex-col gap-4 p-2">
       <span className="text-lg  font-bold">Energy Consumption</span>
-        <div className="flex justify-center gap-4 items-center">
+        <div className="flex gap-4 ">
         <Radio.Group value={placement} onChange={(event) => placementChange(event.target.value)} buttonStyle="solid" style={{ backgroundcolor: '#2563eb'}}>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="day">Day</Radio.Button>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="month">Month</Radio.Button>
@@ -200,7 +200,7 @@ export default function ChartEnergyConsumption({ FloorId }) {
             datasets: [
               ...chartListAHU1.map((item) => {
                 return {
-                  label: "Controle Value " + item.label,
+                  label: item.label,
                   data: item.data != null ? item.data.map((data) => {
                     return data.value;
                   }) : null,

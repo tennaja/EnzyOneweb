@@ -362,27 +362,43 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
           </Button>
           <Button
           variant="outlined"
-        style={Values === "low" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        style={Values === "1" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
         borderBlockColor : "#5eead4" ,border : "1px solid", width : "100px"}}
-            onClick={() => setValues('low')}
+            onClick={() => setValues('1')}
           >
-           Low
+           1
           </Button>
           <Button
           variant="outlined"
-            style={ Values === "medium" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            style={ Values === "2" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
             borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
-            onClick={() => setValues('medium')}
+            onClick={() => setValues('2')}
           >
-            Medium
+            2
           </Button>
           <Button
           variant="outlined"
-            style={ Values === "high" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            style={ Values === "3" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
             borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
-            onClick={() => setValues('high')}
+            onClick={() => setValues('3')}
           >
-            High
+            3
+          </Button>
+          <Button
+          variant="outlined"
+            style={ Values === "4" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('4')}
+          >
+            4
+          </Button>
+          <Button
+          variant="outlined"
+            style={ Values === "5" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+            borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('5')}
+          >
+            5
           </Button>
         </ButtonGroup>
         </div>
@@ -415,9 +431,17 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
           <ButtonGroup >
           <Button
           variant="outlined"
+          style={ Values === "auto" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('auto')}
+          >
+            Auto
+          </Button>
+          <Button
+          variant="outlined"
           style={ Values === "cool" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
         borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
-            onClick={() => setValues('cold')}
+            onClick={() => setValues('cool')}
           >
             Cool
           </Button>
@@ -436,6 +460,14 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
             onClick={() => setValues('fan')}
           >
             Fan
+          </Button>
+          <Button
+          variant="outlined"
+          style={ Values === "heat" ? {backgroundColor : "#5eead4",color : "white" ,borderBlockColor : "white",border : "1px solid", width : "100px"} : {backgroundColor : "white",color : "#5eead4",
+        borderBlockColor : "#5eead4",border : "1px solid", width : "100px"}}
+            onClick={() => setValues('heat')}
+          >
+            Heat
           </Button>
         </ButtonGroup>
         </div>

@@ -25,11 +25,12 @@ export default function Summary({ FloorId }) {
   };
   return (
     <div className="flex flex-row justify-center gap-5 mt-5 ">
-      <div className="w-60 rounded-xl items-center justify-center bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
-        <div className="px-5 py-5 flex flex-col justify-center items-center gap-3">
-          {summaryList1.map((item) => {
+      <div className="w-52 flex-nowrap rounded-xl items-center justify-center bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
+        <div className="px-5 py-5 flex flex-col justify-center items-center">
+          {summaryList1.length > 0 && summaryList1.map((item) => {
             return (
               <>
+              <span key={item.id} className="font-bold text-2xl">{item.name}</span>
               {item.value != null ? 
               <>
               <GaugeChart
@@ -46,6 +47,7 @@ export default function Summary({ FloorId }) {
                   }
                   textColor={"black"}
                   hideText={true} 
+                  
                   // hideText={true} // If you want to hide the text
                 />
                 <span key={item.id} className="font-bold text-2xl">{item.value}</span></> : "-"}
@@ -57,14 +59,12 @@ export default function Summary({ FloorId }) {
         </div>
       </div>
 
-      <div
-            
-            className="w-60 flex items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 "
-          >
-            <div className="px-5 py-5 flex flex-col justify-center items-center gap-3">
+      <div className="w-auto flex items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
+      <div className="px-5 py-5 flex flex-col justify-center items-center">
       {summaryList2.map((item) => {
         return (
           <>
+          <span key={item.id} className="font-bold text-2xl">{item.name}</span>
             {item.value != null ? 
             <div >
               
@@ -81,12 +81,13 @@ export default function Summary({ FloorId }) {
 
           <div
             
-            className="w-96 flex items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 "
+            className="w-auto flex items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 "
           >
             <div className="px-5 py-5 flex flex-col items-center gap-3">
       {summaryList3.map((item) => {
         return (
           <>
+          <span key={item.id} className="font-bold text-2xl">{item.name}</span>
           {item.value != null ?
           <><span key={item.id} className="font-bold text-3xl">{item.value}</span></> : "-"}
           

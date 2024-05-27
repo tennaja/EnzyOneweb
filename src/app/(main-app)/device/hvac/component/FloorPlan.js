@@ -1127,7 +1127,6 @@ export default function FloorPlan({ FloorId }) {
                                     {marker.status == "offline" ? "-" : marker.status == "off" ? <span class="text-gray-700 text-sm">
                                       {marker.airFlow}
                                     </span> : marker.airFlow}
-
                                   </span>
                                 </div>
                                 <div class="px-3">
