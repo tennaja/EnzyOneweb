@@ -139,7 +139,7 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                   Power (kW)
                   </th>
                   <th scope="col" className="px-6 py-4 text-center">
-                  Drawer (%)
+                  % Drawer (%)
                   </th>
                   <th scope="col" className="px-6 py-4 text-center">
                   CHS Temp. (°F)
@@ -183,12 +183,13 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                         key={item.id}
                       >
                         <td className="whitespace-nowrap px-6 py-4 font-extrabold">
-                        <Highlighter
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={item.deviceName}// Replace this with your text
-                                  />
+                         <Highlighter
+                                highlightClassName="highlight" // Define your custom highlight class
+                                searchWords={[searchTable]}
+                                autoEscape={true}
+                                textToHighlight={item.deviceName}// Replace this with your text
+                              />
+                        
                           
                         </td>
                         <td
@@ -208,42 +209,52 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
+                        {item.status == "offline" ? (
+                                  "-"
+                                ) : <Highlighter
+                                highlightClassName="highlight" // Define your custom highlight class
+                                searchWords={[searchTable]}
+                                autoEscape={true}
+                                textToHighlight={String(item.power)} // Replace this with your text
+                              />}
                         
-                        <Highlighter
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={String(item.power)} // Replace this with your text
-                                  />
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                       
-                        <Highlighter
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={String(item.drawer)} // Replace this with your text
-                                  />
+                        {item.status == "offline" ? (
+                                  "-"
+                                ) : <Highlighter
+                                highlightClassName="highlight" // Define your custom highlight class
+                                searchWords={[searchTable]}
+                                autoEscape={true}
+                                textToHighlight={String(item.drawer)} // Replace this with your text
+                              />}
+                        
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={String(item.chillerSupplyTemp)} // Replace this with your text
-                                  />
+                          {item.status == "offline" ? (
+                                  "-"
+                                ) : <Highlighter
+                                highlightClassName="highlight" // Define your custom highlight class
+                                searchWords={[searchTable]}
+                                autoEscape={true}
+                                textToHighlight={String(item.chillerSupplyTemp)} // Replace this with your text
+                              />}
+                        
                           
                         </td>
                        
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        <Highlighter
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={String(item.chillerReturnTemp)} // Replace this with your text
-                                  />
+                        {item.status == "offline" ? (
+                                  "-"
+                                ) : <Highlighter
+                                highlightClassName="highlight" // Define your custom highlight class
+                                searchWords={[searchTable]}
+                                autoEscape={true}
+                                textToHighlight={String(item.chillerReturnTemp)} // Replace this with your text
+                              />}
+                        
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
