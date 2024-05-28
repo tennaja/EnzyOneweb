@@ -1241,4 +1241,111 @@ export async function getSummary(floorId) {
   }
 }
 
+//Chiller-----------------------------------------------
+export async function getSummaryCHiller(buildingId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/chiller/summary/'+buildingId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function getCHillerList(buildingId) {
+  try {     
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + '/api/device-management/cpms/chiller/list/'+buildingId;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",  },
+    });
+    return res;
+    
+  } catch (error) {
+    return error;
+  }
+}
+export async function ChangeControlChiller (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/chiller/control`;
+    let res = await axios.post(
+      url,
+      {
+        devId : devId,
+        value : value,
+        
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+export async function getHistoricalChart1(req) {
+  
+  const buildingId = req.buildingId;
+  const dateFrom = req.dateFrom
+  const dateTo = req.dateTo
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/chiller/chart/temperature?buildingId=${buildingId}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",},
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+export async function getHistoricalChart2(req) {
+  
+  const buildingId = req.buildingId;
+  const dateFrom = req.dateFrom
+  const dateTo = req.dateTo
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/chiller/chart/plant?buildingId=${buildingId}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",},
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+export async function ChillerSetTemp (devId,value) {
+  try {
+    let url = process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/chiller/temp`;
+    let res = await axios.post(
+      url,
+      {
+        value : value,
+        devId : devId,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" ,"Authorization":"Bearer " + Cookies.get("token")},
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log("error", error);
+    return error
+  }
+}
+
+
+
 
