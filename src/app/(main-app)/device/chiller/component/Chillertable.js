@@ -81,7 +81,9 @@ export default function ChillerTable({ChillerList,onSubmitControl,AIMODE,onSubmi
     setOpenSettempModal(false)
     
 };
-
+function financial(x) {
+  return Number.parseFloat(x).toFixed(2);
+}
 const openModalControleIsStop = (DecviceId,DeviceName,DevId) => {
   setDeviceId(DecviceId)
   setDevId(DevId)
@@ -169,7 +171,7 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                       item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
                       item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
                       String(item.power).includes(searchTable) ||
-                      String(item.drawer).includes(searchTable) ||
+                      String(financial(item.drawer)).includes(searchTable) ||
                       String(item.chillerReturnTemp).includes(searchTable) ||
                       String(item.chillerSupplyTemp).includes(searchTable)||
                       String(item.chillerSupplySetTemp).includes(searchTable)||
@@ -227,7 +229,7 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                                 highlightClassName="highlight" // Define your custom highlight class
                                 searchWords={[searchTable]}
                                 autoEscape={true}
-                                textToHighlight={String(item.drawer)} // Replace this with your text
+                                textToHighlight= {financial(item.drawer)} // Replace this with your text
                               />}
                         
                           
