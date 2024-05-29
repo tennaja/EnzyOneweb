@@ -28,6 +28,9 @@ export default function Summary({ BuldingId }) {
   const [DeviceName, setDeviceName] = useState("");
   const [DevId,setDevId] = useState()
   const [DecviceId, setDeviceId] = useState();
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
   const notifySuccess = (title,message) =>
     toast.success(
       <div className="px-2">
@@ -257,7 +260,7 @@ export default function Summary({ BuldingId }) {
                                   ><IoMdPower size="1.5em"/>
                                     
                                   </button>
-                                  <span className='text-xs mt-1 text-gray-500 font-bold'>{item.value}</span>
+                                  <span className='text-xs mt-1 text-gray-500 font-bold'>{titleCase(item.value)}</span>
                   </>
                 ) : (
                   "-"
