@@ -319,7 +319,7 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                                   
                                   searchWords={[searchTable]}
                                   autoEscape={true}
-                                  textToHighlight={item.control} // Replace this with your text
+                                  textToHighlight={titleCase(item.control)} // Replace this with your text
                                 />}
                                 </div>
                              </td>
@@ -419,7 +419,7 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
         {OpenSettempModal ? (
           <div className="fixed inset-0 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="p-8 border w-auto shadow-lg rounded-md bg-white">
-              <h5 className="mt-5">Set Temp. (°C) : {DeviceName}</h5>
+              <h5 className="mt-5">Set Temp. (°F) : {DeviceName}</h5>
               <NumericFormat
                 type="number"
                 className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"

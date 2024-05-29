@@ -824,13 +824,13 @@ export async function getHeaterWater(floorId) {
   }
 }    
 export async function getIotModuleGraph(req) {
-  
+  const floorId = req.floorId;
   const deviceParameterId = req.deviceParameterId;
   const dateFrom = req.dateFrom
   const dateTo = req.dateTo
   try {
     const url =
-      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/graph/${deviceParameterId}?dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/iot/graph/${deviceParameterId}?floorId=${floorId}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
       const res = await axios.get(url, {
       withCredentials: true,
       headers: { "Content-Type": "application/json",},

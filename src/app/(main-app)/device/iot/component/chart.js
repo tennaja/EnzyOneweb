@@ -27,12 +27,12 @@ ChartJS.register(
   Legend
 );
 
-export default function Chart({deviceTypeId}) {
+export default function Chart({deviceTypeId,floorid}) {
   // console.log(deviceTypeId)
   const [DeviceParameterId, setDeviceParameterId] = useState(1);
   const [chartList, setChartList] = useState([]);
   const [deviceparameterList,setDeviceparameterList] = useState([])
-  const [ListLabel, setListLabel] = useState([0]);
+  const [ListLabel, setListLabel] = useState([]);
   const [dateFrom, setdateFrom] = useState(new Date());
   const [dateTo, setdateTo] = useState(new Date());
   const [option, setOption] = useState();
@@ -57,8 +57,8 @@ export default function Chart({deviceTypeId}) {
   }, [deviceTypeId]);
   
   useEffect(() => {
-    if(DeviceParameterId)
-    {GetGraph(DeviceParameterId, dateFrom, dateTo);}
+    if(DeviceParameterId && floorid)
+    {GetGraph(DeviceParameterId,floorid, dateFrom, dateTo);}
   },[DeviceParameterId]);
 
   const zoomOptions = {
@@ -117,9 +117,10 @@ export default function Chart({deviceTypeId}) {
     
     };
 
-  async function GetGraph(deviceParameterid, dateFrom, dateTo) {
+  async function GetGraph(deviceParameterid,floorId,dateFrom, dateTo) {
     
     const paramsNav = {
+      floorId : floorId,
       deviceParameterId : deviceParameterid,
       dateFrom: dateFrom,
       dateTo: dateTo,
@@ -127,17 +128,18 @@ export default function Chart({deviceTypeId}) {
     const res = await getIotModuleGraph(paramsNav);
     // console.log(paramsNav);
     if (res.status === 200) {
+      console.log(res.data)
         let data = [];
-        data.push(res.data)
-       
-        setChartList(data);
+        data.push(res.data.data)
+        setChartList(res.data.data);
+        
         let label = [];
-        for (let j = 0; j < res.data.data.length; j++)
+        for (let j = 0; j < res.data.data[0].data.length; j++)
         {
-        label.push(res.data.data[j].time)
+        label.push(res.data.data[0].data[j].time)
         }
         setListLabel(label)
-           
+      
       }
       
     
@@ -186,10 +188,11 @@ export default function Chart({deviceTypeId}) {
         <Line
           data={{
             labels: ListLabel,
-            datasets: [
-              ...chartList.map((item) => {
+            datasets: 
+              chartList.map((item) => {
+                console.log(item)
                 return {
-                  label: item.name + " ("+item.unit+")",
+                  label: item.label,
                   data: item.data.map((data) => {
                     return data.value;
                   }),
@@ -199,7 +202,7 @@ export default function Chart({deviceTypeId}) {
                   yAxisID: "y",
                 }
               }),
-            ]
+            
           }}
           ref={chartRef}
           options = {{

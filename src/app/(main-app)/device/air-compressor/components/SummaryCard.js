@@ -859,6 +859,7 @@ export default function SummaryCard() {
                 data={{
                   labels: ListLabel,
                   datasets: chartList.map((item,index) => {
+                    console.log(item)
                     return {
                       label: item.name,
                       data: item.data.map((data) => {

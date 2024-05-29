@@ -162,8 +162,7 @@ export default function FloorPlan({ FloorId }) {
     const result = await getoutdoortemphumid(floorId);
     
     setOutdoortemphumidList(result.data);
-    console.log(result.data.id)
-    setdeviceTypeId(result.data.id)
+    
   };
   const getPressuregaugeList = async (floorId) => {
     setFloorId(floorId);
@@ -171,8 +170,7 @@ export default function FloorPlan({ FloorId }) {
     const result = await getPressuregauge(floorId);
     console.log(result.data);
     setPressuregaugeList(result.data);
-    console.log(result.data.id)
-    setdeviceTypeId(result.data.id)
+  
   };
   const getPowerMeterList = async (floorId) => {
     setFloorId(floorId);
@@ -3464,7 +3462,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
               null}
                
               {option != "All Type" && option != "CCTV"? (
-                <Chart deviceTypeId={deviceTypeId} />
+                <Chart deviceTypeId={deviceTypeId} floorid ={FloorId}/>
                ): null}
       
     </div>

@@ -245,8 +245,8 @@ export default function Summary({ BuldingId }) {
                                     type="button"
                                     className={
                                       item.value == "on"
-                                        ? "text-white bg-[#5eead4] hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
-                                        : item.value == "off"  ? "text-gray-500 bg-gray-200 hover:bg-gray-100 hover:text-gray-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        ? "text-white bg-[#5eead4] font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
+                                        : item.value == "off"  ? "text-gray-500 bg-gray-200  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center"
                                         : "text-white bg-red-500  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center opacity-50 cursor-not-allowed"
                                       }
                                     // onClick={() =>
@@ -291,6 +291,7 @@ export default function Summary({ BuldingId }) {
               </>
             );
           })}
+          <span className="font-normal text-sm">gal/min</span>
         </div>
       </div>
       <div className="w-auto h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
@@ -382,7 +383,7 @@ export default function Summary({ BuldingId }) {
               </>
             );
           })}
-          
+          <span className="font-normal text-sm">%</span>
         </div>
       </div>
      
