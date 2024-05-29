@@ -150,7 +150,7 @@ export default function Chart({deviceTypeId,floorid}) {
     console.log(dateString);
     setdateFrom(dateString[0])
     setdateTo(dateString[1])
-    GetGraph(DeviceParameterId, formatDate(dateString[0]), formatDate(dateString[1]));
+    GetGraph(DeviceParameterId,floorid ,formatDate(dateString[0]), formatDate(dateString[1]));
   }
   const disabledDate = (current) => {
     // Can not select days before today and today
