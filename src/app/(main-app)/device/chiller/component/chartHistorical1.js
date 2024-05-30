@@ -251,7 +251,7 @@ export default function HistoricalChart1({ BuildingId }) {
 
               ...CHRList.map((item) => {
                 return {
-                  label: item.label + " (kW)",
+                  label: item.label,
                   data: item.data != null ? item.data.map((data) => {
                     return data.value;
                   }) : null,
