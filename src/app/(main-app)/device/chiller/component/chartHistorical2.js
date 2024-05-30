@@ -226,7 +226,7 @@ export default function HistoricalChart2({ BuildingId }) {
               ...FlowList.map((item) => {
                 console.log(item)
                 return {
-                  label: item.label + " (kW)",
+                  label: item.label,
                   data: item.data != null ? item.data?.map((data) => {
                     return data.value;
                   }) : null,
