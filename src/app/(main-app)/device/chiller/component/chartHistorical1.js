@@ -197,9 +197,9 @@ export default function HistoricalChart1({ BuildingId }) {
     GetHistoricalGraph(BuildingId, formatDate(dateString[0]), formatDate(dateString[1]));
     }
     else {
-      setCurrentPower([])
-      setPowergeneration([])
-      setNumberpeople([])
+      setCHRList([])
+      setCHSList([])
+      setOutdoorList([])
       setListLabel([])
     }
   }
