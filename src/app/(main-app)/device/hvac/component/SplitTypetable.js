@@ -197,15 +197,12 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                               searchTable
                             ) ||
                             String(item.setTemp).includes(searchTable) ||
-                            item.control.toLowerCase().includes(searchTable) ||
-                            item.control.toUpperCase().includes(searchTable) ||
-                            item.control.includes(searchTable) ||
-                            item.fan.toLowerCase().includes(searchTable) ||
-                            item.fan.toUpperCase().includes(searchTable) ||
-                            item.fan.includes(searchTable) ||
-                            item.mode.toLowerCase().includes(searchTable) ||
-                            item.mode.toUpperCase().includes(searchTable) ||
-                            item.mode.includes(searchTable) ||
+                            item.control.toLowerCase().includes(searchTable.toLowerCase()) ||
+                            item.control.toUpperCase().includes(searchTable.toUpperCase()) ||
+                            item.fan.toLowerCase().includes(searchTable.toLowerCase()) ||
+                            item.fan.toUpperCase().includes(searchTable.toUpperCase()) ||
+                            item.mode.toLowerCase().includes(searchTable.toLowerCase()) ||
+                            item.mode.toUpperCase().includes(searchTable.toUpperCase()) ||
                             item.automation.includes(searchTable)
                           );
                         }).map((item) => {
@@ -313,13 +310,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={
-                                      item.fan == "auto"
-                                        ? "Auto"
-                                        : item.fan == "low"
-                                        ? "Low"
-                                        : item.fan == "medium"
-                                        ? "Medium"
-                                        : "High"
+                                      titleCase(item.fan)
                                     } // Replace this with your text
                                   />
                                 ) : (
@@ -340,13 +331,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={
-                                      item.fan == "auto"
-                                        ? "Auto"
-                                        : item.fan == "low"
-                                        ? "Low"
-                                        : item.fan == "medium"
-                                        ? "Medium"
-                                        : "High"
+                                      titleCase(item.fan) 
                                     } // Replace this with your text
                                   />
                                 )}
@@ -361,11 +346,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={
-                                      item.mode == "cool"
-                                        ? "Cool"
-                                        : item.mode == "dry"
-                                        ? "Dry"
-                                        : "Fan"
+                                      titleCase(item.mode)
                                     } // Replace this with your text
                                   />
                                 ) : (
@@ -386,11 +367,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={
-                                      item.mode == "cool"
-                                        ? "Cool"
-                                        : item.mode == "dry"
-                                        ? "Dry"
-                                        : "Fan"
+                                      titleCase(item.mode)
                                     } // Replace this with your text
                                   />
                                 )}
@@ -433,11 +410,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                       searchWords={[searchTable]}
                                       autoEscape={true}
                                       textToHighlight={
-                                        item.control == "on"
-                                          ? "On"
-                                          : item.control == "off"
-                                          ? "Off"
-                                          : "Offline"
+                                        titleCase(item.control)
                                       } // Replace this with your text
                                     />
                                   )}
@@ -471,7 +444,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                           : ""
                                       }`}
                                     >
-                                      {item.automation == "on" ? "ON" : "OFF"}
+                                      {titleCase(item.automation)}
                                     </div>
                                   </div>
                                 ) : (
@@ -498,7 +471,7 @@ export default function SplitTypetable({SplittypeList,onSubmitControl,onSubmitSe
                                           : ""
                                       }`}
                                     >
-                                      {item.automation == "on" ? "ON" : "OFF"}
+                                      {titleCase(item.automation)}
                                     </div>
                                   </div>
                                 )}

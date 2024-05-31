@@ -129,13 +129,13 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                       item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
-                      String(item.supplyTemp.toFixed(2)).includes(searchTable) ||
-                      String(item.supplyTempSetPoint.toFixed(2)).includes(searchTable) ||
-                      String(item.returnTemp.toFixed(2)).includes(searchTable) ||
-                      String(item.vsdDrive.toFixed(2)).includes(searchTable)||
-                      String(item.vsdPower.toFixed(2)).includes(searchTable)||
-                      String(item.vsdSpeed.toFixed(2)).includes(searchTable)||
-                      String(item.controlValve.toFixed(2)).includes(searchTable)
+                      String(item.supplyTemp).includes(searchTable) ||
+                      String(item.supplyTempSetPoint).includes(searchTable) ||
+                      String(item.returnTemp).includes(searchTable) ||
+                      String(item.vsdDrive).includes(searchTable)||
+                      String(item.vsdPower).includes(searchTable)||
+                      String(item.vsdSpeed).includes(searchTable)||
+                      String(item.controlValve).includes(searchTable)
                     );
                   }).map((item) => {
                     
@@ -260,7 +260,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                     : openModalAutomationIsStart(item.id,item.deviceName,item.devId)
                                  :  null }>
                                     <div className={`toggle-btn-disable ${item.automation=="off" ? "disableNone" : ""}`}>
-                                        {item.automation=="on" ? "ON" : "OFF"}
+                                        {titleCase(item.automation)}
                                     </div>
                                 </div> 
                                 
@@ -271,7 +271,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                                     : openModalAutomationIsStart(item.id,item.deviceName,item.devId)
                                  :  null }>
                                     <div className={`toggle-btn ${item.automation=="off" ? "disable" : ""}`}>
-                                        {item.automation=="on" ? "ON" : "OFF"}
+                                        {titleCase(item.automation)}
                                     </div>
                                 </div>}
 
@@ -303,7 +303,7 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
               decimalScale={2}
               onChange={e => setValues(e.target.value)}
     onBlur={e => {
-        setValues(Math.min(max, Math.max(min, Values)).toFixed(2));
+        setValues(Math.min(max, Math.max(min, Values)));
     }}
               />
              

@@ -28,7 +28,7 @@ const Layout = (props) => {
         shown={showSidebar}
       />
       {/* content */}
-      <div className=""> {props.children}</div>
+      <div className="">{props.children}</div>
     </div>
   );
 };

@@ -55,7 +55,6 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
-
     dispatch(showLoading());
     const loginParam = {
       username: username,
