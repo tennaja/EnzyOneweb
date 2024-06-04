@@ -425,8 +425,8 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
               <NumericFormat
                 type="number"
                 className="border border-slate-300 rounded-md h-9 px-2 mt-2 w-80"
-                min={10}
-                max={40}
+                min={40}
+                max={70}
                 value={Values}
                 decimalScale={2}
                 onChange={(e) => setValues(e.target.value)}

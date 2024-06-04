@@ -72,6 +72,7 @@ export default function ChartSplittype({FloorId}) {
 
     };
     const options = {
+      aspectRatio: 4,
         responsive: true,
         interaction: {
             mode: "index",
@@ -187,7 +188,17 @@ export default function ChartSplittype({FloorId}) {
       }
       function onChangeDay(date, dateString) {
         console.log(dateString);
-        GetSplittypeGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
+        if(dateString[0] != "" && dateString[1] != ""){
+        GetSplittypeGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]))
+      }else {
+        setChartListSplittype1([])
+        setChartListSplittype2([])
+        setChartListSplittype3([])
+        setChartListSplittype4([])
+        setListLabelSplittype([])
+        
+
+      };
       }
       const disabledDate = (current) => {
         // Can not select days before today and today

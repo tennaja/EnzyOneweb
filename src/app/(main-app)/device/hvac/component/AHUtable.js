@@ -12,7 +12,7 @@ import Loading from "./Loading";
 import TextField from '@mui/material/TextField';
 import { message } from "antd";
 export default function AHUtable({AHUlist,onSubmitAutomation,onSubmitSettemp}) {
-  // console.log(AHUlist)
+  console.log(AHUlist)
   const [searchTable, setSerachTable] = useState("");
   const [DecviceId, setDeviceId] = useState(null);
   const [DevId,setDevId] = useState()
