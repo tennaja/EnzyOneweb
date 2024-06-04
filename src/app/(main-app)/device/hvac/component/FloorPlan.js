@@ -225,22 +225,22 @@ export default function FloorPlan({ FloorId }) {
     const res = await ChangeValueSetFan(DecviceId, Values);
     if (res.status === 200) {
       setOpenSetModeModal(false)
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       console.log(res.data);
       setLoading(false);
       notifySuccess(res.data.title, res.data.message);
       getSplittypeList(floorId);
       getSplitdetail(DevId)
     } else if (res.response.status === 401) {
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
       setModalError(true);
     } else if (res.response.status === 500) {
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
       setModalError(true);
@@ -257,14 +257,14 @@ export default function FloorPlan({ FloorId }) {
       getSplittypeList(FloorId);
       getSplitdetail(DevId)
     } else if (res.response.status === 401) {
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
       setModalError(true);
     } else if (res.response.status === 500) {
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
       setModalError(true);
@@ -274,8 +274,8 @@ export default function FloorPlan({ FloorId }) {
     setLoading(true);
     const res = await ChangeValueSettempSplttpye(DecviceId, Values);
     if (res.status === 200) {
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       console.log(res.data);
       closeModal();
       setLoading(false);
@@ -283,14 +283,14 @@ export default function FloorPlan({ FloorId }) {
       getSplittypeList(FloorId);
       getSplitdetail(DevId)
     } else if (res.response.status === 401) {
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
       setModalError(true);
     } else if (res.response.status === 500) {
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
       setModalError(true);
@@ -482,14 +482,14 @@ export default function FloorPlan({ FloorId }) {
       getAHUList(FloorId)
       getAHUdetail(DevId)
     } else if (res.response.status === 401) {
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
       setModalError(true);
     } else if (res.response.status === 500) {
-      setAlertTitle(res.data.title);
-      setAlertmessage(res.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
       setModalError(true);
@@ -509,13 +509,13 @@ export default function FloorPlan({ FloorId }) {
       getAHUList(FloorId)
       getAHUdetail(DevId)
     } else if (res.response.status === 401) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
     } else if (res.response.status === 500) {
-      setAlertTitle(res.response.data.title);
-      setAlertmessage(res.response.data.message);
+      setAlertTitle(res.title);
+      setAlertmessage(res.message);
       closeModal();
       setLoading(false);
     }
