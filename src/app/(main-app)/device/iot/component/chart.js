@@ -58,7 +58,7 @@ export default function Chart({deviceTypeId,floorid}) {
   
   useEffect(() => {
     if(DeviceParameterId && floorid)
-    {GetGraph(DeviceParameterId,floorid, dateFrom, dateTo);}
+    {GetGraph(DeviceParameterId,floorid, formatDate(dateFrom), formatDate(dateTo));}
   },[DeviceParameterId]);
 
   const zoomOptions = {
