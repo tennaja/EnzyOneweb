@@ -725,14 +725,14 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
 
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"1"}
                             className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("SPLIT", [marker])}
+                            onClick={() => {onChangeValue("1"); getIndoortemphumiddetail(marker.devId)}}
                           >
                             <div
                               class={
@@ -770,15 +770,14 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"AHU"}
+                            value={"2"}
                             className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("AHU", [marker])}
-                            // onClick={() => onChangeValue('AHU',item.deviceName)}
+                            onClick={() => {onChangeValue("2"); getOutdoortemphumiddetail(marker.devId)}}
                           >
                             <div
                               class={
@@ -816,16 +815,15 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={index}
-                            value={"VAV"}
+                            value={"3"}
                             className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
-                            onClick={() => onChangeValue("VAV", [marker])}
-                            // onClick={() => onChangeValue('VAV',item.deviceName,item.status,item.temp,item.airFlow)}
-                          >
+                            onClick={() => {onChangeValue("3"); getPressuregaugedetail(marker.devId)}}
+                            >
                             <div
                               class={
                                 marker.status == "on"
@@ -861,13 +859,14 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"4"}
                             className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
+                            onClick={() => {onChangeValue("4"); getPowerMeterdetail(marker.devId)}}
                           >
                             <div
                               class={
@@ -903,13 +902,14 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"5"}
                             className="w-auto"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
+                            onClick={() => {onChangeValue("5"); getInveterdetail(marker.devId)}}
                           >
                             <div
                               class={
@@ -947,13 +947,14 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                             ></div>
                             <div
                               key={marker.id}
-                              value={"SPLIT"}
+                              value={"6"}
                               className="w-auto"
                               style={{
                                 left: marker.position.x,
                                 top: marker.position.y,
                                 position: "absolute",
                               }}
+                              onClick={() => {onChangeValue("6"); getFlowMeterdetail(marker.devId)}}
                              >
                               <div
                                 class={
@@ -991,13 +992,15 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"7"}
                             className="w-auto "
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }}>
+                            }}
+                            onClick={() => {onChangeValue("7"); getMotionSensordetail(marker.devId)}}
+                            >
                             <div
                               class={
                                 marker.status == "on"
@@ -1034,13 +1037,19 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"8"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
+                            onClick={() =>
+                              { onChangeValue(
+                                 "8"); getLightingdetail(marker.devId)
+                                 
+                               }
+                             }
                            >
                             <div
                               class={
@@ -1078,13 +1087,14 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"9"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
+                            onClick={() => {onChangeValue("9"); getCounterdetail(marker.devId)}}
                             >
                             <div
                               class={
@@ -1122,13 +1132,17 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"10"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
                             }}
+                            onClick={() =>
+                              {onChangeValue(
+                                "10") ; getSmartIRdetail(marker.devId)}
+                            }
                          >
                             <div
                               class={
@@ -1166,13 +1180,18 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"11"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }}>
+                            }}
+                            onClick={() =>
+                              {onChangeValue(
+                                "11"); getEfficiencydetail(marker.devId)} 
+                            }
+                            >
                             <div
                               class={
                                 marker.status == "on"
@@ -1209,13 +1228,13 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"12"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }} >
+                            }}onClick={() => {onChangeValue("12"); getCCTVdetail(marker.devId)}} >
                             <div
                               class={
                                 marker.status == "on"
@@ -1251,13 +1270,13 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"13"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }} >
+                            }} onClick={() => {onChangeValue("13"); getCO2detail(marker.devId)}}>
                             <div
                               class={
                                 marker.status == "on"
@@ -1294,13 +1313,13 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"14"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }}>
+                            }}onClick={() => {onChangeValue("14"); getWaterMeterdetail(marker.devId)}}>
                             <div
                               class={
                                 marker.status == "on"
@@ -1337,13 +1356,13 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"15"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }}>
+                            }}onClick={() => {onChangeValue("15"); getHeaterdetail(marker.devId)}}>
                             <div
                               class={
                                 marker.status == "on"
@@ -1380,13 +1399,13 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           ></div>
                           <div
                             key={marker.id}
-                            value={"SPLIT"}
+                            value={"16"}
                             className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,
                               position: "absolute",
-                            }}>
+                            }}onClick={() => {onChangeValue("16"); getHeaterWaterdetail(marker.devId)}}>
                             <div
                               class={
                                 marker.status == "on"
