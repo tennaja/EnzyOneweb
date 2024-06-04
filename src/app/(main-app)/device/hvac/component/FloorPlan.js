@@ -550,7 +550,7 @@ export default function FloorPlan({ FloorId }) {
               return (
                 <div key={item.id}>
                   <div className="flex flex-row gap-4 p-2">
-                    <span className="text-lg  font-bold">HVAC Floor</span>
+                    <span className="text-lg  font-bold">HVAC</span>
                     <span className="text-lg  font-bold">{item.name}</span>
                     
                     <select
