@@ -76,6 +76,9 @@ export default function FloorPlan({ FloorId }) {
   const maxV = 100;
   const minA = 10;
   const maxA = 40;
+  function titleCase(str) {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
   useEffect(() => {
     if (FloorId) {
       getfloorplan(FloorId);
@@ -164,12 +167,10 @@ export default function FloorPlan({ FloorId }) {
   };
   const getSplitdetail = async (devId) => {
     setDevId(devId);
-    
     const result = await getSplitTypeDetail(devId);
     if(result.status === 200){
     setSplittypeDetailList([result.data]);
     console.log(result.data)
-    console.log(SplittypeDetailList)
     getSplittypeList(FloorId);
     }
     else if(result.status === 500) {
@@ -196,13 +197,11 @@ export default function FloorPlan({ FloorId }) {
         }
   };
   const getIoTdetail = async (devId) => {
-    
     setDevId(devId);
-    
     const result = await getIoTDetail(devId);
     if(result.status === 200){
     console.log([result.data])
-    setIoTDetailList([result.data]);
+    setIoTDetailList(result.data);
     getIOTList(FloorId);
     }
     else if(result.status === 401){
@@ -1105,10 +1104,7 @@ export default function FloorPlan({ FloorId }) {
                                           : " text-center text-gray-500 font-extrabold"
                                     }>
                                       {
-                                        marker.status == "on"
-                                          ? "On"
-                                          : marker.status == "offline" ? " Offline"
-                                            : " Off"
+                                        titleCase(marker.status)
                                       }
                                     </span>
                                   </span>
@@ -1172,10 +1168,7 @@ export default function FloorPlan({ FloorId }) {
                                             : " text-center text-gray-500 font-extrabold"
                                       }>
                                         {
-                                          marker.status == "on"
-                                            ? "On"
-                                            : marker.status == "offline" ? " Offline"
-                                              : " Off"
+                                          titleCase(marker.status)
                                         }
                                       </span>
                                     </span>
@@ -1271,7 +1264,7 @@ export default function FloorPlan({ FloorId }) {
                                         className={`toggle-btn-disable ${marker.automation == "off" ? "disableNone" : ""
                                           }`}
                                       >
-                                        {marker.automation == "on" ? "ON" : "OFF"}
+                                        {titleCase(marker.automation)}
                                       </div>
                                     </div> : <div
                                       className="toggle-container"
@@ -1292,7 +1285,7 @@ export default function FloorPlan({ FloorId }) {
                                         className={`toggle-btn ${marker.automation == "off" ? "disable" : ""
                                           }`}
                                       >
-                                        {marker.automation == "on" ? "ON" : "OFF"}
+                                        {titleCase(marker.automation)}
                                       </div>
                                     </div>}
 
@@ -1320,10 +1313,8 @@ export default function FloorPlan({ FloorId }) {
                                               : " text-center text-gray-500 font-extrabold"
                                         }>
                                           {
-                                            marker.status == "on"
-                                              ? "On"
-                                              : marker.status == "offline" ? " Offline"
-                                                : " Off"
+                                            titleCase(marker.status)
+                                              
                                           }
                                         </span>
                                       </span>
@@ -1415,9 +1406,9 @@ export default function FloorPlan({ FloorId }) {
                                               ) : null
                                           }
                                         >
-                                          {marker.fan == "auto" ? "Auto" : marker.fan == "low" ? "Low" : marker.fan == "medium" ? "Medium" : "High"}
+                                          {titleCase(marker.fan)}
                                         </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                          {marker.fan == "auto" ? "Auto" : marker.fan == "low" ? "Low" : marker.fan == "medium" ? "Medium" : "High"}
+                                          {titleCase(marker.fan)}
                                         </span> : "-"}
                                       </span>
                                     </div>
@@ -1436,9 +1427,9 @@ export default function FloorPlan({ FloorId }) {
                                               ) : null
                                           }
                                         >
-                                          {marker.mode == "cool" ? "Cool" : marker.mode == "dry" ? "Dry" : "Fan"}
+                                          {titleCase(marker.mode)}
                                         </span> : marker.status == "off" ? <span class="text-gray-700 text-sm">
-                                          {marker.mode == "cool" ? "Cool" : marker.mode == "dry" ? "Dry" : "Fan"}
+                                          {titleCase(marker.mode)}
                                         </span> : "-"}
                                       </span>
                                     </div>
@@ -1465,7 +1456,7 @@ export default function FloorPlan({ FloorId }) {
                                           className={`toggle-btn-disable ${marker.automation == "off" ? "disableNone" : ""
                                             }`}
                                         >
-                                          {marker.automation == "on" ? "ON" : "OFF"}
+                                          {titleCase(marker.automation)}
                                         </div>
                                       </div> : <div
                                         className="toggle-container"
@@ -1486,7 +1477,7 @@ export default function FloorPlan({ FloorId }) {
                                           className={`toggle-btn ${marker.automation == "off" ? "disable" : ""
                                             }`}
                                         >
-                                          {marker.automation == "on" ? "ON" : "OFF"}
+                                          {titleCase(marker.automation)}
                                         </div>
                                       </div>}
 
@@ -1514,10 +1505,7 @@ export default function FloorPlan({ FloorId }) {
                                                 : " text-center text-gray-500 font-extrabold"
                                           }>
                                             {
-                                              marker.status == "on"
-                                                ? "On"
-                                                : marker.status == "offline" ? " Offline"
-                                                  : " Off"
+                                              titleCase(marker.status) 
                                             }
                                           </span>
                                         </span>
