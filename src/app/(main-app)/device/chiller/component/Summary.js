@@ -145,8 +145,8 @@ export default function Summary({ BuldingId }) {
   return (
     <>
     <div className="flex flex-row w-auto justify-center gap-3 mt-5 ">
-    <div className="w-40 h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
-        <div className="h-28 p-3 flex flex-col justify-center items-center">
+    <div className="w-48 h-32 items-center justify-center rounded-xl bg-white p-3 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
+        <div className="h-28 p-6 flex flex-col justify-center items-center">
           {summaryList1.length > 0 &&
             summaryList1.map((item) => {
               return (
@@ -173,7 +173,7 @@ export default function Summary({ BuldingId }) {
                         // style={{height : "150px" , width : "150px", background : "red"}}
                         // hideText={true} // If you want to hide the text
                       />
-                      <span className="font-bold text-sm">
+                      <span className="font-bold text-base">
                         {item.value}
                       </span>
                     </>
@@ -183,11 +183,11 @@ export default function Summary({ BuldingId }) {
                 </>
               );
             })}
-          <span className="font-normal text-sm">Efficiency</span>
+          
         </div>
       </div>
 
-      <div className="w-auto h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
+      <div className="w-48 h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
         <div className="h-28 p-3 flex flex-col justify-center items-center gap-1">
           {summaryList2.map((item) => {
             return (
@@ -197,7 +197,7 @@ export default function Summary({ BuldingId }) {
                 </span>
                 {item.value != null ? (
                   <div>
-                    <span key={item.id} className="font-bold text-sm">
+                    <span key={item.id} className="font-bold text-base">
                       {item.value}
                     </span>
                   </div>
@@ -211,7 +211,7 @@ export default function Summary({ BuldingId }) {
         </div>
       </div>
 
-      <div className="w-auto h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
+      <div className="w-48 h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
         <div className="h-28 p-3 flex flex-col justify-center items-center gap-1">
           {summaryList3.map((item) => {
             return (
@@ -221,7 +221,7 @@ export default function Summary({ BuldingId }) {
                 </span>
                 {item.value != null ? (
                   <>
-                    <span key={item.id} className="font-bold text-sm">
+                    <span key={item.id} className="font-bold text-base">
                       {item.value}
                     </span>
                   </>
@@ -234,7 +234,7 @@ export default function Summary({ BuldingId }) {
           <span className="font-normal text-sm">kW/ton</span>
         </div>
       </div>
-      <div className="w-32 h-32 rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
+      <div className="w-48 h-32 rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
         <div className="h-28 p-3 flex flex-col justify-center items-center gap-1">
           {summaryList4.map((item) => {
             return (
@@ -260,7 +260,7 @@ export default function Summary({ BuldingId }) {
                                   ><IoMdPower size="1.5em"/>
                                     
                                   </button>
-                                  <span className='text-xs mt-1 text-gray-500 font-bold'>{titleCase(item.value)}</span>
+                                  <span className='text-sm mt-1 text-gray-500 font-bold'>{titleCase(item.value)}</span>
                   </>
                 ) : (
                   "-"
@@ -274,7 +274,7 @@ export default function Summary({ BuldingId }) {
      
     </div>
     <div className="flex flex-row justify-center gap-3 mt-5 ">
-      <div className="w-auto h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
+      <div className="w-48 h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
         <div className="h-28 p-3 flex flex-col justify-center items-center gap-1">
           {summaryList5.map((item) => {
             return (
@@ -284,7 +284,7 @@ export default function Summary({ BuldingId }) {
                 </span>
                 {item.value != null ? (
                   <>
-                    <span key={item.id} className="font-bold text-sm">
+                    <span key={item.id} className="font-bold text-base">
                       {item.value}
                     </span>
                   </>
@@ -307,7 +307,7 @@ export default function Summary({ BuldingId }) {
                 </span>
                 {item.value != null ? (
                   <>
-                    <span key={item.id} className="font-bold text-sm">
+                    <span key={item.id} className="font-bold text-base">
                       {item.value}
                     </span>
                   </>
@@ -330,7 +330,7 @@ export default function Summary({ BuldingId }) {
                 </span>
                 {item.value != null ? (
                   <>
-                    <span key={item.id} className="font-bold text-sm">
+                    <span key={item.id} className="font-bold text-base">
                       {item.value}
                     </span>
                   </>
@@ -353,7 +353,7 @@ export default function Summary({ BuldingId }) {
                 </span>
                 {item.value != null ? (
                   <>
-                    <span key={item.id} className="font-bold text-sm">
+                    <span key={item.id} className="font-bold text-base">
                       {item.value}
                     </span>
                   </>
@@ -366,7 +366,7 @@ export default function Summary({ BuldingId }) {
           <span className="font-normal text-sm">°F</span>
         </div>
       </div>
-      <div className="w-auto h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
+      <div className="w-48 h-32 items-center justify-center rounded-xl bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 ">
         <div className="h-28 p-3 flex flex-col justify-center items-center gap-1">
           {summaryList9.map((item) => {
             return (
@@ -376,7 +376,7 @@ export default function Summary({ BuldingId }) {
                 </span>
                 {item.value != null ? (
                   <>
-                    <span key={item.id} className="font-bold text-sm">
+                    <span key={item.id} className="font-bold text-base">
                       {item.value}
                     </span>
                   </>

@@ -175,7 +175,7 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                       String(item.chillerReturnTemp).includes(searchTable) ||
                       String(item.chillerSupplyTemp).includes(searchTable)||
                       String(item.chillerSupplySetTemp).includes(searchTable)||
-                      String(item.control).includes(searchTable)
+                      String(item.control).includes(searchTable)  
                     );
                   }).map((item) => {
                     
@@ -211,57 +211,54 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? (
-                                  "-"
-                                ) : <Highlighter
+                         <Highlighter
                                 highlightClassName="highlight" // Define your custom highlight class
                                 searchWords={[searchTable]}
                                 autoEscape={true}
                                 textToHighlight={String(item.power)} // Replace this with your text
-                              />}
+                              />
                         
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? (
-                                  "-"
-                                ) : <Highlighter
+                         <Highlighter
                                 highlightClassName="highlight" // Define your custom highlight class
                                 searchWords={[searchTable]}
                                 autoEscape={true}
-                                textToHighlight= {financial(item.drawer)} // Replace this with your text
-                              />}
+                                textToHighlight= {item.status == "offline" ? String(item.drawer) : financial(item.drawer)} // Replace this with your text
+                              />
                         
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                          {item.status == "offline" ? (
-                                  "-"
-                                ) : <Highlighter
+                          <Highlighter
                                 highlightClassName="highlight" // Define your custom highlight class
                                 searchWords={[searchTable]}
                                 autoEscape={true}
                                 textToHighlight={String(item.chillerSupplyTemp)} // Replace this with your text
-                              />}
+                              />
                         
                           
                         </td>
                        
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? (
-                                  "-"
-                                ) : <Highlighter
+                         <Highlighter
                                 highlightClassName="highlight" // Define your custom highlight class
                                 searchWords={[searchTable]}
                                 autoEscape={true}
                                 textToHighlight={String(item.chillerReturnTemp)} // Replace this with your text
-                              />}
+                              />
                         
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                         {item.status == "offline" ? (
-                                  "-"
+                                  <Highlighter
+                                  highlightClassName="highlight" // Define your custom highlight class
+                                  searchWords={[searchTable]}
+                                  autoEscape={true}
+                                  textToHighlight={String(item.chillerSupplySetTemp)} // Replace this with your text
+                                />
                                 ) : 
                                 item.status == "off" || AIMODE == "on" ? (
                                   <Highlighter
@@ -297,7 +294,7 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
 
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                         <div className="flex flex-col items-center">
-                        {item.status == "offline" ? "-" : 
+                        {item.status == "offline" ? null : 
                               <button
                                     type="button"
                                     className={
@@ -315,14 +312,13 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                                   ><IoMdPower size="1.5em"/>
                                     
                                   </button>}
-                                  {item.status == "offline" ? null : <Highlighter
+                                  <Highlighter
                                   className='text-xs mt-1 text-gray-500 font-bold'
                                   highlightClassName="highlight " // Define your custom highlight class
-                                  
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={titleCase(item.control)} // Replace this with your text
-                                />}
+                                />
                                 </div>
                              </td>
                         

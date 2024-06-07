@@ -676,7 +676,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                   return (
                     <div key={item.id}>
                       <div className="flex flex-row gap-4 p-2">
-                      <span className="text-lg  font-bold">IoT Floor</span>
+                      <span className="text-lg  font-bold">IoT</span>
                       <span className="text-lg  font-bold">{item.name}</span>
             <select
               className="w-auto border border-slate-300 mx-2 rounded-md h-9 px-3"

@@ -33,6 +33,7 @@ export default function HistoricalChart1({ BuildingId }) {
   const [CHSList, setCHSList] = useState([]);
   const [CHRList, setCHRList] = useState([]);
   const [OutdoorList, setOutdoorList] = useState([]);
+  const [PowerList, setPowerList] = useState([]);
   const [ListLabel, setListLabel] = useState([0]);
   const [dateFrom, setdateFrom] = useState(new Date());
   const [dateTo, setdateTo] = useState(new Date());
@@ -185,6 +186,18 @@ export default function HistoricalChart1({ BuildingId }) {
         console.log(label)
         }   
       }
+      if (res.data[3]) {
+        setPowerList([res.data[3]]);
+        let label = [];
+        let modday = 0;
+        if (res.data[3].data != null){
+          for (let j = 0; j < res.data[3].data.length; j++) {
+            label.push(res.data[3].data[j].time);
+          }
+        setListLabel(label);
+        console.log(label)
+        }   
+      }
     }
   }
   const disabledDate = (current) => {
@@ -264,6 +277,19 @@ export default function HistoricalChart1({ BuildingId }) {
               }),
 
               ...OutdoorList.map((item) => {
+                return {
+                  label: item.label,
+                  data: item.data != null ? item.data.map((data) => {
+                    return data.value;
+                  }) : null,
+                  borderColor: RandomColor(),
+                  
+                  fill: true,
+                  tension: 0,
+                  yAxisID: "y",
+                };
+              }),
+              ...PowerList.map((item) => {
                 return {
                   label: item.label,
                   data: item.data != null ? item.data.map((data) => {

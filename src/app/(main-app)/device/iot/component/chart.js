@@ -29,7 +29,7 @@ ChartJS.register(
 
 export default function Chart({deviceTypeId,floorid}) {
   // console.log(deviceTypeId)
-  const [DeviceParameterId, setDeviceParameterId] = useState(1);
+  const [DeviceParameterId, setDeviceParameterId] = useState();
   const [chartList, setChartList] = useState([]);
   const [deviceparameterList,setDeviceparameterList] = useState([])
   const [ListLabel, setListLabel] = useState([]);
@@ -53,12 +53,18 @@ export default function Chart({deviceTypeId,floorid}) {
   useEffect(() => {
     if (deviceTypeId) {
       getDeviceparameterList(deviceTypeId);
+      
     }
   }, [deviceTypeId]);
   
   useEffect(() => {
     if(DeviceParameterId && floorid)
-    {GetGraph(DeviceParameterId,floorid, formatDate(dateFrom), formatDate(dateTo));}
+    {
+      GetGraph(DeviceParameterId,floorid, formatDate(new Date()), formatDate(new Date()));
+      setdateFrom(formatDate(new Date()))
+      setdateTo(formatDate(new Date()))
+      onChangeDay(formatDate(new Date()),[formatDate(new Date()),formatDate(new Date())])
+    }
   },[DeviceParameterId]);
 
   const zoomOptions = {
@@ -99,7 +105,7 @@ export default function Chart({deviceTypeId,floorid}) {
       setDeviceParameterId(selected.id);
       setOption(selected.name)
       setUnit(selected.unit)
-      GetGraph(event,dateFrom,dateTo)
+      GetGraph(event,floorid,dateFrom,dateTo)
     }
     
   }
@@ -162,7 +168,7 @@ export default function Chart({deviceTypeId,floorid}) {
         <div className="flex gap-4">
         
           <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
-      format={dateFormat} disabledDate={disabledDate}/>
+      format={dateFormat} value={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]} disabledDate={disabledDate}/>
       
           <select
               className="w-auto border border-slate-300 mx-2 rounded-md h-9 px-3"
