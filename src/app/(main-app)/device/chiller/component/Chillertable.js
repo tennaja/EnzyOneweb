@@ -294,7 +294,13 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
 
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                         <div className="flex flex-col items-center">
-                        {item.status == "offline" ? null : 
+                        {item.status == "offline" ? <Highlighter
+                                  
+                                  highlightClassName="highlight " // Define your custom highlight class
+                                  searchWords={[searchTable]}
+                                  autoEscape={true}
+                                  textToHighlight={titleCase(item.control)} // Replace this with your text
+                                /> : 
                               <button
                                     type="button"
                                     className={
@@ -312,13 +318,14 @@ const onclickOPenSettemp = (id, DecviceId, values,DevId) => {
                                   ><IoMdPower size="1.5em"/>
                                     
                                   </button>}
-                                  <Highlighter
+                                  {item.status == "offline" ? null : <Highlighter
                                   className='text-xs mt-1 text-gray-500 font-bold'
                                   highlightClassName="highlight " // Define your custom highlight class
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={titleCase(item.control)} // Replace this with your text
-                                />
+                                />}
+                                  
                                 </div>
                              </td>
                         

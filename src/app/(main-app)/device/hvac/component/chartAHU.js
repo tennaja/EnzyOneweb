@@ -101,7 +101,7 @@ export default function ChartAHU({ FloorId }) {
 
         title: {
           display: true,
-          text: "Controle Valve %",
+          text: "Control Valve %",
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
       },
@@ -200,7 +200,7 @@ export default function ChartAHU({ FloorId }) {
             datasets: [
               ...chartListAHU1.map((item) => {
                 return {
-                  label: "Controle Value " + item.deviceName,
+                  label: "Control Value " + item.deviceName,
                   data: item.data.map((data) => {
                     return data.value;
                   }),
