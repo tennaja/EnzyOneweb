@@ -60,10 +60,8 @@ export default function Chart({deviceTypeId,floorid}) {
   useEffect(() => {
     if(DeviceParameterId && floorid)
     {
-      GetGraph(DeviceParameterId,floorid, formatDate(new Date()), formatDate(new Date()));
-      setdateFrom(formatDate(new Date()))
-      setdateTo(formatDate(new Date()))
-      onChangeDay(formatDate(new Date()),[formatDate(new Date()),formatDate(new Date())])
+      GetGraph(DeviceParameterId,floorid, formatDate(dateFrom), formatDate(dateFrom));
+      onChangeDay(formatDate(new Date()),[formatDate(dateFrom),formatDate(dateTo)])
     }
   },[DeviceParameterId]);
 
@@ -124,7 +122,6 @@ export default function Chart({deviceTypeId,floorid}) {
     };
 
   async function GetGraph(deviceParameterid,floorId,dateFrom, dateTo) {
-    
     const paramsNav = {
       floorId : floorId,
       deviceParameterId : deviceParameterid,
@@ -154,9 +151,12 @@ export default function Chart({deviceTypeId,floorid}) {
 
   function onChangeDay(date, dateString) {
     console.log(dateString);
-    setdateFrom(dateString[0])
-    setdateTo(dateString[1])
-    GetGraph(DeviceParameterId,floorid ,formatDate(dateString[0]), formatDate(dateString[1]));
+    if(dateString[0] != "" && dateString[1] != "" ){
+      setdateFrom(dateString[0])
+      setdateTo(dateString[1])
+      GetGraph(DeviceParameterId,floorid ,formatDate(dateString[0]), formatDate(dateString[1]));
+    }
+    
   }
   const disabledDate = (current) => {
     // Can not select days before today and today
@@ -167,9 +167,8 @@ export default function Chart({deviceTypeId,floorid}) {
       <div className="flex flex-col gap-4 p-2">
         <div className="flex gap-4">
         
-          <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
+          <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay}
       format={dateFormat} value={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]} disabledDate={disabledDate}/>
-      
           <select
               className="w-auto border border-slate-300 mx-2 rounded-md h-9 px-3"
               onChange={(e) => OnchangeList(e.target.value)}
