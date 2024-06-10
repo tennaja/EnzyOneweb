@@ -877,6 +877,11 @@ export default function FloorPlan({ FloorId }) {
                                             Humidity (%) : {String(marker.humidity)}
                                           </span>
                                         </div>
+                                        <div class="px-3 ">
+                                          <span class="text-gray-700 text-xs">
+                                          Set Temp. (°C) : {String(marker.setTemp)}
+                                          </span>
+                                        </div>
 
                                       </div>
                                     </div>

@@ -114,7 +114,7 @@ const handleChangeValueSettemp = async () => {
                       item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
                       item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
-                      String(item.roomTemp).includes(searchTable) ||
+                      String(item.temp).includes(searchTable) ||
                       String(item.humidity).includes(searchTable) 
                       
                     );

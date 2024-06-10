@@ -261,7 +261,7 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                               <div className="flex flex-col items-center">
-                              {item.status == "offline" ? "-" : 
+                              {item.status == "offline" ? null : 
                               <button
                                     type="button"
                                     className={
@@ -278,14 +278,14 @@ export default function SmartIRtable({SmartIRlist,onSubmitControl,onSubmitSettem
                                   ><IoMdPower size="1.5em"/>
                                     
                                   </button>}
-                                  {item.status == "offline" ? null : <Highlighter
-                                  className='text-xs mt-1 text-gray-500 font-bold'
+                                   <Highlighter
+                                  className={ item.control == "on" && "off" ? 'text-xs mt-1 text-gray-500 font-bold' : ""}
                                   highlightClassName="highlight " // Define your custom highlight class
                                   
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={titleCase(item.control)} // Replace this with your text
-                                />}
+                                />
                                   
                                 </div>
                               </td>

@@ -129,7 +129,9 @@ const openModalControleIsStart = (DecviceId,DeviceName,DevId) => {
                       String(item.power).includes(searchTable) ||
                       String(item.model).includes(searchTable) ||
                       String(item.waste).includes(searchTable)||
-                      String(item.counter).includes(searchTable)
+                      String(item.counter).includes(searchTable) || 
+                      item.control.toUpperCase().includes(searchTable.toUpperCase()) ||
+                      item.control.toLowerCase().includes(searchTable.toLowerCase()) 
                     );
                   }).map((item) => {
                     
@@ -214,7 +216,7 @@ const openModalControleIsStart = (DecviceId,DeviceName,DevId) => {
 
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
                         <div className="flex flex-col items-center">
-                        {item.status == "offline" ? "-" : 
+                        {item.status == "offline" ? null : 
                               <button
                                     type="button"
                                     className={
@@ -231,14 +233,13 @@ const openModalControleIsStart = (DecviceId,DeviceName,DevId) => {
                                   ><IoMdPower size="1.5em"/>
                                     
                                   </button>}
-                                  {item.status == "offline" ? null : <Highlighter
-                                  className='text-xs mt-1 text-gray-500 font-bold'
-                                  highlightClassName="highlight " // Define your custom highlight class
-                                  
+                                  <Highlighter
+                                  className={ item.control == "on" && "off" ? 'text-xs mt-1 text-gray-500 font-bold' : ""}
+                                  highlightClassName="highlight " // Define your custom highlight class 
                                   searchWords={[searchTable]}
                                   autoEscape={true}
                                   textToHighlight={item.control} // Replace this with your text
-                                />}
+                                />
                                 </div>
                              </td>
                         
