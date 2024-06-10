@@ -2723,7 +2723,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                             }
                           >
                           <IoMdPower size="1.2em"/>
-                          </button><div className="text-xs  text-gray-500 font-bold">{marker.control}</div></div>}
+                          </button><div className="text-xs  text-gray-500 font-bold">{titleCase(marker.control)}</div></div>}
                           
                         </span>
                       </div>
