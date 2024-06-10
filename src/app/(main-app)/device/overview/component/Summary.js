@@ -55,7 +55,7 @@ export default function Summary({ FloorId }) {
               </>
             );
           })}
-          <span className="font-normal text-sm">Efficiency</span>
+          
         </div>
       </div>
 

@@ -173,87 +173,86 @@ const openModalAutomationIsStart = (DecviceId,Decvicename,DevId) => {
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? "-" : <Highlighter
+                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.supplyTemp)} // Replace this with your text
-                                  />}
+                                  />
                         
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center ">
-                        {item.status == "offline" ? "-" : item.status == "off" ? <Highlighter
-                                    className="font-bold cursor-pointer"
+                        <Highlighter
+                                    className={item.status == "on" ? "text-[#5eead4] underline font-bold cursor-pointer" : "font-bold cursor-pointer"}
                                     onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,item.devId,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
-                                  />: <Highlighter
-                                    className="text-[#5eead4] underline font-bold cursor-pointer"
-                                    onClick={(event) =>  item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.supplyTempSetPoint ,item.devId,event.preventDefault()) : null}
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={String(item.supplyTempSetPoint)} // Replace this with your text
-                                  />}
+                                  />
                         
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? "-" :  <Highlighter
+                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.returnTemp)} // Replace this with your text
-                                  />}
+                                  />
                        
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? "-" : <Highlighter
+                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.vsdDrive)} // Replace this with your text
-                                  />}
+                                  />
                         
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? "-" : <Highlighter
+                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.vsdPower)} // Replace this with your text
-                                  />}
+                                  />
                         
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? "-" :  <Highlighter
+                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.vsdSpeed)} // Replace this with your text
-                                  />}
+                                  />
                        
                 
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? "-" : <Highlighter
+                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.controlValve)} // Replace this with your text
                                   />
-                          }
+                          
                         
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 flex justify-center items-center font-extrabold">
                                 
-                        {item.status == "offline" ? "-" : item.status == "off" ? <div className='toggle-container-disable' onClick={() =>
+                        {item.status == "offline" ? 
+                        <Highlighter
+                                    highlightClassName="highlight" // Define your custom highlight class
+                                    searchWords={[searchTable]}
+                                    autoEscape={true}
+                                    textToHighlight={String(item.automation)} // Replace this with your text
+                                  /> : item.status == "off" ? <div className='toggle-container-disable' onClick={() =>
                                 item.status == "on" ?
                                 item.automation == "on"
                                     ? openModalAutomationIsStop(item.id,item.deviceName,item.devId)

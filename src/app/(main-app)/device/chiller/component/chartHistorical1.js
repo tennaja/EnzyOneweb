@@ -299,7 +299,7 @@ export default function HistoricalChart1({ BuildingId }) {
                   
                   fill: true,
                   tension: 0,
-                  yAxisID: "y",
+                  yAxisID: "y1",
                 };
               }),
             ],

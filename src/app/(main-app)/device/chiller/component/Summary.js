@@ -90,6 +90,7 @@ export default function Summary({ BuldingId }) {
       // closeModal();
       setLoading(false);
       notifySuccess(res.data.title,res.data.message);
+      getChillerList(BuldingId)
       // getLightingdetail(DevId)
       // getLightingList(FloorId)
     } else if (res.response.status === 401) {
@@ -114,6 +115,7 @@ export default function Summary({ BuldingId }) {
       // closeModal();
       setLoading(false);
       notifySuccess(res.data.title, res.data.message);
+      getChillerList(BuldingId)
       // getSplittypeList(FloorId);
       // getSplitdetail(DevId)
     } else if (res.response.status === 401) {

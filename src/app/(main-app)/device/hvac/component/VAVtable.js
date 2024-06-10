@@ -98,9 +98,9 @@ export default function VAVtable({VAVList,onSubmitSettemp}) {
                       item.deviceName.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toLowerCase().includes(searchTable.toLowerCase()) ||
                       item.status.toUpperCase().includes(searchTable.toUpperCase()) ||
-                      String(item.temp.toFixed(2)).includes(searchTable) ||
-                      String(item.airFlow.toFixed(2)).includes(searchTable) ||
-                      String(item.damper.toFixed(2)).includes(searchTable) 
+                      String(item.temp).includes(searchTable) ||
+                      String(item.airFlow).includes(searchTable) ||
+                      String(item.damper).includes(searchTable) 
                       
                     );
                   }).map((item) => {
@@ -138,41 +138,35 @@ export default function VAVtable({VAVList,onSubmitSettemp}) {
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? "-" :  <Highlighter
+                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.temp)} // Replace this with your text
                                   />
-       }
+       
                        
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.status == "offline" ? "-" : <Highlighter
+                         <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.airFlow)} // Replace this with your text
-                                  />}
+                                  />
                         
                           
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold" >
-                        {item.status == "offline" ? "-" : item.status == "off" ? <Highlighter
-                        className="font-bold cursor-pointer"
-                                    highlightClassName="highlight" // Define your custom highlight class
-                                    searchWords={[searchTable]}
-                                    autoEscape={true}
-                                    textToHighlight={String(item.damper)} // Replace this with your text
-                                  /> :
+                        
                              <Highlighter
-                        className="text-[#5eead4] underline font-bold cursor-pointer"
+                        className={item.status == "on" ? "text-[#5eead4] underline font-bold cursor-pointer" : "font-bold cursor-pointer"}
                         onClick={(event) => item.status == "on" ? onclickOPenSettemp(item.id, item.deviceName, item.damper ,item.devId,event.preventDefault()) : null}
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
                                     autoEscape={true}
                                     textToHighlight={String(item.damper)} // Replace this with your text
-                                  />}
+                                  />
                         
                           
                         </td>
