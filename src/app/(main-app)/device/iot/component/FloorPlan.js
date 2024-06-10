@@ -293,7 +293,7 @@ const getPowerMeterdetail = async (devId) => {
   const result = await getpowermeterDetail(devId);
   console.log(result.data);
   setPowerMeterDetailList([result.data]);
-  getPressuregaugeList(FloorId)
+  getPowerMeterList(FloorId)
 };
 const getInveterdetail = async (devId) => {
   setDevId(devId);
@@ -441,8 +441,8 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
     closeModal();
     setLoading(false);
     notifySuccess(res.data.title,res.data.message);
-    getLightingdetail(DevId)
-    getLightingList(FloorId)
+    getHeaterdetail(DevId)
+    getHeaterList(FloorId)
   } else if (res.response.status === 401) {
     setAlertTitle(res.response.data.title);
     setAlertmessage(res.response.data.message);

@@ -11,7 +11,7 @@ import Loading from "./Loading";
 import { IoMdPower } from "react-icons/io";
 
 export default function Heatertable({Heaterlist,onSubmitControl}) {
-  console.log(Heaterlist)
+  // console.log(Heaterlist)
   const [searchTable, setSerachTable] = useState("");
   const [DevId,setDevId] = useState()
   const [DecviceId, setDeviceId] = useState(null);
