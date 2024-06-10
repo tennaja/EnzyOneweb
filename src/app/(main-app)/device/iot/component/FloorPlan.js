@@ -2671,7 +2671,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                             : marker.status == "offline" ? " text-center text-red-500 font-extrabold"
                             : " text-center text-gray-500 font-extrabold"
                         }>
-                        {marker.status}
+                        {titleCase(marker.status)}
                         </span> 
                         </span>
                       </div>
