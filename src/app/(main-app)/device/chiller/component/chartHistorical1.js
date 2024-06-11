@@ -296,7 +296,8 @@ export default function HistoricalChart1({ BuildingId }) {
                     return data.value;
                   }) : null,
                   borderColor: RandomColor(),
-                  
+                  borderWidth: 1,
+                  borderDash: [10, 5],
                   fill: true,
                   tension: 0,
                   yAxisID: "y1",
