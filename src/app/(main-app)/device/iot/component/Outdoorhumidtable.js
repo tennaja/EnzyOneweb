@@ -10,6 +10,7 @@ import {
 import Loading from "./Loading";
 
 export default function OutdoorHumid(Outdoorlist) {
+  console.log(Outdoorlist)
     const [searchTable, setSerachTable] = useState("");
     const [DecviceId, setDeviceId] = useState(null);
   const [DeviceName, setDeviceName] = useState('');

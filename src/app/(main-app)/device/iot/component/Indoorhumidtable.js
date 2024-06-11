@@ -115,9 +115,7 @@ export default function IndoorHumid(Indoorlist) {
       
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-center font-extrabold">
-                        {item.humidity == "-" ? (
-                                  "-"
-                                ) : (
+                         
                                   <Highlighter
                                     highlightClassName="highlight" // Define your custom highlight class
                                     searchWords={[searchTable]}
@@ -126,7 +124,7 @@ export default function IndoorHumid(Indoorlist) {
                                       item.humidity
                                     )} // Replace this with your text
                                   />
-                                )}
+                                
                           
                         </td> 
                       </tr>
