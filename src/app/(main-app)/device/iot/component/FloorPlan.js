@@ -726,7 +726,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                           <div
                             key={marker.id}
                             value={"1"}
-                            className="w-auto"
+                            className="w-44"
                             style={{
                               left: marker.position.x,
                               top: marker.position.y,

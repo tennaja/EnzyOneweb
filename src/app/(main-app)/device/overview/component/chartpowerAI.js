@@ -197,7 +197,7 @@ export default function PowerAiControl({ FloorId }) {
   return (
     <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200 my-5">
       <div className="flex flex-col gap-4 p-2">
-      <span className="text-lg  font-bold">Power vs AI Constol</span>
+      <span className="text-lg  font-bold">Power vs AI Control</span>
         <div className="flex gap-4 items-center">
         {/* <Radio.Group value={placement} onChange={placementChange} buttonStyle="solid" style={{color : "primary"}}>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="day">Day</Radio.Button>
