@@ -13,6 +13,7 @@ import {
 import HistoricalChart from "./chartHistorical";
 import ChartEnergyConsumption from "./chartEnergy";
 import Summary from "./Summary";
+import PowerAiControl from "./chartpowerAI";
 
 
 export default function FilterCard() {
@@ -172,6 +173,7 @@ export default function FilterCard() {
       <Summary FloorId= {floorId}/>
       <ChartEnergyConsumption FloorId= {floorId}/>
       <HistoricalChart FloorId= {floorId}/>
+      <PowerAiControl FloorId= {floorId}/>
     
       
     </div>

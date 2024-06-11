@@ -16,8 +16,6 @@ import zoomPlugin from "chartjs-plugin-zoom";
 import dayjs from 'dayjs';
 import { getEnergyConsumptionChart } from "@/utils/api";
 import { DatePicker, TimePicker,Radio} from "antd";
-
-
 ChartJS.register(
   zoomPlugin,
   BarElement,
@@ -39,6 +37,13 @@ export default function ChartEnergyConsumption({ FloorId }) {
   const dateFormat = 'YYYY/MM/DD';
   // const yearlabel =['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
   
+  
+
+  useEffect(() => {
+    if (FloorId != 0 && placement) {
+      GetEnergyGraph(FloorId, formatDate(startdate),placement );
+    }
+  }, [FloorId,placement]);
   const formatDate = (date) => {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -51,11 +56,6 @@ export default function ChartEnergyConsumption({ FloorId }) {
     return [year, month, day].join("-");
   };
 
-  useEffect(() => {
-    if (FloorId != 0 && placement) {
-      GetEnergyGraph(FloorId, formatDate(new Date()),placement );
-    }
-  }, [FloorId,placement]);
   const zoomOptions = {
     pan: {
       enabled: true,
@@ -161,9 +161,14 @@ export default function ChartEnergyConsumption({ FloorId }) {
     return current && current > dayjs().endOf('day');
   };
   function onChangeDay(dateString) {
+    if(dateString != []){
     console.log(formatDate(dateString));
     setStartDate(dateString)
     GetEnergyGraph(FloorId, formatDate(dateString),placement);
+    }else if (dateString == "1970-01-01") {
+      GetEnergyGraph(FloorId, formatDate(new Date()),placement)
+    }
+    
   }
   
   const placementChange = (event) => {
@@ -183,7 +188,7 @@ export default function ChartEnergyConsumption({ FloorId }) {
       </Radio.Group>
           {/* <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
       format={dateFormat} disabledDate={disabledDate}/> */}
-      {placement == "day" ? <DatePicker defaultValue={[dayjs(formatDate(startdate), dateFormat)]} onChange={onChangeDay} disabledDate={disabledDate} /> : placement == "month" ? <DatePicker onChange={onChangeDay} picker="month" disabledDate={disabledDate}/> : <DatePicker onChange={onChangeDay} picker="year" disabledDate={disabledDate}/>}
+      {placement == "day" ? <DatePicker format={dateFormat} value={[dayjs(formatDate(startdate), dateFormat)]} onChange={onChangeDay} disabledDate={disabledDate} /> : placement == "month" ? <DatePicker onChange={onChangeDay} picker="month" disabledDate={disabledDate}/> : <DatePicker onChange={onChangeDay} picker="year" disabledDate={disabledDate}/>}
           <button
             className="border border-slate-300 rounded-md h-9 px-2"
             onClick={onResetZoom}

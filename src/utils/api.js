@@ -1240,7 +1240,23 @@ export async function getSummary(floorId) {
     return error;
   }
 }
-
+export async function getPowerAIControlChart(req) {
+  
+  const floorId = req.floorId;
+  const date = req.date
+  const period = req.period
+  try {
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/overview/historical/power-mode?floorId=${floorId}&date=${date}&period=${period}`;
+      const res = await axios.get(url, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json",},
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
 //Chiller-----------------------------------------------
 export async function getSummaryCHiller(buildingId) {
   try {     
