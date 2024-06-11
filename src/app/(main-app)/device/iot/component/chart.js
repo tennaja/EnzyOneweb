@@ -177,7 +177,7 @@ export default function Chart({deviceTypeId,floorid}) {
                 deviceparameterList.map((item) => {
                   
                   return (
-                  <option className="rounded-lg" key={item.id} value={item.id}>{item.name} ({item.unit})</option>)
+                  <option className="rounded-lg" key={item.id} value={item.id}>{item.name} {item.unit === "" ? item.unit : "(" +item.unit+ ")"}  </option>)
                 })}
             </select>
           <button
@@ -239,7 +239,7 @@ export default function Chart({deviceTypeId,floorid}) {
 
         title: {
           display: true,
-          text: option+ " ("+unit+")",
+          text: option + ( unit == "" ? unit : " ("+unit+")"),
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
       },

@@ -90,10 +90,7 @@ export default function SummaryCard() {
   // Option Graph
   
 
-  function onChangeDay(date, dateString) {
-    console.log(dateString);
-    GetAHUGraph(floorId, formatDate(dateString[0]), formatDate(dateString[1]));
-  }
+  
 
   const chartRef = useRef(null);
 
@@ -166,14 +163,18 @@ export default function SummaryCard() {
         formatDate(new Date()),
         formatDate(new Date())
       );
+      onChangeDay(formatDate(new Date()),[formatDate(startDate),formatDate(endDate)])
     }
   }, [floorId, listChange]);
 
   function onChangeDay(date, dateString) {
+    if(dateString[0] != "" && dateString[1] != "" ){
     setStartDate(dateString[0])
     setEndDate(dateString[1])
     console.log(dateString);
     GetHitoricalGraph(floorId, listChange, formatDate(dateString[0]), formatDate(dateString[1]));
+    }
+    
   }
   const OnListChange = async (event) => {
     setListChange(event);
@@ -823,7 +824,7 @@ export default function SummaryCard() {
           </div>
           <div className="flex gap-5">
           
-          <RangePicker type="number" className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(startDate), dateFormat), dayjs(formatDate(endDate), dateFormat)]}
+          <RangePicker type="number" className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} value={[dayjs(formatDate(startDate), dateFormat), dayjs(formatDate(endDate), dateFormat)]}
       format={dateFormat} disabledDate={disabledDate}/>
 
             <button
