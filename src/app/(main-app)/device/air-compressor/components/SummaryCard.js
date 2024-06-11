@@ -168,7 +168,7 @@ export default function SummaryCard() {
   }, [floorId, listChange]);
 
   function onChangeDay(date, dateString) {
-    if(dateString[0] != "" && dateString[1] != "" ){
+    if(dateString[0] !== "" && dateString[1] !== "" ){
     setStartDate(dateString[0])
     setEndDate(dateString[1])
     console.log(dateString);

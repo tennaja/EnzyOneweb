@@ -35,13 +35,11 @@ export default function ChartEnergyConsumption({ FloorId }) {
   const [placement, SetPlacement] = useState('day');
   const [startdate, setStartDate] = useState(new Date());
   const dateFormat = 'YYYY/MM/DD';
-  // const yearlabel =['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
   
-  
-
   useEffect(() => {
-    if (FloorId != 0 && placement) {
+    if (FloorId && placement) {
       GetEnergyGraph(FloorId, formatDate(startdate),placement );
+      onChangeDay(formatDate(new Date()),formatDate(new Date()))
     }
   }, [FloorId,placement]);
   const formatDate = (date) => {
@@ -126,7 +124,7 @@ export default function ChartEnergyConsumption({ FloorId }) {
     const paramsNav = {
       floorId: floorId,
       date: date,
-      period: placement,
+      period: period,
     };
     const res = await getEnergyConsumptionChart(paramsNav);
     console.log(paramsNav);
@@ -160,15 +158,14 @@ export default function ChartEnergyConsumption({ FloorId }) {
     // Can not select days before today and today
     return current && current > dayjs().endOf('day');
   };
-  function onChangeDay(dateString) {
-    if(dateString != []){
+  function onChangeDay(date,dateString) {
+    console.log(dateString)
+    if(dateString != "")
+    {
     console.log(formatDate(dateString));
     setStartDate(dateString)
     GetEnergyGraph(FloorId, formatDate(dateString),placement);
-    }else if (dateString == "1970-01-01") {
-      GetEnergyGraph(FloorId, formatDate(new Date()),placement)
     }
-    
   }
   
   const placementChange = (event) => {
@@ -185,10 +182,10 @@ export default function ChartEnergyConsumption({ FloorId }) {
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="day">Day</Radio.Button>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="month">Month</Radio.Button>
         <Radio.Button className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" value="year">Year</Radio.Button>
-      </Radio.Group>
+        </Radio.Group>
           {/* <RangePicker className="bg-white border shadow-default dark:border-slate-300 dark:bg-dark-box dark:text-slate-200" onChange={onChangeDay} defaultValue={[dayjs(formatDate(dateFrom), dateFormat), dayjs(formatDate(dateTo), dateFormat)]}
       format={dateFormat} disabledDate={disabledDate}/> */}
-      {placement == "day" ? <DatePicker format={dateFormat} value={[dayjs(formatDate(startdate), dateFormat)]} onChange={onChangeDay} disabledDate={disabledDate} /> : placement == "month" ? <DatePicker onChange={onChangeDay} picker="month" disabledDate={disabledDate}/> : <DatePicker onChange={onChangeDay} picker="year" disabledDate={disabledDate}/>}
+      {placement == "day" ? <DatePicker  value={[dayjs(formatDate(startdate), dateFormat)]} onChange={onChangeDay} disabledDate={disabledDate} /> : placement == "month" ? <DatePicker value={[dayjs(formatDate(startdate), dateFormat)]} onChange={onChangeDay} picker="month" disabledDate={disabledDate}/> : <DatePicker value={[dayjs(formatDate(startdate), dateFormat)]} onChange={onChangeDay} picker="year" disabledDate={disabledDate}/>}
           <button
             className="border border-slate-300 rounded-md h-9 px-2"
             onClick={onResetZoom}
