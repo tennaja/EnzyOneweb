@@ -224,7 +224,7 @@ export default function PowerAiControl({ FloorId }) {
               ...power.map((item) => {
                 console.log(item)
                 return {
-                  label: item.label ,
+                  label: item.label + " (kW)",
                   data: item.data != null ? item.data?.map((data) => {
                     return data.value;
                   }) : null,
