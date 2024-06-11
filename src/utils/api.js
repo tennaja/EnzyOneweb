@@ -1243,11 +1243,11 @@ export async function getSummary(floorId) {
 export async function getPowerAIControlChart(req) {
   
   const floorId = req.floorId;
-  const date = req.date
-  const period = req.period
+  const dateFrom = req.dateFrom
+  const dateTo = req.dateTo
   try {
     const url =
-      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/overview/historical/power-mode?floorId=${floorId}&date=${date}&period=${period}`;
+      process.env.NEXT_PUBLIC_APP_URL + `/api/device-management/cpms/overview/historical?floorId=${floorId}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
       const res = await axios.get(url, {
       withCredentials: true,
       headers: { "Content-Type": "application/json",},

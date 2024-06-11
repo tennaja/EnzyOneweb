@@ -50,7 +50,7 @@ export default function PowerAiControl({ FloorId }) {
 
   useEffect(() => {
     if (FloorId != 0) {
-      GetGraph(FloorId, formatDate(new Date()), formatDate(new Date()));
+      GetGraph(FloorId, formatDate(dateFrom), formatDate(dateTo));
     }
   }, [FloorId]);
   const zoomOptions = {
@@ -180,7 +180,9 @@ export default function PowerAiControl({ FloorId }) {
   };
   function onChangeDay(date, dateString) {
     console.log(dateString);
-    if(dateString[0] != "" && dateString[1] != ""){
+    if(dateString[0] != "" && dateString[1] != "")
+      {
+        console.log(dateString);
       GetGraph(FloorId, formatDate(dateString[0]), formatDate(dateString[1]));
     }
     else {
