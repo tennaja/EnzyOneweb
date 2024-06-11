@@ -234,7 +234,7 @@ const openModalControleIsStart = (DecviceId,DeviceName,DevId) => {
                                     
                                   </button>}
                                   <Highlighter
-                                  className={ item.control == "on" || "off" ? 'text-xs mt-1 text-gray-500 font-bold' : ""}
+                                  className={ item.control == "on" || item.control == "off" ? 'text-xs mt-1 text-gray-500 font-bold' : ""}
                                   highlightClassName="highlight " // Define your custom highlight class 
                                   searchWords={[searchTable]}
                                   autoEscape={true}
