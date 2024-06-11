@@ -820,6 +820,7 @@ export default function SummaryCard() {
               <option value="barg">Pressure (barg)</option>
               <option value="kw">Power (kw)</option>
               <option value="%">Efficiency (%)</option>
+              <option value="anomaly">Anomaly detection</option>
             </select>
           </div>
           <div className="flex gap-5">
