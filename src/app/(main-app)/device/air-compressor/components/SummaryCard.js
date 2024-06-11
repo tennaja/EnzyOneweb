@@ -813,7 +813,7 @@ export default function SummaryCard() {
           <div className="flex justify-between ">
             <span className="text-lg  font-bold">Historical</span>
             <select
-              className="w-44 border border-slate-300 mx-2 rounded-md h-9"
+              className="w-52 pl-3 border border-slate-300 mx-2 rounded-md h-9"
               onChange={(event) => OnListChange(event.target.value)}
               value={listChange}
             >
@@ -903,7 +903,7 @@ export default function SummaryCard() {
       
               title: {
                 display: true,
-                text: listChange === "barg" ? "Pressure (barg)" : listChange === "kw" ? "Power (kw)" : "Efficiency (%)",
+                text: listChange === "barg" ? "Pressure (barg)" : listChange === "kw" ? "Power (kw)" : listChange === "anomaly" ? "Anomaly detection" : "Efficiency (%)",
                 padding: { top: 30, left: 0, right: 0, bottom: 0 },
               },
             },
