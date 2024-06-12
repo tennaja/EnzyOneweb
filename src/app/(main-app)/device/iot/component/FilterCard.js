@@ -8,22 +8,9 @@ import {
   getBranch,
   getBulding,
   getFloor,
-  getFloorplan,
-  getAHU,
-  getVAV,
-  getSplittype,
-  getIOT,
-  getSplittypeGraph,
-  getAHUGraph,
 } from "@/utils/api";
 import FloorPlan from "./FloorPlan";
-import Heatertable from "./Heatertable";
-import VAVtable from "./Outdoorhumidtable";
-import SplitTypetable from "./SmartIRtable";
-import SmartIRtable from "./WaterMetertable";
-import ChartAHU from "./chart";
-import ChartSplittype from "./chartSplittype";
-import SelectComponent from "./test";
+
 
 export default function FilterCard() {
   const [chartListAHU1, setChartListAHU1] = useState([]);

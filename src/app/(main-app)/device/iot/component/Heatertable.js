@@ -22,7 +22,12 @@ export default function Heatertable({Heaterlist,onSubmitControl}) {
   const [showModalControlestart, setShowModalControlestart] = useState(false);
   const [showModalControlestop, setShowModalControlestop] = useState(false);
   function titleCase(str) {
-    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
 
   const notifySuccess = () =>

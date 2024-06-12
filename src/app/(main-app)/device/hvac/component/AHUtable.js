@@ -31,7 +31,12 @@ export default function AHUtable({AHUlist,onSubmitAutomation,onSubmitSettemp}) {
   },[AHUlist,]) 
 
   function titleCase(str) {
-    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
   const onclickOPenSettemp = (id, Decvicename, values,DevId) => {
     setOpenSettempModal(true)

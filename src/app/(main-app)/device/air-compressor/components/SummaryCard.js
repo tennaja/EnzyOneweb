@@ -399,6 +399,14 @@ export default function SummaryCard() {
     // Can not select days before today and today
     return current && current > dayjs().endOf('day');
   };
+  function titleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
+  }
   return (
     <div>
       <div className="grid rounded-xl bg-white p-3 shadow-default dark:border-slate-800 dark:bg-dark-box dark:text-slate-200">
@@ -623,7 +631,7 @@ export default function SummaryCard() {
                                         : openModalIsStart(item.id)
                                     }
                                   ><IoMdPower size="1.5em"/>
-                                  </button>}<div className="text-xs mt-1 text-gray-500 font-bold">{item.status == "On" ? "On" : item.status == "Off" ? "Off" : null }</div>
+                                  </button>}<div className="text-xs mt-1 text-gray-500 font-bold">{item.status == "On" || item.status == "Off" ?  titleCase(item.status) : null }</div>
                                   
                                   </div>
                                 </td>

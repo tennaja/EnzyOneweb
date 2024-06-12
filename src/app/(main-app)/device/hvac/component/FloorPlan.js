@@ -77,7 +77,12 @@ export default function FloorPlan({ FloorId }) {
   const minA = 10;
   const maxA = 40;
   function titleCase(str) {
-    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
   useEffect(() => {
     if (FloorId) {

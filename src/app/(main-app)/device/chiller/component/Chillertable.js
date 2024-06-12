@@ -28,7 +28,12 @@ export default function ChillerTable({ChillerList,onSubmitControl,AIMODE,onSubmi
   const min = 40;
   const max = 70;
   function titleCase(str) {
-    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
 
   const notifySuccess = (title,message) =>

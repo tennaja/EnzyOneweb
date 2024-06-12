@@ -4,7 +4,12 @@ import Highlighter from "react-highlight-words";
 
 export default function Counter(Counterlist) {
   function titleCase(str) {
-    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
   const [searchTable, setSerachTable] = useState("");
   return (

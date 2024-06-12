@@ -3,18 +3,14 @@ import Loading from "./Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect, useState, useRef } from "react";
-import ImageMarker, { Marker } from "react-image-marker";
 import {
   getFloorplanIoT,getdeviceparameter,getindoortemphumid,getoutdoortemphumid,getPressuregauge,getPowerMeter,getInveter,getFlowMeter,getMotionSensor,getLighting,getCounter,getSmartIR,getEfficiency,getCCTV,getCO2Sensor,
   getWaterMeter,getHeater,getHeaterWater,ChangeControlLightning,ChangeControlSmartIR,SmartIRSetTemp, ChangeSetModeSmartIR, ChangeSetFanSmartIR ,getindoortemphumidDetail,getoutndoortemphumidDetail,getpressuregaugeDetail,getpowermeterDetail,
   getinverterDetail,getflowmeterDetail,getmotionsensorDetail,getlightingDetail,getcounterDetail,getsmartirDetail,getefficiencyDetail,getCCTVDetail,getco2Detail,getwatermeterDetail,getheaterDetail,getheaterwaterDetail,ChangeControleHeater
 } from "@/utils/api";
 import Heatertable from "./Heatertable";
-import VAVtable from "./Outdoorhumidtable";
 import SmartIRtable from "./SmartIRtable";
 import WaterMetertable from "./WaterMetertable";
-import ChartAHU from "./chart";
-import ChartSplittype from "./chartSplittype";
 import CO2Sensor from "./CO2tble";
 import HeaterWatertable from "./Heaterwater";
 import CCTV from "./CCTVtable";
@@ -561,7 +557,6 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
       closeModal();
       setAlertTitle(res.response.data.title);
       setAlertmessage(res.response.data.message);
-      
       setLoading(false);
     }
   };
@@ -663,7 +658,12 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
   };
 
   function titleCase(str) {
-    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
   return (
     <div>
@@ -3372,7 +3372,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                 <div className="mt-2 px-7 py-3">
                   <p className="text-lg text-gray-500 mt-2">
                     {" "}
-                    Are you sure you want to start {DeviceName} now ?{" "}
+                    Are you sure you want to start {DeviceName} now ? {" "}
                   </p>
                 </div>
                 <div className="flex justify-center mt-10 gap-5">

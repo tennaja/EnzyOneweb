@@ -105,6 +105,8 @@ export default function PowerAiControl({ FloorId }) {
         },
       },
       y1: {
+        
+        
         beginAtZero: true,
         type: "linear",
         display: true,
@@ -115,6 +117,7 @@ export default function PowerAiControl({ FloorId }) {
           padding: { top: 30, left: 0, right: 0, bottom: 0 },
         },
         grid: {
+          
           drawOnChartArea: false, // only want the grid lines for one axis to show up
         },
       },

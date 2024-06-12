@@ -27,7 +27,12 @@ export default function VAVtable({VAVList,onSubmitSettemp}) {
     setList(VAVList)
   },[VAVList,]) 
   function titleCase(str) {
-    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
 
 
