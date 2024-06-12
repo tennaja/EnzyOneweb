@@ -1810,7 +1810,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                             <div className="bg-white ml-4 border border-black">
                               <div class="px-3 ">
                                 <span class="text-gray-700 text-xs">
-                                Detected : {String(marker.detect)}
+                                Detected : {titleCase(String(marker.detect))}
                                 </span></div>
                                 </div>
                           </div>
@@ -2552,7 +2552,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                       </div>
                       <div class="px-3">
                         <span class="text-gray-700 text-sm">
-                        Detected : {String(marker.detect)}
+                        Detected : {titleCase(String(marker.detect))}
                         </span>
                       </div>
                       
@@ -2975,7 +2975,7 @@ async function clickChangestatusControleHeater(DecviceId, Values,DevId) {
                             >
                                
                               <IoMdPower size="1.2em"/>
-                            </button><div className="text-xs text-gray-500 font-bold">{marker.control}</div></div>}
+                            </button><div className="text-xs text-gray-500 font-bold">{titleCase(marker.control)}</div></div>}
                             
                             
                           </span>

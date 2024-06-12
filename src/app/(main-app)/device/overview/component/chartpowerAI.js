@@ -33,6 +33,7 @@ export default function PowerAiControl({ FloorId }) {
   const [controlMode, setControlmode] = useState([]);
   const [power, setPower] = useState([]);
   const [ListLabel, setListLabel] = useState([0]);
+  
   const [dateFrom, setdateFrom] = useState(new Date());
   const [dateTo, setdateTo] = useState(new Date());
   const dateFormat = 'YYYY/MM/DD';
@@ -105,7 +106,9 @@ export default function PowerAiControl({ FloorId }) {
         },
       },
       y1: {
-        
+        ticks: {
+                stepSize: 1
+            },
         
         beginAtZero: true,
         type: "linear",
